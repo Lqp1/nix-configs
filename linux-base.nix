@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  callPackage,
-  ...
+{ config
+, pkgs
+, callPackage
+, ...
 }:
 {
 
@@ -198,6 +197,7 @@
     shell = pkgs.zsh;
   };
   hardware.cpu.intel.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = true;
   nix.settings.max-jobs = 4;
   nix.gc = {
     automatic = true;

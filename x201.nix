@@ -35,44 +35,50 @@
   };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/81cd606e-adac-4ef8-b39a-2a2e223d5c4b";
+    {
+      device = "/dev/disk/by-uuid/81cd606e-adac-4ef8-b39a-2a2e223d5c4b";
       options = [ "noatime" "nodiratime" "discard" ];
       fsType = "ext4";
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/f6149b05-4821-41a6-b169-4f80d26726ef";
+    {
+      device = "/dev/disk/by-uuid/f6149b05-4821-41a6-b169-4f80d26726ef";
       options = [ "noatime" "nodiratime" "discard" "nodev" "nosuid" ];
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/0d46e3fa-bef9-4e6d-8afc-64315ae595e4";
+    {
+      device = "/dev/disk/by-uuid/0d46e3fa-bef9-4e6d-8afc-64315ae595e4";
       #options = [ "nodev" "nosuid" "noexec" "discard" "nodiratime" "noatime" ];
       fsType = "ext2";
     };
 
   fileSystems."/tmp" =
-    { device = "tmpfs";
+    {
+      device = "tmpfs";
       options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
       fsType = "tmpfs";
     };
 
   fileSystems."/run" =
-    { device = "tmpfs";
+    {
+      device = "tmpfs";
       options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
       fsType = "tmpfs";
     };
 
   fileSystems."/var/tmp" =
-    { device = "tmpfs";
+    {
+      device = "tmpfs";
       options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
       fsType = "tmpfs";
     };
 
   swapDevices =
     [
-    { device = "/dev/disk/by-uuid/c7bfd33d-4ed6-46ba-b931-8ff5c0b92a9c"; }
+      { device = "/dev/disk/by-uuid/c7bfd33d-4ed6-46ba-b931-8ff5c0b92a9c"; }
     ];
 
 }
