@@ -28,6 +28,7 @@
           ./x201.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-x200s
         ];
+        specialArgs = { inherit inputs; };
       };
       nixosConfigurations."thomas-t460" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -37,6 +38,7 @@
           ./t460.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-t460
         ];
+        specialArgs = { inherit inputs; };
       };
     };
 }

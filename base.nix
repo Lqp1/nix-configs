@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 let
   my-python-packages = python-packages: with python-packages; [
     pip
@@ -79,5 +79,8 @@ in
   nix.settings.experimental-features = "nix-command flakes";
   nix.optimise.automatic = true;
   nixpkgs.config.allowUnfree = true;
+
+  # Set Git commit hash for darwin-version.
+  system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
 }

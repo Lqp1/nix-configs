@@ -56,8 +56,6 @@
     pulseaudio
   ];
 
-  #environment.sessionVariables.TERMINAL = ["kitty"];
-
   # List services that you want to enable:
   services.fstrim.enable = true;
 
