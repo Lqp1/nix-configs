@@ -29,5 +29,14 @@
           nixos-hardware.nixosModules.lenovo-thinkpad-x200s
         ];
       };
+      nixosConfigurations."thomas-t460" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./linux-base.nix
+          ./base.nix
+          ./t460.nix
+          nixos-hardware.nixosModules.lenovo-thinkpad-t460
+        ];
+      };
     };
 }

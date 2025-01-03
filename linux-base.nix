@@ -199,6 +199,7 @@
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
   nix.settings.max-jobs = 4;
+  nix.settings.auto-optimise-store = true;
   nix.gc = {
     automatic = true;
     dates = "monthly";

@@ -5,6 +5,7 @@
 
 {
   system.stateVersion = "20.03";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # Use the GRUB 2 boot loader.
   boot.supportedFilesystems = [ "ntfs" ];
