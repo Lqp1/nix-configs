@@ -6,9 +6,10 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixos-hardware }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixos-hardware, nixos-wsl }:
     {
       formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
@@ -37,6 +38,15 @@
           ./base.nix
           ./t460.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-t460
+        ];
+        specialArgs = { inherit inputs; };
+      };
+      nixosConfigurations."wsl" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          nixos-wsl.nixosModules.default
+          ./wsl.nix
+          ./base.nix
         ];
         specialArgs = { inherit inputs; };
       };
