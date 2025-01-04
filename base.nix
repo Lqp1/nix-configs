@@ -1,5 +1,6 @@
 { inputs, pkgs, ... }:
 let
+  smount = inputs.smount;
   my-python-packages = python-packages: with python-packages; [
     pip
     configargparse
@@ -17,14 +18,7 @@ let
     i3ipc
   ];
   my-python = pkgs.python3.withPackages my-python-packages;
-  #smount = import (pkgs.fetchFromGitHub {
-  #        owner = "lqp1";
-  #        repo = "smount";
-  #        rev = "main";  # commit, tag, ou branche spécifique
-  #        sha256 = "sha256-urzQbm+8Woz/GsyWxA1m+ryhHE/JaZNSSJv1vLM3Cy4=";
-  #        }) {};
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
-
   my-kitty = pkgs.kitty.overrideAttrs (oldAttrs: rec {
     buildInputs = oldAttrs.buildInputs ++ [ my-python ];
   });
@@ -71,7 +65,7 @@ in
     my-python
     gnutar
     gnugrep
-    # smount
+    smount
   ];
 
   programs.zsh.enable = true;
