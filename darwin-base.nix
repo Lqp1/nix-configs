@@ -2,6 +2,7 @@
 {
 
   services.aerospace.enable = true;
+  services.aerospace.package = inputs.nixpkgs-unstable.aerospace
   services.aerospace.settings = {
     enable-normalization-flatten-containers = true;
     enable-normalization-opposite-orientation-for-nested-containers = true;
