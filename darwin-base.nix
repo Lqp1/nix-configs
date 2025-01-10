@@ -2,7 +2,6 @@
 {
 
   services.aerospace.enable = true;
-  services.aerospace.package = inputs.nixpkgs-unstable.aerospace
   services.aerospace.settings = {
     enable-normalization-flatten-containers = true;
     enable-normalization-opposite-orientation-for-nested-containers = true;
@@ -100,6 +99,10 @@
       {
         "if".app-id = "com.electron.logseq";
         run = "move-node-to-workspace 5";
+      }
+      {
+        "if".app-id = "com.cisco.secureclient.gui";
+        run = "layout floating";
       }
     ];
   };
