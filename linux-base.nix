@@ -6,21 +6,6 @@
 {
 
   security.rtkit.enable = true;
-  security.sudo.extraRules = [
-    {
-      groups = [ "wheel" ];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/veracrypt";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/uptime";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   # Select internationalisation properties.
   i18n.defaultLocale = "fr_FR.UTF-8";
