@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+function update_repo {
+    BRANCH=${1:-main}
+    git fetch
+    git log $BRANCH..origin/$BRANCH --oneline --color|tee
+    git rebase origin/$BRANCH
+}
+
+update_repo $@
