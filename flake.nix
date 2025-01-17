@@ -22,6 +22,7 @@
         modules = [
           ./darwin-base.nix
           ./base.nix
+          ./FV3Y4FYJ31.nix
         ];
         specialArgs = { inherit inputs; };
       };
