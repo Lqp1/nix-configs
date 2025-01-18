@@ -138,7 +138,6 @@
         pkgs.xfce.tumbler
         dunst
         picom
-        acpilight
         xss-lock
         rofimoji
       ];
@@ -147,6 +146,13 @@
   services.clamav.daemon.enable = true;
   services.clamav.updater.enable = true;
   services.autorandr.enable = true;
+
+  hardware.acpilight.enable = true;
+
+  # Temp fix for https://github.com/NixOS/nixpkgs/issues/292638
+  services.udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="kbd_backlight", GROUP="video", MODE="0664"
+      '';
 
   programs.evince.enable = true;
   programs.file-roller.enable = true;
