@@ -1,6 +1,6 @@
 { inputs, pkgs, ... }:
 let
-  smount = inputs.smount;
+  smount = inputs.smount.packages.${pkgs.system}.smount;
   my-python-packages = python-packages: with python-packages; [
     pip
     configargparse
