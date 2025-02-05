@@ -66,6 +66,7 @@ in
     gnutar
     gnugrep
     smount
+    yazi
   ];
 
   programs.zsh.enable = true;
