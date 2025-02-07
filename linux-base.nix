@@ -1,4 +1,6 @@
-{ config
+{ inputs
+, lib
+, config
 , pkgs
 , callPackage
 , ...
@@ -193,5 +195,11 @@
     automatic = true;
     dates = "monthly";
     options = "--delete-older-than 60d";
+  };
+   system.activationScripts = {
+    nixos-needsreboot = {
+      supportsDryActivation = true;
+      text = "${lib.getExe inputs.nixos-needsreboot.packages.${pkgs.system}.default} \"$systemConfig\" || true";
+    };
   };
 }
