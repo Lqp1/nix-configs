@@ -1,5 +1,5 @@
 {
-  description = "Work system flake";
+  description = "Personal system flake";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-24.11";

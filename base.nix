@@ -58,7 +58,6 @@ in
     less
     httpie
     lazygit
-    # choose-gui
     go
     gopls
     my-ruby

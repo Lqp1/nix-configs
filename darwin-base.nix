@@ -1,5 +1,12 @@
-{ pkgs, ... }:
+{ inputs, pkgs, pkgsUnstable, ... }:
 {
+  _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
+    inherit (pkgs.stdenv.hostPlatform) system;
+  };
+
+  environment.systemPackages = [
+    pkgsUnstable.choose-gui
+  ];
 
   services.aerospace.enable = true;
   services.aerospace.settings = {
