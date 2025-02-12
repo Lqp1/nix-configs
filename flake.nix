@@ -22,18 +22,18 @@
 
       darwinConfigurations."FV3Y4FYJ31" = nix-darwin.lib.darwinSystem {
         modules = [
-          ./darwin-base.nix
+          ./os/darwin-base.nix
           ./base.nix
-          ./FV3Y4FYJ31.nix
+          ./hosts/FV3Y4FYJ31.nix
         ];
         specialArgs = { inherit inputs; };
       };
       nixosConfigurations."thomas-x201" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./linux-base.nix
+          ./os/linux-base.nix
           ./base.nix
-          ./x201.nix
+          ./hosts/x201.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-x200s
         ];
         specialArgs = { inherit inputs; };
@@ -41,9 +41,9 @@
       nixosConfigurations."thomas-t460" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./linux-base.nix
+          ./os/linux-base.nix
           ./base.nix
-          ./t460.nix
+          ./hosts/t460.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-t460
         ];
         specialArgs = { inherit inputs; };
@@ -52,7 +52,7 @@
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.default
-          ./wsl.nix
+          ./hosts/wsl.nix
           ./base.nix
         ];
         specialArgs = { inherit inputs; };
