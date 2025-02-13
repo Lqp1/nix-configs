@@ -6,6 +6,7 @@
 
   environment.systemPackages = [
     pkgsUnstable.choose-gui
+    colima
   ];
 
   services.aerospace.enable = true;
