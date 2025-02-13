@@ -4,9 +4,10 @@
     inherit (pkgs.stdenv.hostPlatform) system;
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     pkgsUnstable.choose-gui
     colima
+    docker
   ];
 
   services.aerospace.enable = true;
