@@ -120,7 +120,7 @@
   services.skhd.skhdConfig = ''
     cmd - return : open -n -a "Kitty"
     cmd + shift - d : open -n -a "Launchpad"
-    cmd - d : \ls /Users/t.lange/Applications/Home\ Manager\ Apps /Applications/ /Applications/Utilities/ /System/Applications/ /System/Applications/Utilities/|grep '\.app'|choose|xargs --null open -a
+    cmd - d : \ls /Users/t.lange/Applications/Home\ Manager\ Apps /Applications/Nix\ Apps /Applications/ /Applications/Utilities/ /System/Applications/ /System/Applications/Utilities/|grep '\.app'|choose|xargs --null open -a
     cmd - 0x29 : open -a "Emoji & Symbols"
     cmd + shift - j : cat ~/.cache/jira_tickets | choose | cut -d' ' -f1 | pbcopy -
   '';
