@@ -196,7 +196,7 @@
     dates = "monthly";
     options = "--delete-older-than 60d";
   };
-   system.activationScripts = {
+  system.activationScripts = {
     nixos-needsreboot = {
       supportsDryActivation = true;
       text = "${lib.getExe inputs.nixos-needsreboot.packages.${pkgs.system}.default} \"$systemConfig\" || true";

@@ -1,4 +1,7 @@
 { inputs, pkgs, pkgsUnstable, ... }:
+let
+  nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
+in
 {
   _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -165,6 +168,11 @@
   system.keyboard.swapLeftCtrlAndFn = false;
 
   security.pam.enableSudoTouchIdAuth = true;
+
+  # workaround to have flake's derivations available for nix-* commands
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.nixPath = [ "nixpkgs=${nixpkgsPath}" ];
+  environment.etc."nixpkgs/channels/nixpkgs".source = inputs.nixpkgs;
 
   nix.gc = {
     automatic = true;
