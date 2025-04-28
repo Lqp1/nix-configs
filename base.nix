@@ -64,6 +64,7 @@ in
     my-python
     gnutar
     gnugrep
+    gnused
     smount
     yazi
   ];
