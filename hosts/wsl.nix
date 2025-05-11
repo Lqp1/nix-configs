@@ -14,6 +14,7 @@
     ];
     packages = with pkgs; [
       unzip
+      wget # required for VSCode integration
     ];
     shell = pkgs.zsh;
   };
@@ -21,4 +22,8 @@
     device = "Z:";
     fsType = "drvfs";
   };
+  programs.nix-ld = { # for VSCode
+    enable = true;
+    package = pkgs.nix-ld-rs; # only for NixOS 24.05
+};
 }
