@@ -19,9 +19,10 @@ let
   ];
   my-python = pkgs.python3.withPackages my-python-packages;
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
-  my-kitty = pkgs.kitty.overrideAttrs (oldAttrs: rec {
-    buildInputs = oldAttrs.buildInputs ++ [ my-python ];
-  });
+  my-kitty = pkgs.kitty.override {
+    python3 = my-python;
+    python3Packages = my-python.pkgs;
+  };
 in
 {
   environment.systemPackages = with pkgs; [
