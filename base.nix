@@ -51,6 +51,7 @@ in
     coreutils
     home-manager
     pipx
+    mdcat
     autojump
     iftop
     lazygit
@@ -63,6 +64,7 @@ in
     gopls
     my-ruby
     my-python
+    netcat-gnu
     gnutar
     gnugrep
     gnused
