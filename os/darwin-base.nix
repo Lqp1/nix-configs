@@ -67,7 +67,6 @@ in
       cmd-shift-c = "reload-config";
 
       cmd-r = "mode resize";
-      #alt-tab = "focus-back-and-forth workspace-back-and-forth";
     };
 
     mode.resize.binding = {
@@ -126,6 +125,7 @@ in
     cmd - d : \ls /Users/t.lange/Applications/Home\ Manager\ Apps /Applications/Nix\ Apps /Applications/ /Applications/Utilities/ /System/Applications/ /System/Applications/Utilities/|grep '\.app'|choose|xargs --null open -a
     cmd - 0x29 : open -a "Emoji & Symbols"
     cmd + shift - j : cat ~/.cache/jira_tickets | choose | cut -d' ' -f1 | pbcopy -
+    alt - tab : aerospace focus-back-and-forth || aerospace workspace-back-and-forth
   '';
 
   system.defaults = {
