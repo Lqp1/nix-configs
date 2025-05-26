@@ -25,6 +25,7 @@
           ./os/darwin-base.nix
           ./base.nix
           ./hosts/FV3Y4FYJ31.nix
+          ./work.nix
         ];
         specialArgs = { inherit inputs; };
       };

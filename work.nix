@@ -1,0 +1,34 @@
+{ inputs, pkgs, pkgsUnstable, ... }:
+{
+  environment.systemPackages = with pkgs; [
+      awscli2
+      bind
+      cpulimit
+      git-review
+      gnvim
+      helm-ls
+      jq
+      jnv
+      pkgsUnstable.k9s
+      krew
+      kubectl
+      kubectl-tree
+      kubectl-images
+      kubectx
+      kubent
+      kubie
+      kubernetes-helm
+      mtr
+      neovim
+      nmap
+      nodejs
+      openjdk11
+      pandoc
+      parallel
+      pssh
+      uv
+      whois
+      xmlstarlet
+      yq
+  ];
+}
