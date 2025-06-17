@@ -9,7 +9,7 @@
       helm-ls
       jq
       jnv
-      pkgsUnstable.k9s
+      pkgsUnstable.k9s # Use unstable version as it has the custom views feature
       krew
       kubectl
       kubectl-tree
@@ -19,7 +19,7 @@
       kubie
       kubernetes-helm
       mtr
-      neovim
+      pkgsUnstable.neovim # Use unstable version as some plugins require it
       nmap
       nodejs
       openjdk11
