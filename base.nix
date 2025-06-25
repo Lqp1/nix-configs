@@ -19,10 +19,6 @@ let
   ];
   my-python = pkgs.python3.withPackages my-python-packages;
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
-  my-kitty = pkgs.kitty.override {
-    python3 = my-python;
-    python3Packages = my-python.pkgs;
-  };
 in
 {
   environment.systemPackages = with pkgs; [
@@ -36,6 +32,7 @@ in
     screen
     rclone
     sshfs
+    kitty
     moreutils
     pciutils
     delta
@@ -45,7 +42,6 @@ in
     bc
     ansible
     btop
-    my-kitty
     eza
     vgrep
     coreutils
@@ -62,14 +58,14 @@ in
     lazygit
     go
     gopls
-    my-ruby
-    my-python
     netcat-gnu
     gnutar
     gnugrep
     gnused
     smount
     yazi
+    my-ruby
+    my-python
   ];
 
   programs.zsh.enable = true;
