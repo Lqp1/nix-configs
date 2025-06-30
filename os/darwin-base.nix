@@ -31,6 +31,7 @@ in
       cmd-left = "focus --boundaries-action wrap-around-the-workspace left";
       cmd-l = "focus --boundaries-action wrap-around-the-workspace right";
       cmd-right = "focus --boundaries-action wrap-around-the-workspace right";
+      #cmd-twosuperior = "focus --boundaries-action wrap-around-the-workspace right"; # Fast switch on azerty
 
       cmd-shift-j = "move left";
       cmd-shift-left = "move left";
