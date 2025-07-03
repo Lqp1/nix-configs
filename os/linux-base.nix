@@ -141,7 +141,6 @@
         dunst
         picom
         xss-lock
-        rofimoji
       ];
   };
 
