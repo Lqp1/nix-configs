@@ -22,26 +22,25 @@ let
   ];
   my-python = pkgs.python3.withPackages my-python-packages;
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
-  my-rofimoji = (pkgsUnstable.callPackage
-    # Use rofimoji from nixpkgs-unstable because rofi dep is hardcoded in 24.11 and not compatible with darwin
-    (inputs.nixpkgs-unstable + "/pkgs/by-name/ro/rofimoji/package.nix")
-    {
-      waylandSupport = false;
-      x11Support = false;
-    }).overrideAttrs (old: {
+  # Use rofimoji from nixpkgs-unstable because rofi dep is hardcoded in 24.11 and not compatible with darwin
+  my-rofimoji = (pkgsUnstable.rofimoji.overrideAttrs (old: {
           # Why needing hatchling manually ? it works oob on Linux but not on macOS
           buildInputs = old.buildInputs ++ [ pkgsUnstable.python3Packages.hatchling ];
           # Personal fork of rofimoji to fix the tool on MacOS to support "choose" and "pbcopy" commands
+          version = old.version + "-lqp1-e86";
           src = pkgs.fetchFromGitHub {
              owner = "lqp1";
              repo = "rofimoji";
-             rev = "c4af1bc211af63935fbe9364c36af25982efd506";
-             sha256 = "sha256-dPM2VQg6TR3S7FmU6h7fp/PoNCBAkg2iGJbdM+f6eeY=";
+             rev = "e86d1814e86b0f8f97a8b14378d98f62a54fd9e5";
+             sha256 = "sha256-W3D+8RLmx7Tq7DSsjN/OfjAqbN0NltdDubATqlP9LTg=";
              };
           # Force support of darwin and linux platforms now
           meta = old.meta // { platforms = pkgs.lib.platforms.linux ++ pkgs.lib.platforms.darwin;};
           }
-  );
+        )).override {
+          waylandSupport = false;
+          x11Support = false;
+    };
 in
 {
   environment.systemPackages = with pkgs; [
