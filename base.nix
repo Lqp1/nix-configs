@@ -24,14 +24,13 @@ let
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
   # Use rofimoji from nixpkgs-unstable because rofi dep is hardcoded in 24.11 and not compatible with darwin
   my-rofimoji = (pkgsUnstable.rofimoji.overrideAttrs (old: {
-    # Why needing hatchling manually ? it works oob on Linux but not on macOS
+    # Use main branch which contains my patch for MacOS; it required hatchling to build now
     buildInputs = old.buildInputs ++ [ pkgsUnstable.python3Packages.hatchling ];
-    # Personal fork of rofimoji to fix the tool on MacOS to support "choose" and "pbcopy" commands
-    version = old.version + "-lqp1-e86";
+    version = old.version + "-1438d04";
     src = pkgs.fetchFromGitHub {
-      owner = "lqp1";
+      owner = "fdw";
       repo = "rofimoji";
-      rev = "e86d1814e86b0f8f97a8b14378d98f62a54fd9e5";
+      rev = "1438d048bbe4477ac6383c29a8f520300bacdafc";
       sha256 = "sha256-W3D+8RLmx7Tq7DSsjN/OfjAqbN0NltdDubATqlP9LTg=";
     };
     # Force support of darwin and linux platforms now
