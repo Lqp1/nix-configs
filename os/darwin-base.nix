@@ -31,7 +31,6 @@ in
       cmd-left = "focus --boundaries-action wrap-around-the-workspace left";
       cmd-l = "focus --boundaries-action wrap-around-the-workspace right";
       cmd-right = "focus --boundaries-action wrap-around-the-workspace right";
-      #cmd-twosuperior = "focus --boundaries-action wrap-around-the-workspace right"; # Fast switch on azerty
 
       cmd-shift-j = "move left";
       cmd-shift-left = "move left";
@@ -128,6 +127,8 @@ in
     cmd - 0x2B : rofimoji -a clipboard
     cmd + shift - j : cat ~/.cache/jira_tickets | choose | cut -d' ' -f1 | tr -d '\n' | pbcopy - && cliclick -w 100 kd:cmd t:v ku:cmd
     alt - tab : aerospace focus-back-and-forth || aerospace workspace-back-and-forth
+    cmd - 0x0A : aerospace focus --boundaries-action wrap-around-the-workspace right
+    cmd - 0x32 : aerospace focus --boundaries-action wrap-around-the-workspace right
   '';
 
   system.defaults = {
