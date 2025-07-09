@@ -170,7 +170,7 @@ in
   system.keyboard.swapLeftCommandAndLeftAlt = false;
   system.keyboard.swapLeftCtrlAndFn = false;
 
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # workaround to have flake's derivations available for nix-* commands
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
@@ -183,7 +183,7 @@ in
     options = "--delete-older-than 60d";
   };
 
-  system.activationScripts.postUserActivation.text = ''
+  system.activationScripts.activateDarwinSettings.text = ''
     # Following line should allow us to avoid a logout/login cycle
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   '';
