@@ -31,7 +31,7 @@ let
       owner = "fdw";
       repo = "rofimoji";
       rev = "1438d048bbe4477ac6383c29a8f520300bacdafc";
-      sha256 = "sha256-W3D+8RLmx7Tq7DSsjN/OfjAqbN0NltdDubATqlP9LTg=";
+      sha256 = "sha256-AJM0XvDe+L8o7SKwGTug+M5Un5G3K0NHYPDLrUalDbY=";
     };
     # Force support of darwin and linux platforms now
     meta = old.meta // { platforms = pkgs.lib.platforms.linux ++ pkgs.lib.platforms.darwin; };
