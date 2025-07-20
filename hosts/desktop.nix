@@ -17,7 +17,6 @@
   boot.extraModulePackages = [ ];
   networking.hostName = "thomas-desktop"; # Define your hostname.
   services.xserver.desktopManager.gnome.enable = true;
-  services.tlp.enable = lib.mkForce false;
   services.redshift.enable = lib.mkForce false;
 
   hardware.graphics.enable = true;

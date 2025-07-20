@@ -15,6 +15,8 @@
   environment.sessionVariables.TERMINAL = [ "kitty" ];
   networking.hostName = "thomas-t460";
   networking.useDHCP = lib.mkDefault true;
+  networking.networkmanager.wifi.powersave = true;
+  services.tlp.enable = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];

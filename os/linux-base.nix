@@ -41,6 +41,7 @@
     iptraf-ng
     fwupd
     pulseaudio
+    networkmanagerapplet
   ];
 
   # List services that you want to enable:
@@ -66,7 +67,6 @@
     };
   };
 
-  services.tlp.enable = lib.mkDefault true;
   services.acpid.enable = true;
 
   virtualisation.docker.enable = true;
