@@ -100,6 +100,7 @@
   services.xserver.enable = true;
   services.xserver.xkb.layout = "fr";
   services.xserver.xkb.options = "eurosign:e,compose:rctrl";
+  services.xserver.desktopManager.wallpaper.mode = "max";
   services.libinput.enable = true;
   services.displayManager = {
     defaultSession = "none+i3";

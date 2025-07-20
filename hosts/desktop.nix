@@ -22,6 +22,7 @@
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = false; # Card is too old for the fresh and advised open source drivers
+  hardware.nvidia.forceFullCompositionPipeline = true; # To reduce screen tearing
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/78949a70-f664-44e2-8acd-e9cc7394ff3a";
