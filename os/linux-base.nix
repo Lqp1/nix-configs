@@ -59,14 +59,14 @@
 
 
   services.redshift = {
-    enable = true;
+    enable = lib.mkDefault true;
     temperature = {
       day = 5500;
       night = 3500;
     };
   };
 
-  services.tlp.enable = true;
+  services.tlp.enable = lib.mkDefault true;
   services.acpid.enable = true;
 
   virtualisation.docker.enable = true;
@@ -98,7 +98,6 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.videoDrivers = [ "modesetting" ];
   services.xserver.xkb.layout = "fr";
   services.xserver.xkb.options = "eurosign:e,compose:rctrl";
   services.libinput.enable = true;

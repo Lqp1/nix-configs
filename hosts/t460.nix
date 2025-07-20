@@ -11,6 +11,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services.xserver.videoDrivers = [ "modesetting" ];
   environment.sessionVariables.TERMINAL = [ "kitty" ];
   networking.hostName = "thomas-t460";
   networking.useDHCP = lib.mkDefault true;

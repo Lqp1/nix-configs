@@ -5,6 +5,7 @@
 }:
 {
   system.stateVersion = "24.05";
+  services.xserver.videoDrivers = [ "modesetting" ];
   wsl.enable = true;
   wsl.defaultUser = "thomas";
   users.users.thomas = {

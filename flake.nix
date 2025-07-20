@@ -58,5 +58,14 @@
         ];
         specialArgs = { inherit inputs; };
       };
+      nixosConfigurations."thomas-desktop" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./os/linux-base.nix
+          ./base.nix
+          ./hosts/desktop.nix
+        ];
+        specialArgs = { inherit inputs; };
+      };
     };
 }
