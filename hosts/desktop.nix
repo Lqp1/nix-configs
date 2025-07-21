@@ -50,7 +50,7 @@
   {
       device = "/dev/disk/by-uuid/0E629ED6629EC23F";
       fsType = "ntfs-3g";
-      options = ["uid=1000" "gid=100"];
+      options = [ "uid=1000" "gid=100" "dmask=0027" "fmask=0137" ];
   };
 
 
