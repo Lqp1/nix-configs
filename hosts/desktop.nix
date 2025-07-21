@@ -24,6 +24,14 @@
   hardware.nvidia.open = false; # Card is too old for the fresh and advised open source drivers
   hardware.nvidia.forceFullCompositionPipeline = true; # To reduce screen tearing
 
+  # Suspend is buggy with the "old" nvidia card and not really useful wrt how I use the desktop
+  systemd.sleep.extraConfig = ''
+  AllowSuspend=no
+  AllowHibernation=no
+  AllowHybridSleep=no
+  AllowSuspendThenHibernate=no
+'';
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/78949a70-f664-44e2-8acd-e9cc7394ff3a";
       fsType = "ext4";
