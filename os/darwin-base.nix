@@ -124,7 +124,7 @@ in
     cmd - return : open -n -a "Kitty"
     cmd + shift - d : open -n -a "Launchpad"
     cmd - d : \ls /Users/t.lange/Applications/Home\ Manager\ Apps /Applications/Nix\ Apps /Applications/ /Applications/Utilities/ /System/Applications/ /System/Applications/Utilities/|grep '\.app'|choose|xargs --null open -a
-    cmd - 0x2B : rofimoji -a clipboard
+    cmd - 0x2B : rofimoji -a clipboard -s neutral
     cmd + shift - j : cat ~/.cache/jira_tickets | choose | cut -d' ' -f1 | tr -d '\n' | pbcopy - && cliclick -w 100 kd:cmd t:v ku:cmd
     alt - tab : aerospace focus-back-and-forth || aerospace workspace-back-and-forth
     cmd - 0x0A : aerospace focus --boundaries-action wrap-around-the-workspace right
