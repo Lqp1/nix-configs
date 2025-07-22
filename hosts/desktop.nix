@@ -19,6 +19,8 @@
   services.xserver.desktopManager.gnome.enable = true;
   services.redshift.enable = lib.mkForce false;
 
+  services.libinput.mouse.accelProfile = "flat";
+
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = false; # Card is too old for the fresh and advised open source drivers

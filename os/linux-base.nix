@@ -7,6 +7,8 @@
 }:
 {
 
+  security.sudo.package = pkgs.sudo.override { withInsults = true; };
+
   security.rtkit.enable = true;
 
   # Select internationalisation properties.
