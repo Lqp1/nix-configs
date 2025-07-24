@@ -1,6 +1,7 @@
 { inputs, pkgs, pkgsUnstable, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
+  lunchy = pkgs.callPackage ../derivations/lunchy {};
 in
 {
   _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
@@ -11,6 +12,7 @@ in
     pkgsUnstable.choose-gui
     colima
     docker
+    lunchy
   ];
 
   services.aerospace.enable = true;

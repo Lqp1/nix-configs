@@ -1,0 +1,19 @@
+GIT
+  remote: https://github.com/eddiezane/lunchy.git
+  revision: dfe1b06dae47fb58e4d42dcf28d404ff3557a004
+  specs:
+    lunchy (0.10.4)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  arm64-darwin-24
+  ruby
+
+DEPENDENCIES
+  lunchy!
+
+BUNDLED WITH
+   2.5.22
