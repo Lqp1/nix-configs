@@ -1,5 +1,10 @@
 # My Nix Flake
 
+## Flake format
+```
+nix fmt .
+```
+
 ## Lock update
 
 ```
@@ -12,7 +17,7 @@ nix flake update --commit-lock-file
 
 ```
 nix run nix-darwin -- switch --flake .
-darwin-rebuild --flake . switch
+sudo darwin-rebuild --flake . switch
 ```
 
 ### Linux

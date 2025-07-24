@@ -1,13 +1,14 @@
-with (import <nixpkgs> {});
+with (import <nixpkgs> { });
 let
   env = bundlerEnv {
     name = "lunchy-bundler-env";
     inherit ruby;
-    gemfile  = ./Gemfile;
+    gemfile = ./Gemfile;
     lockfile = ./Gemfile.lock;
-    gemset   = ./gemset.nix;
+    gemset = ./gemset.nix;
   };
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   name = "lunchy";
   buildInputs = [ env ];
 }

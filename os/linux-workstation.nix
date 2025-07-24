@@ -50,9 +50,9 @@
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings = {
-      General = {
-          Experimental = true;
-      };
+    General = {
+      Experimental = true;
+    };
   };
 
   # Enable the X11 windowing system.
@@ -140,6 +140,6 @@
     ];
     shell = pkgs.zsh;
   };
-    };
-  };
+};
+};
 }

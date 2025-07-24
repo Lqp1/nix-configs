@@ -1,7 +1,7 @@
 {
   lunchy = {
-    groups = ["default"];
-    platforms = [];
+    groups = [ "default" ];
+    platforms = [ ];
     source = {
       fetchSubmodules = false;
       rev = "dfe1b06dae47fb58e4d42dcf28d404ff3557a004";

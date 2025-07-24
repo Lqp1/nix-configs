@@ -6,7 +6,8 @@
 {
   system.stateVersion = "25.05"; # Did you read the comment?
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -28,32 +29,34 @@
 
   # Suspend is buggy with the "old" nvidia card and not really useful wrt how I use the desktop
   systemd.sleep.extraConfig = ''
-  AllowSuspend=no
-  AllowHibernation=no
-  AllowHybridSleep=no
-  AllowSuspendThenHibernate=no
-'';
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/78949a70-f664-44e2-8acd-e9cc7394ff3a";
+    {
+      device = "/dev/disk/by-uuid/78949a70-f664-44e2-8acd-e9cc7394ff3a";
       fsType = "ext4";
-      options = ["noatime" "nodiratime" "discard"];
+      options = [ "noatime" "nodiratime" "discard" ];
     };
 
   boot.initrd.luks.devices."luks-b0575706-4682-4fb7-92b3-e322f3b28904".device = "/dev/disk/by-uuid/b0575706-4682-4fb7-92b3-e322f3b28904";
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/9B95-CF1A";
+    {
+      device = "/dev/disk/by-uuid/9B95-CF1A";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
   fileSystems."/mnt/backup" =
-  {
+    {
       device = "/dev/disk/by-uuid/0E629ED6629EC23F";
       fsType = "ntfs-3g";
       options = [ "uid=1000" "gid=100" "dmask=0027" "fmask=0137" ];
-  };
+    };
 
 
   swapDevices = [ ];

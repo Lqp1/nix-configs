@@ -1,7 +1,7 @@
 { inputs, pkgs, pkgsUnstable, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
-  lunchy = pkgs.callPackage ../derivations/lunchy {};
+  lunchy = pkgs.callPackage ../derivations/lunchy { };
 in
 {
   _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
