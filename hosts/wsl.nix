@@ -8,17 +8,6 @@
   services.xserver.videoDrivers = [ "modesetting" ];
   wsl.enable = true;
   wsl.defaultUser = "thomas";
-  users.users.thomas = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-    ];
-    packages = with pkgs; [
-      unzip
-      wget # required for VSCode integration
-    ];
-    shell = pkgs.zsh;
-  };
   fileSystems."/mnt/z" = {
     device = "Z:";
     fsType = "drvfs";

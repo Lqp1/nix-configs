@@ -24,6 +24,7 @@
         modules = [
           ./os/darwin-base.nix
           ./base.nix
+          ./workstation.nix
           ./hosts/FV3Y4FYJ31.nix
           ./work.nix
         ];
@@ -33,7 +34,9 @@
         system = "x86_64-linux";
         modules = [
           ./os/linux-base.nix
+          ./os/linux-workstation.nix
           ./base.nix
+          ./workstation.nix
           ./hosts/x201.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-x200s
         ];
@@ -43,7 +46,9 @@
         system = "x86_64-linux";
         modules = [
           ./os/linux-base.nix
+          ./os/linux-workstation.nix
           ./base.nix
+          ./workstation.nix
           ./hosts/t460.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-t460
         ];
@@ -53,8 +58,10 @@
         system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.default
-          ./hosts/wsl.nix
+          ./os/linux-base.nix
+          ./os/linux-headless.nix
           ./base.nix
+          ./hosts/wsl.nix
         ];
         specialArgs = { inherit inputs; };
       };
@@ -62,7 +69,9 @@
         system = "x86_64-linux";
         modules = [
           ./os/linux-base.nix
+          ./os/linux-workstation.nix
           ./base.nix
+          ./workstation.nix
           ./hosts/desktop.nix
         ];
         specialArgs = { inherit inputs; };
