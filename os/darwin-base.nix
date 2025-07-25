@@ -1,7 +1,19 @@
-{ inputs, pkgs, pkgsUnstable, ... }:
+{ inputs, lib, pkgs, pkgsUnstable, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
   lunchy = pkgs.callPackage ../derivations/lunchy { };
+  my-aerospace = pkgs.aerospace.overrideAttrs (oldAttrs:
+    let
+      custom_version = "0.19.2-Beta";
+    in
+    {
+      version = custom_version;
+      src = pkgs.fetchzip {
+        url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${custom_version}/AeroSpace-v${custom_version}.zip";
+        sha256 = "sha256-6RyGw84GhGwULzN0ObjsB3nzRu1HYQS/qoCvzVWOYWQ=";
+      };
+    });
+
 in
 {
   _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
@@ -16,6 +28,7 @@ in
   ];
 
   services.aerospace.enable = true;
+  services.aerospace.package = my-aerospace;
   services.aerospace.settings = {
     enable-normalization-flatten-containers = true;
     enable-normalization-opposite-orientation-for-nested-containers = true;
