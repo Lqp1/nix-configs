@@ -46,6 +46,7 @@ in
     home-manager
     pipx
     mdcat
+    nil
     autojump
     iftop
     lazygit
