@@ -16,10 +16,6 @@ let
 
 in
 {
-  _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
-    inherit (pkgs.stdenv.hostPlatform) system;
-  };
-
   environment.systemPackages = with pkgs; [
     pkgsUnstable.choose-gui
     colima

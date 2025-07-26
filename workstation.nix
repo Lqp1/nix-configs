@@ -1,8 +1,5 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, pkgsUnstable, ... }:
 let
-  pkgsUnstable = import inputs.nixpkgs-unstable {
-    inherit (pkgs.stdenv.hostPlatform) system;
-  };
   # Use rofimoji from nixpkgs-unstable because rofi dep is hardcoded in 24.11 and not compatible with darwin
   my-rofimoji = (pkgsUnstable.rofimoji.overrideAttrs (old: {
     # Use main branch which contains my patch for MacOS; it required hatchling to build now
