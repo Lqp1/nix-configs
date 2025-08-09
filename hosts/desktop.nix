@@ -14,26 +14,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.initrd.verbose = false;
   boot.kernelModules = [ "kvm-intel" ];
-  boot.kernelParams = [
-    "quiet"
-    "splash"
-    "boot.shell_on_fail"
-    "udev.log_priority=3"
-    "rd.systemd.show_status=auto"
-  ];
-  boot.consoleLogLevel = 3;
   boot.extraModulePackages = [ ];
-  boot.plymouth = {
-    enable = true;
-    theme = "pixels";
-    themePackages = with pkgs; [
-      (adi1090x-plymouth-themes.override {
-        selected_themes = [ "pixels" ];
-      })
-    ];
-  };
   networking.hostName = "thomas-desktop"; # Define your hostname.
   services.xserver.desktopManager.gnome.enable = true;
   services.redshift.enable = lib.mkForce false;

@@ -140,4 +140,26 @@
     ];
     shell = pkgs.zsh;
   };
+
+  # Hide logs or on workstations & add plymouth
+  boot.loader.timeout = 0;
+  boot.consoleLogLevel = 3;
+  boot.initrd.verbose = false;
+  boot.kernelParams = [
+    "quiet"
+    "splash"
+    "boot.shell_on_fail"
+    "udev.log_priority=3"
+    "rd.systemd.show_status=auto"
+  ];
+  boot.plymouth = {
+    enable = true;
+    theme = "pixels";
+    themePackages = with pkgs; [
+      (adi1090x-plymouth-themes.override {
+        selected_themes = [ "pixels" ];
+      })
+    ];
+  };
+
 }
