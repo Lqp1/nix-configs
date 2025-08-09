@@ -132,6 +132,7 @@
       vlc
       transmission_4
       gimp
+      gthumb
       libreoffice
       pavucontrol
       gsmartcontrol
