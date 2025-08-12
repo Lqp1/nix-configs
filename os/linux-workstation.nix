@@ -87,6 +87,7 @@
         pkgs.xfce.xfce4-terminal
         arc-icon-theme
         arc-theme
+        material-cursors
         pkgs.xfce.xfce4-screenshooter
         pkgs.xfce.thunar
         pkgs.xfce.ristretto
