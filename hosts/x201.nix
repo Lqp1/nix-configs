@@ -13,7 +13,7 @@
   boot.loader.grub.device = "/dev/sda";
 
   services.xserver.videoDrivers = [ "modesetting" ];
-  environment.sessionVariables.TERMINAL = [ "xfce4-terminal" ];
+  environment.variables.TERMINAL = [ "xfce4-terminal" ];
   networking.hostName = "thomas-x201"; # Define your hostname.
   networking.interfaces.enp0s25.useDHCP = true;
   networking.networkmanager.wifi.powersave = true;

@@ -12,7 +12,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   services.xserver.videoDrivers = [ "modesetting" ];
-  environment.sessionVariables.TERMINAL = [ "kitty" ];
+  environment.variables.TERMINAL = [ "kitty" ];
   networking.hostName = "thomas-t460";
   networking.useDHCP = lib.mkDefault true;
   networking.networkmanager.wifi.powersave = true;
