@@ -36,6 +36,7 @@
           ./os/linux-base.nix
           ./os/linux-workstation.nix
           ./base.nix
+          ./laptop.nix
           ./workstation.nix
           ./hosts/x201.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-x200s
@@ -48,6 +49,7 @@
           ./os/linux-base.nix
           ./os/linux-workstation.nix
           ./base.nix
+          ./laptop.nix
           ./workstation.nix
           ./hosts/t460.nix
           nixos-hardware.nixosModules.lenovo-thinkpad-t460
