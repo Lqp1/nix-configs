@@ -9,6 +9,12 @@
 
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
+  security.auditd.enable = true;
+  security.audit.enable = true;
+  security.audit.rules = [
+      "-a exit,always -F arch=b64 -S execve"
+  ];
+
   security.rtkit.enable = true;
 
   # Select internationalisation properties.
