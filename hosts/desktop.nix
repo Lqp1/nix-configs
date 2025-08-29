@@ -11,6 +11,7 @@
     ];
 
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.editor = false;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
@@ -57,6 +58,27 @@
       device = "/dev/disk/by-uuid/0E629ED6629EC23F";
       fsType = "ntfs-3g";
       options = [ "uid=1000" "gid=100" "dmask=0027" "fmask=0137" ];
+    };
+
+  fileSystems."/tmp" =
+    {
+      device = "tmpfs";
+      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
+      fsType = "tmpfs";
+    };
+
+  fileSystems."/run" =
+    {
+      device = "tmpfs";
+      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
+      fsType = "tmpfs";
+    };
+
+  fileSystems."/var/tmp" =
+    {
+      device = "tmpfs";
+      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
+      fsType = "tmpfs";
     };
 
 
