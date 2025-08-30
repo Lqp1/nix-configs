@@ -63,7 +63,7 @@
   fileSystems."/tmp" =
     {
       device = "tmpfs";
-      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
+      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=6G" ];
       fsType = "tmpfs";
     };
 
