@@ -17,6 +17,12 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
+  # We don't do power saving on desktops, but especially we need to make sure
+  # bt adapters are on USB-2 and not USB-3 ports...
+  boot.extraModprobeConfig = ''
+  options btusb enable_autosuspend=N
+  '';
   networking.hostName = "thomas-desktop"; # Define your hostname.
   services.xserver.desktopManager.gnome.enable = true;
   services.redshift.enable = lib.mkForce false;
