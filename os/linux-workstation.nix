@@ -130,6 +130,7 @@
       "docker"
       "video"
       "plugdev"
+      "adbusers"
     ];
     packages = with pkgs; [
       firefox
