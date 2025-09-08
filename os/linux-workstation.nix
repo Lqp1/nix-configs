@@ -31,6 +31,8 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.browsed.enable = false;
+
   services.printing.drivers = [ pkgs.hplip ];
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [
