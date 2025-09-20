@@ -143,6 +143,7 @@
       gsmartcontrol
       gparted
       audacity
+      naps2
     ];
     shell = pkgs.zsh;
   };
