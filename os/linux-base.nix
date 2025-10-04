@@ -134,39 +134,17 @@
   };
 
   boot.blacklistedKernelModules = [
-    # Obscure network protocols
-    "ax25"
-    "netrom"
-    "rose"
-
-    # Rare protocols
-    "tipc"
-    "dccp"
-    "sctp"
-    "rds"
-
-    # Old or rare or insufficiently audited filesystems
-    "adfs"
-    "affs"
-    "bfs"
-    "befs"
-    "cramfs"
-    "efs"
-    "erofs"
-    "exofs"
-    "freevxfs"
-    "f2fs"
-    "hfs"
-    "hpfs"
-    "jfs"
-    "minix"
-    "nilfs2"
-    "ntfs"
-    "omfs"
-    "qnx4"
-    "qnx6"
-    "sysv"
-    "ufs"
+    "cdrom"
+    "sr_mod"
+    "amd76x_edac"
+    "ath_pci"
+    "evbug"
+    "pcspkr"
+    "snd_aw2"
+    "snd_intel8x0m"
+    "snd_pcsp"
+    "usbkbd"
+    "usbmouse"
   ];
 
   environment.etc."modprobe.d/disable-uneeded-kmodules.conf" = {
