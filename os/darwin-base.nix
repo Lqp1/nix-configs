@@ -68,6 +68,7 @@ in
       cmd-3 = "workspace 3";
       cmd-4 = "workspace 4";
       cmd-5 = "workspace 5";
+      cmd-6 = "workspace 6";
 
       cmd-shift-1 = "move-node-to-workspace 1";
       cmd-shift-2 = "move-node-to-workspace 2";
