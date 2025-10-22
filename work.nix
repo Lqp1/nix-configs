@@ -14,6 +14,7 @@ in
     gnvim
     helm-ls
     jq
+    openconnect
     jnv
     pkgsUnstable.k9s # Use unstable version as it has the custom views feature
     krew
