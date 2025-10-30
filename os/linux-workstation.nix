@@ -30,10 +30,29 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.browsed.enable = false;
+  services.printing = {
+    enable = true;
+    browsed.enable = false;
+    drivers = [ pkgs.hplipWithPlugin ];
+    extraConf = ''
+      ErrorPolicy retry-job
+    '';
+  };
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "HP3639";
+        location = "Bureau";
+        deviceUri = "hp:/net/DeskJet_3630_series?ip=192.168.1.40";
+        model = "HP/hp-deskjet_3630_series.ppd.gz";
+        ppdOptions = {
+          PageSize = "A4";
+        };
+      }
+    ];
+    ensureDefaultPrinter = "HP3639";
+  };
 
-  services.printing.drivers = [ pkgs.hplip ];
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [
     pkgs.hplipWithPlugin
@@ -111,6 +130,7 @@
 
   hardware.acpilight.enable = true;
 
+  services.udev.packages = [ pkgs.sane-airscan ];
   # Temp fix for https://github.com/NixOS/nixpkgs/issues/292638
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="kbd_backlight", GROUP="video", MODE="0664"
