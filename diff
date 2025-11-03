@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+case "$(uname -s)" in
+    Darwin)
+        # macos
+        darwin-rebuild build --flake .
+        ;;
+    Linux)
+        # linux
+        nixos-rebuild build --flake .
+        ;;
+    *)
+        echo "Unsupported OS"
+        exit 1
+        ;;
+esac
+
+nvd diff /run/current-system result

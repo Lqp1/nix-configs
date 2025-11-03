@@ -58,6 +58,7 @@ in
     less
     httpie
     lazygit
+    nvd
     go
     gopls
     netcat-gnu
