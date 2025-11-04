@@ -25,50 +25,48 @@ in
     inherit (pkgs.stdenv.hostPlatform) system;
   };
   environment.systemPackages = with pkgs; [
-    curl
-    vim
-    git
-    htop
-    dfc
-    tree
-    screen
-    rclone
-    sshfs
-    moreutils
-    pciutils
-    delta
-    tig
-    bat
-    lsof
-    bc
     ansible
-    btop
-    eza
-    vgrep
-    coreutils
-    home-manager
-    pipx
-    mdcat
-    nil
     autojump
-    iftop
-    lazygit
-    httpie
-    ripgrep
-    less
-    httpie
-    lazygit
-    nvd
-    go
-    gopls
-    netcat-gnu
-    gnutar
+    bat
+    bc
+    btop
+    coreutils
+    curl
+    delta
+    dfc
+    eza
+    git
     gnugrep
     gnused
-    smount
-    yazi
-    my-ruby
+    gnutar
+    go
+    gopls
+    home-manager
+    htop
+    httpie
+    iftop
+    lazygit
+    less
+    lsof
+    mdcat
+    moreutils
     my-python
+    my-ruby
+    netcat-gnu
+    nil
+    nvd
+    pciutils
+    pipx
+    rclone
+    ripgrep
+    screen
+    smount
+    sshfs
+    tig
+    tree
+    vgrep
+    vim
+    yazi
   ];
 
   programs.zsh.enable = true;
