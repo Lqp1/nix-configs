@@ -1,0 +1,20 @@
+name: nix-ci
+on:
+  pull_request:
+    branches: ["master", "main", "stable", "release/v*"]
+  push:
+    branches: ["master", "main", "stable", "release/v*"]
+jobs:
+  validate:
+    name: Nix Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - name: Install omnix
+        run: nix profile install nixpkgs#omnix
+      - run: om ci
