@@ -88,7 +88,12 @@
     };
 
 
-  swapDevices = [ ];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
   users.users.famille = {
     isNormalUser = true;
     extraGroups = [
