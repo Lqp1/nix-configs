@@ -11,7 +11,6 @@ in
     cpulimit
     gdk
     git-review
-    gnvim
     helm-ls
     jq
     openconnect
