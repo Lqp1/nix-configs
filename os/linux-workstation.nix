@@ -140,6 +140,11 @@
   programs.file-roller.enable = true;
   programs.adb.enable = true;
   programs.nm-applet.enable = true;
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   users.users.thomas = {
     isNormalUser = true;
