@@ -2,9 +2,9 @@
   description = "Personal system flake";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.05";
+    nixpkgs.url = "nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
@@ -31,7 +31,6 @@
         specialArgs = { inherit inputs; };
       };
       nixosConfigurations."thomas-x201" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
           ./os/linux-base.nix
           ./os/linux-workstation.nix
@@ -44,7 +43,6 @@
         specialArgs = { inherit inputs; };
       };
       nixosConfigurations."thomas-t460" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
           ./os/linux-base.nix
           ./os/linux-workstation.nix
@@ -57,7 +55,6 @@
         specialArgs = { inherit inputs; };
       };
       nixosConfigurations."wsl" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
           nixos-wsl.nixosModules.default
           ./os/linux-base.nix
@@ -68,7 +65,6 @@
         specialArgs = { inherit inputs; };
       };
       nixosConfigurations."thomas-desktop" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         modules = [
           ./os/linux-base.nix
           ./os/linux-workstation.nix

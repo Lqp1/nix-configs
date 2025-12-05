@@ -24,7 +24,7 @@
     options btusb enable_autosuspend=N
   '';
   networking.hostName = "thomas-desktop"; # Define your hostname.
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
   services.redshift.enable = lib.mkForce false;
   environment.variables.TERMINAL = [ "kitty" ];
 

@@ -137,7 +137,6 @@
   '';
 
   programs.evince.enable = true;
-  programs.file-roller.enable = true;
   programs.adb.enable = true;
   programs.nm-applet.enable = true;
   programs.neovim = {
