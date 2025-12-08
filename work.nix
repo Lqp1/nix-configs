@@ -6,6 +6,7 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
+    amp-cli
     awscli2
     bind
     cpulimit
