@@ -53,6 +53,7 @@ in
     my-ruby
     netcat-gnu
     nil
+    statix
     nvd
     pciutils
     pipx
