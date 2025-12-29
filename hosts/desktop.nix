@@ -56,7 +56,7 @@
     {
       device = "/dev/disk/by-uuid/9B95-CF1A";
       fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
+      options = [ "fmask=0077" "dmask=0077" "discard" ];
     };
 
   fileSystems."/mnt/backup" =

@@ -47,7 +47,7 @@
     {
       device = "/dev/disk/by-uuid/6414-6721";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" "discard" ];
+      options = [ "fmask=0077" "dmask=0077" "discard" ];
     };
 
   fileSystems."/tmp" =
