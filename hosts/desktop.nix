@@ -50,7 +50,10 @@
       options = [ "noatime" "nodiratime" "discard" ];
     };
 
-  boot.initrd.luks.devices."luks-b0575706-4682-4fb7-92b3-e322f3b28904".device = "/dev/disk/by-uuid/b0575706-4682-4fb7-92b3-e322f3b28904";
+  boot.initrd.luks.devices."luks-b0575706-4682-4fb7-92b3-e322f3b28904" = {
+      device = "/dev/disk/by-uuid/b0575706-4682-4fb7-92b3-e322f3b28904";
+      allowDiscards = true;
+  };
 
   fileSystems."/boot" =
     {
