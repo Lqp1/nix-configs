@@ -16,5 +16,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - name: Install omnix
-        run: nix profile install nixpkgs#omnix
+        run: nix profile install github:NixOS/nixpkgs/25.11#omnix 
       - run: om ci
