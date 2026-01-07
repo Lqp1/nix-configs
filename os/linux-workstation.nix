@@ -30,9 +30,11 @@
   };
 
   # Enable CUPS to print documents.
+  #services.printing.logLevel = "debug";
   services.printing = {
     enable = true;
     browsed.enable = false;
+    browsing = false;
     drivers = [ pkgs.hplipWithPlugin ];
     extraConf = ''
       ErrorPolicy retry-job
@@ -49,6 +51,13 @@
           PageSize = "A4";
         };
       }
+      # Potentially use IPP Eve instead; we could then cleanup all references to hplipWithPlugin
+      #{
+      #  name = "HP3639-IPP";
+      #  location = "Bureau";
+      #  deviceUri = "ipp://192.168.1.40/ipp/print";
+      #  model = "everywhere";
+      #}
     ];
     ensureDefaultPrinter = "HP3639";
   };
