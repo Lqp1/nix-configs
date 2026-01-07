@@ -30,6 +30,9 @@
 
   services.libinput.mouse.accelProfile = "flat";
 
+  # TODO: pin Scanner address in SANE Airscan and get rid of avahi for good
+  services.avahi.enable = true;
+
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = false; # Card is too old for the fresh and advised open source drivers

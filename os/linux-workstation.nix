@@ -13,6 +13,8 @@
     networkmanagerapplet
   ];
 
+  services.avahi.enable = pkgs.lib.mkDefault false;
+
   # VPN
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "client";
