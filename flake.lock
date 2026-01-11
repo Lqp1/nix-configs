@@ -60,11 +60,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1767376240,
-        "narHash": "sha256-4JATZBMXhx2MTHVky4+GRitIdTCsYpMsR102VFedxI8=",
-        "rev": "e7a3b1cdf75f1211c302014ec0873faf9e81b681",
+        "lastModified": 1767981348,
+        "narHash": "sha256-2CXq2bZaWSHi7YvOTp728+9GYISIzJTmNhdsvLgHbUY=",
+        "rev": "b0bf333aa48ace2d47735cc50553a58a9403e0c8",
         "type": "tarball",
-        "url": "https://codeberg.org/api/v1/repos/Mynacol/nixos-needsreboot/archive/e7a3b1cdf75f1211c302014ec0873faf9e81b681.tar.gz"
+        "url": "https://codeberg.org/api/v1/repos/Mynacol/nixos-needsreboot/archive/b0bf333aa48ace2d47735cc50553a58a9403e0c8.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -95,11 +95,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1767480499,
-        "narHash": "sha256-8IQQUorUGiSmFaPnLSo2+T+rjHtiNWc+OAzeHck7N48=",
+        "lastModified": 1768028080,
+        "narHash": "sha256-50aDK+8eLvsLK39TzQhKNq50/HcXyP4hyxOYoPoVxjo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "30a3c519afcf3f99e2c6df3b359aec5692054d92",
+        "rev": "d03088749a110d52a4739348f39a63f84bb0be14",
         "type": "github"
       },
       "original": {
@@ -110,11 +110,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1767364772,
-        "narHash": "sha256-fFUnEYMla8b7UKjijLnMe+oVFOz6HjijGGNS1l7dYaQ=",
+        "lastModified": 1768032153,
+        "narHash": "sha256-6kD1MdY9fsE6FgSwdnx29hdH2UcBKs3/+JJleMShuJg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "16c7794d0a28b5a37904d55bcca36003b9109aaa",
+        "rev": "3146c6aa9995e7351a398e17470e15305e6e18ff",
         "type": "github"
       },
       "original": {
