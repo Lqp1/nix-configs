@@ -116,7 +116,6 @@
   environment.systemPackages = with pkgs; [
     spotify
     discord
-    nodejs
   ];
 
   programs.steam.enable = true;
