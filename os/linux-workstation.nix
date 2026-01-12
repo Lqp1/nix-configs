@@ -179,6 +179,10 @@
       gparted
       audacity
       naps2
+
+      # For Neovim/Lazyvim
+      gcc # Treesitter
+      nodejs # Copilot.ai
     ];
     shell = pkgs.zsh;
   };
