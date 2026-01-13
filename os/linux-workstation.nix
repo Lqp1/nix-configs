@@ -150,10 +150,12 @@
   programs.evince.enable = true;
   programs.adb.enable = true;
   programs.nm-applet.enable = true;
+
   programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
+    defaultEditor = true;
   };
 
   users.users.thomas = {
@@ -179,10 +181,6 @@
       gparted
       audacity
       naps2
-
-      # For Neovim/Lazyvim
-      gcc # Treesitter
-      nodejs # Copilot.ai
     ];
     shell = pkgs.zsh;
   };
