@@ -4,13 +4,13 @@ let
   lunchy = pkgs.callPackage ../derivations/lunchy { };
   my-aerospace = pkgs.aerospace.overrideAttrs (oldAttrs:
     let
-      version = "0.20.0-Beta";
+      version = "0.20.2-Beta";
     in
     {
       inherit version;
       src = pkgs.fetchzip {
         url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${version}/AeroSpace-v${version}.zip";
-        sha256 = "sha256-bPcVgTPvskit0/LeqmWoOOnlwwyzPoa48P8Vooaqlig=";
+        sha256 = "sha256-PyWHtM38XPNkkEZ0kACPia0doR46FRpmSoNdsOhU4uw=";
       };
     });
 
