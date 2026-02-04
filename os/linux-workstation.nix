@@ -161,13 +161,14 @@
   users.users.thomas = {
     isNormalUser = true;
     extraGroups = [
-      "wheel"
+      "wheel" # Admin of the system
       "networkmanager"
-      "clamav"
-      "docker"
+      "clamav" # To trigger scans
+      "docker" # To manipulate docker
       "video"
       "plugdev"
-      "adbusers"
+      "adbusers" # To use ADB
+      "dialout" # For Arduino / Esp32 access through tty
     ];
     packages = with pkgs; [
       firefox
