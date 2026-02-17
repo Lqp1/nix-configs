@@ -16,8 +16,15 @@
   services.avahi.enable = pkgs.lib.mkDefault false;
 
   # VPN
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
+  services.tailscale =
+    {
+      enable = true;
+      useRoutingFeatures = "client";
+      disableUpstreamLogging = true;
+      disableTaildrop = true;
+      extraSetFlags = [ "--netfilter-mode=on" "--accept-routes" ];
+      extraDaemonFlags = [ "--no-logs-no-support" ];
+    };
 
   # Enable the various daemons
   services.gvfs.enable = true;

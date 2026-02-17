@@ -15,7 +15,7 @@ let
     consul
     requests
     six
-  ]  ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [ i3ipc ]);
+  ] ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [ i3ipc ]);
   my-python = pkgs.python3.withPackages my-python-packages;
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
 in
