@@ -27,15 +27,6 @@
   };
   boot.kernelModules = [ "acpi_call" "kvm-intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
-  services = {
-    syncthing = {
-      enable = true;
-      user = "thomas";
-      openDefaultPorts = true;
-      dataDir = "/home/thomas/Sync";
-      configDir = "/home/thomas/.config/syncthing";
-    };
-  };
 
   fileSystems."/" =
     {
