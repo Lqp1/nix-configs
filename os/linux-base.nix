@@ -60,6 +60,9 @@
   # systemd logrotate serrvice
   services.logrotate.enable = true;
 
+  boot.loader.systemd-boot.configurationLimit = 5;
+  boot.loader.grub.configurationLimit = 5;
+
   # Don't save coredumps
   systemd.coredump.extraConfig = ''
     Storage=none
