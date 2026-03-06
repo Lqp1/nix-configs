@@ -127,6 +127,10 @@ in
         "if".app-id = "com.cisco.secureclient.gui";
         run = "layout floating";
       }
+      {
+        "if".app-id = "Cisco Secure Client";
+        run = "layout floating";
+      }
     ];
   };
 
