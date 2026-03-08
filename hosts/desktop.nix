@@ -108,7 +108,6 @@
     packages = with pkgs; [
       firefox
       vlc
-      libreoffice
     ];
     shell = pkgs.bash;
   };

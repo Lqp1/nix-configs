@@ -11,6 +11,10 @@
     veracrypt
     pulseaudio
     networkmanagerapplet
+    libreoffice
+    hunspell
+    hunspellDicts.fr_FR
+    hunspellDicts.en_US
   ];
 
   services.avahi.enable = pkgs.lib.mkDefault false;
@@ -183,7 +187,6 @@
       transmission_4
       gimp
       gthumb
-      libreoffice
       pavucontrol
       gsmartcontrol
       gparted
