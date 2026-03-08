@@ -13,7 +13,7 @@
     networkmanagerapplet
     libreoffice
     hunspell
-    hunspellDicts.fr_FR
+    hunspellDicts.fr-moderne
     hunspellDicts.en_US
   ];
 
