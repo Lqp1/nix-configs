@@ -1,6 +1,7 @@
 { inputs, pkgs, pkgsUnstable, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
+  nixpkgsUnstablePath = "/etc/nixpkgs/channels/nixpkgs-unstable";
   lunchy = pkgs.callPackage ../derivations/lunchy { };
   my-aerospace = pkgs.aerospace.overrideAttrs (oldAttrs:
     let
@@ -190,8 +191,10 @@ in
 
   # workaround to have flake's derivations available for nix-* commands
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
-  nix.nixPath = [ "nixpkgs=${nixpkgsPath}" ];
+  nix.registry.nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+  nix.nixPath = [ "nixpkgs=${nixpkgsPath}" "nixpkgs-unstable=${nixpkgsUnstablePath}" ];
   environment.etc."nixpkgs/channels/nixpkgs".source = inputs.nixpkgs;
+  environment.etc."nixpkgs/channels/nixpkgs-unstable".source = inputs.nixpkgs-unstable;
 
   nix.gc = {
     automatic = true;
