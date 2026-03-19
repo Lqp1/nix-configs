@@ -196,6 +196,14 @@ in
   environment.etc."nixpkgs/channels/nixpkgs".source = inputs.nixpkgs;
   environment.etc."nixpkgs/channels/nixpkgs-unstable".source = inputs.nixpkgs-unstable;
 
+  # Add "stats" cask
+  homebrew = {
+    enable = true;
+    casks = [
+      "stats"
+    ];
+  };
+
   nix.gc = {
     automatic = true;
     interval = { Weekday = 0; Hour = 0; Minute = 0; };
