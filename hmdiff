@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+home-manager build
+nvd diff ~/.nix-profile result

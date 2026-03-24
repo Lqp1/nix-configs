@@ -19,7 +19,7 @@ in
 {
   environment.systemPackages = with pkgs; [
     pkgsUnstable.choose-gui
-    colima
+    pkgsUnstable.colima
     docker
     lunchy
   ];
@@ -41,7 +41,7 @@ in
       # i3 wraps focus by default
       cmd-j = "focus --boundaries-action wrap-around-the-workspace left";
       cmd-left = "focus --boundaries-action wrap-around-the-workspace left";
-      cmd-l = "focus --boundaries-action wrap-around-the-workspace right";
+      #cmd-l = "focus --boundaries-action wrap-around-the-workspace right";
       cmd-right = "focus --boundaries-action wrap-around-the-workspace right";
 
       cmd-shift-j = "move left";
