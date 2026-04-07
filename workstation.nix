@@ -1,9 +1,9 @@
-{ inputs, pkgs, pkgsUnstable, ... }:
+{ inputs, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     keepassxc
     kitty
-    pkgsUnstable.rofimoji
+    unstable.rofimoji
 
     # For Neovim/Lazyvim
     neovim # Defined already in ./linux-workstation.nix but needed for darwin too

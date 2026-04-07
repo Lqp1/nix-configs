@@ -20,9 +20,6 @@ let
   my-ruby = pkgs.ruby.withPackages (ps: with ps; [ rubocop pry rspec solargraph ]);
 in
 {
-  _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
-    inherit (pkgs.stdenv.hostPlatform) system;
-  };
   environment.systemPackages = with pkgs; [
     ansible
     autojump

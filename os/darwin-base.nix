@@ -1,4 +1,4 @@
-{ inputs, pkgs, pkgsUnstable, ... }:
+{ inputs, pkgs, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
   nixpkgsUnstablePath = "/etc/nixpkgs/channels/nixpkgs-unstable";
@@ -18,8 +18,8 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    pkgsUnstable.choose-gui
-    pkgsUnstable.colima
+    unstable.choose-gui
+    unstable.colima
     docker
     lunchy
   ];

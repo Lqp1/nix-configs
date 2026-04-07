@@ -1,4 +1,4 @@
-{ inputs, pkgs, pkgsUnstable, ... }:
+{ inputs, pkgs, ... }:
 {
   services.tlp.enable = true;
 
