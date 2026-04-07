@@ -6,6 +6,7 @@
 , ...
 }:
 {
+  imports = [ ./linux-tmpfs.nix ];
 
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
 

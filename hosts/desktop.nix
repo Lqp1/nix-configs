@@ -72,27 +72,9 @@
       options = [ "uid=1000" "gid=100" "dmask=0027" "fmask=0137" ];
     };
 
-  fileSystems."/tmp" =
-    {
-      device = "tmpfs";
-      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=6G" ];
-      fsType = "tmpfs";
-    };
 
-  fileSystems."/run" =
-    {
-      device = "tmpfs";
-      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
-      fsType = "tmpfs";
-    };
-
-  fileSystems."/var/tmp" =
-    {
-      device = "tmpfs";
-      options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=2G" ];
-      fsType = "tmpfs";
-    };
-
+  # Override shared tmpfs size for desktop (more RAM available)
+  fileSystems."/tmp".options = [ "nodev" "nosuid" "nodiratime" "noatime" "size=6G" ];
 
   swapDevices = [
     {
