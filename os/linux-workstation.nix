@@ -1,8 +1,5 @@
-{ inputs
-, lib
-, config
+{ lib
 , pkgs
-, callPackage
 , ...
 }:
 {

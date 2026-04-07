@@ -1,10 +1,4 @@
-{ inputs
-, lib
-, config
-, pkgs
-, callPackage
-, ...
-}:
+{ pkgs, ... }:
 {
   users.users.thomas = {
     isNormalUser = true;
