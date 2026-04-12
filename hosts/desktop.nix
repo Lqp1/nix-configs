@@ -90,6 +90,16 @@
     ];
     shell = pkgs.bash;
   };
+  services.displayManager.defaultSession = null;
+  environment.etc."gnome.dmrc".text = ''
+    [Desktop]
+    Session=gnome-wayland
+    Language=fr_FR.UTF-8
+  '';
+
+  systemd.tmpfiles.rules = [
+    "L+ /home/famille/.dmrc - - - - /etc/gnome.dmrc"
+  ];
 
   environment.systemPackages = with pkgs; [
     spotify

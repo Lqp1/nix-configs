@@ -97,54 +97,69 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.xkb.layout = "fr";
-  services.xserver.xkb.options = "eurosign:e,compose:rctrl";
-  services.xserver.desktopManager.wallpaper.mode = "max";
-  services.libinput.enable = true;
-  services.displayManager = {
-    defaultSession = "none+i3";
-  };
-  services.xserver.desktopManager = {
-    xterm.enable = false;
-  };
-  services.xserver.windowManager.i3 = {
-    enable = true;
-    extraPackages =
-      with pkgs;
-      let
-        polybar = pkgs.polybar.override {
-          i3Support = true;
-          pulseSupport = true;
+  services.xserver =
+    {
+      enable = true;
+      xkb.layout = "fr";
+      xkb.options = "eurosign:e,compose:rctrl";
+      desktopManager =
+        {
+          wallpaper.mode = "max";
+          xterm.enable = false;
         };
-      in
-      [
-        rofi
-        xdotool
-        feh
-        arandr
-        polybar
-        i3lock
-        pkgs.xfce.xfce4-terminal
-        arc-icon-theme
-        arc-theme
-        material-cursors
-        pkgs.xfce.xfce4-screenshooter
-        pkgs.xfce.thunar
-        pkgs.xfce.ristretto
-        xclip
-        pkgs.xfce.xfce4-settings
-        pkgs.xfce.xfce4-power-manager
-        pkgs.xfce.xfce4-clipman-plugin
-        pkgs.xfce.xfconf
-        pkgs.xfce.exo
-        pkgs.xfce.tumbler
-        dunst
-        picom
-        xss-lock
-      ];
-  };
+      displayManager =
+        {
+          lightdm = {
+            background = pkgs.nixos-artwork.wallpapers.moonscape.gnomeFilePath;
+            greeters.gtk.enable = true;
+            greeters.gtk.theme.name = "Arc";
+            greeters.gtk.theme.package = pkgs.arc-theme;
+            greeters.gtk.iconTheme.name = "Arc";
+            greeters.gtk.iconTheme.package = pkgs.arc-icon-theme;
+            greeters.gtk.cursorTheme.name = "material_light_cursors";
+            greeters.gtk.cursorTheme.package = pkgs.material-cursors;
+          };
+        };
+      windowManager.i3 = {
+        enable = true;
+        extraPackages =
+          with pkgs;
+          let
+            polybar = pkgs.polybar.override {
+              i3Support = true;
+              pulseSupport = true;
+            };
+          in
+          [
+            rofi
+            xdotool
+            feh
+            arandr
+            polybar
+            i3lock
+            pkgs.xfce.xfce4-terminal
+            arc-icon-theme
+            arc-theme
+            material-cursors
+            pkgs.xfce.xfce4-screenshooter
+            pkgs.xfce.thunar
+            pkgs.xfce.ristretto
+            xclip
+            pkgs.xfce.xfce4-settings
+            pkgs.xfce.xfce4-power-manager
+            pkgs.xfce.xfce4-clipman-plugin
+            pkgs.xfce.xfconf
+            pkgs.xfce.exo
+            pkgs.xfce.tumbler
+            dunst
+            picom
+            xss-lock
+          ];
+      };
 
+    };
+  services.libinput.enable = true;
+  services.displayManager.defaultSession = lib.mkDefault "none+i3";
   services.autorandr.enable = true;
 
   hardware.acpilight.enable = true;
