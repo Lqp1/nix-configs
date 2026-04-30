@@ -147,6 +147,7 @@
     "snd_pcsp"
     "usbkbd"
     "usbmouse"
+    "algif_aead" # CVE-2026-31431
   ];
 
   environment.etc."modprobe.d/disable-uneeded-kmodules.conf" = {
