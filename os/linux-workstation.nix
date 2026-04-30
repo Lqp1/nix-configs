@@ -1,8 +1,12 @@
-{ lib
+{ config
+, lib
 , pkgs
-, config
 , ...
 }:
+let
+  isDesktop = config.my.isDesktop;
+  useNeovim = config.my.editor == "neovim";
+in
 {
   options = {
     my.editor = lib.mkOption {
@@ -10,8 +14,13 @@
       default = "neovim";
       description = "Default editor";
     };
-
+    my.isDesktop = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether this is a desktop (GNOME + avahi) rather than a laptop (i3)";
+    };
   };
+
   config = {
 
     environment.systemPackages = with pkgs; [
@@ -24,7 +33,7 @@
       hunspellDicts.en_US
     ];
 
-    services.avahi.enable = pkgs.lib.mkDefault false;
+    services.avahi.enable = isDesktop;
 
     # VPN
     services.tailscale =
@@ -42,7 +51,7 @@
     services.gvfs.package = pkgs.lib.mkForce pkgs.gvfs;
 
     services.redshift = {
-      enable = lib.mkDefault true;
+      enable = !isDesktop;
       temperature = {
         day = 5500;
         night = 3500;
@@ -168,8 +177,10 @@
         };
 
       };
+
+    services.desktopManager.gnome.enable = isDesktop;
     services.libinput.enable = true;
-    services.displayManager.defaultSession = lib.mkDefault "none+i3";
+    services.displayManager.defaultSession = lib.mkIf (!isDesktop) "none+i3";
     services.autorandr.enable = true;
 
     hardware.acpilight.enable = true;
@@ -185,10 +196,10 @@
     programs.nm-applet.enable = true;
 
     programs.neovim = {
-      enable = config.my.editor == "neovim";
-      viAlias = config.my.editor == "neovim";
-      vimAlias = config.my.editor == "neovim";
-      defaultEditor = config.my.editor == "neovim";
+      enable = useNeovim;
+      viAlias = useNeovim;
+      vimAlias = useNeovim;
+      defaultEditor = useNeovim;
     };
 
     users.users.thomas = {

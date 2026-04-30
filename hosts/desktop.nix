@@ -21,14 +21,10 @@
     options btusb enable_autosuspend=N
   '';
   networking.hostName = "thomas-desktop"; # Define your hostname.
-  services.desktopManager.gnome.enable = true;
-  services.redshift.enable = lib.mkForce false;
+  my.isDesktop = true;
   environment.variables.TERMINAL = [ "kitty" ];
 
   services.libinput.mouse.accelProfile = "flat";
-
-  # TODO: pin Scanner address in SANE Airscan and get rid of avahi for good
-  services.avahi.enable = true;
 
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -90,7 +86,6 @@
     ];
     shell = pkgs.bash;
   };
-  services.displayManager.defaultSession = null;
   environment.etc."gnome.dmrc".text = ''
     [Desktop]
     Session=gnome-wayland
