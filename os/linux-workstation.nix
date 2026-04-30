@@ -5,13 +5,13 @@
 }:
 {
   options = {
-      my.editor = lib.mkOption {
-          type = lib.types.enum ["neovim" "vim"];
-          default = "neovim";
-          description = "Default editor";
-        };
-
+    my.editor = lib.mkOption {
+      type = lib.types.enum [ "neovim" "vim" ];
+      default = "neovim";
+      description = "Default editor";
     };
+
+  };
   config = {
 
     environment.systemPackages = with pkgs; [
