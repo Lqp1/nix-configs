@@ -192,6 +192,7 @@
       install qnx6 /usr/bin/false
       install sysv /usr/bin/false
       install ufs /usr/bin/false
+      install algif_aead /usr/bin/false
     '';
   };
 
