@@ -25,6 +25,8 @@
   boot.kernelModules = [ "acpi_call" "kvm-intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
+  my.editor = "vim";
+
   fileSystems."/" =
     {
       device = "/dev/disk/by-uuid/81cd606e-adac-4ef8-b39a-2a2e223d5c4b";

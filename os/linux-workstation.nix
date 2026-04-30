@@ -1,232 +1,243 @@
 { lib
 , pkgs
+, config
 , ...
 }:
 {
-
-  environment.systemPackages = with pkgs; [
-    veracrypt
-    pulseaudio
-    networkmanagerapplet
-    libreoffice
-    hunspell
-    hunspellDicts.fr-moderne
-    hunspellDicts.en_US
-  ];
-
-  services.avahi.enable = pkgs.lib.mkDefault false;
-
-  # VPN
-  services.tailscale =
-    {
-      enable = true;
-      useRoutingFeatures = "client";
-      disableUpstreamLogging = true;
-      disableTaildrop = true;
-      extraSetFlags = [ "--netfilter-mode=on" "--accept-routes" ];
-      extraDaemonFlags = [ "--no-logs-no-support" ];
-    };
-
-  # Enable the various daemons
-  services.gvfs.enable = true;
-  services.gvfs.package = pkgs.lib.mkForce pkgs.gvfs;
-
-  services.redshift = {
-    enable = lib.mkDefault true;
-    temperature = {
-      day = 5500;
-      night = 3500;
-    };
-  };
-
-  # Enable CUPS to print documents.
-  #services.printing.logLevel = "debug";
-  services.printing = {
-    enable = true;
-    browsed.enable = false;
-    browsing = false;
-    drivers = [ pkgs.hplipWithPlugin ];
-    extraConf = ''
-      ErrorPolicy retry-job
-    '';
-  };
-  hardware.printers = {
-    ensurePrinters = [
-      {
-        name = "HP3639";
-        location = "Bureau";
-        deviceUri = "hp:/net/DeskJet_3630_series?ip=192.168.1.40";
-        model = "HP/hp-deskjet_3630_series.ppd.gz";
-        ppdOptions = {
-          PageSize = "A4";
+  options = {
+      my.editor = lib.mkOption {
+          type = lib.types.enum ["neovim" "vim"];
+          default = "neovim";
+          description = "Default editor";
         };
-      }
-      # Potentially use IPP Eve instead; we could then cleanup all references to hplipWithPlugin
-      #{
-      #  name = "HP3639-IPP";
-      #  location = "Bureau";
-      #  deviceUri = "ipp://192.168.1.40/ipp/print";
-      #  model = "everywhere";
-      #}
+
+    };
+  config = {
+
+    environment.systemPackages = with pkgs; [
+      veracrypt
+      pulseaudio
+      networkmanagerapplet
+      libreoffice
+      hunspell
+      hunspellDicts.fr-moderne
+      hunspellDicts.en_US
     ];
-    ensureDefaultPrinter = "HP3639";
-  };
 
-  hardware.sane.enable = true;
-  hardware.sane.extraBackends = [
-    pkgs.hplipWithPlugin
-    pkgs.sane-airscan
-  ];
+    services.avahi.enable = pkgs.lib.mkDefault false;
 
-  # Enables sound using PW
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Enable bt
-  services.blueman.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  hardware.bluetooth.settings = {
-    General = {
-      Experimental = true;
-    };
-  };
-
-  # Enable the X11 windowing system.
-  services.xserver =
-    {
-      enable = true;
-      xkb.layout = "fr";
-      xkb.options = "eurosign:e,compose:rctrl";
-      desktopManager =
-        {
-          wallpaper.mode = "max";
-          xterm.enable = false;
-        };
-      displayManager =
-        {
-          lightdm = {
-            background = pkgs.nixos-artwork.wallpapers.moonscape.gnomeFilePath;
-            greeters.gtk.enable = true;
-            greeters.gtk.theme.name = "Arc";
-            greeters.gtk.theme.package = pkgs.arc-theme;
-            greeters.gtk.iconTheme.name = "Arc";
-            greeters.gtk.iconTheme.package = pkgs.arc-icon-theme;
-            greeters.gtk.cursorTheme.name = "material_light_cursors";
-            greeters.gtk.cursorTheme.package = pkgs.material-cursors;
-          };
-        };
-      windowManager.i3 = {
+    # VPN
+    services.tailscale =
+      {
         enable = true;
-        extraPackages =
-          with pkgs;
-          let
-            polybar = pkgs.polybar.override {
-              i3Support = true;
-              pulseSupport = true;
-            };
-          in
-          [
-            rofi
-            xdotool
-            feh
-            arandr
-            polybar
-            i3lock
-            pkgs.xfce.xfce4-terminal
-            arc-icon-theme
-            arc-theme
-            material-cursors
-            pkgs.xfce.xfce4-screenshooter
-            pkgs.xfce.thunar
-            pkgs.xfce.ristretto
-            xclip
-            pkgs.xfce.xfce4-settings
-            pkgs.xfce.xfce4-power-manager
-            pkgs.xfce.xfce4-clipman-plugin
-            pkgs.xfce.xfconf
-            pkgs.xfce.exo
-            pkgs.xfce.tumbler
-            dunst
-            picom
-            xss-lock
-          ];
+        useRoutingFeatures = "client";
+        disableUpstreamLogging = true;
+        disableTaildrop = true;
+        extraSetFlags = [ "--netfilter-mode=on" "--accept-routes" ];
+        extraDaemonFlags = [ "--no-logs-no-support" ];
       };
 
+    # Enable the various daemons
+    services.gvfs.enable = true;
+    services.gvfs.package = pkgs.lib.mkForce pkgs.gvfs;
+
+    services.redshift = {
+      enable = lib.mkDefault true;
+      temperature = {
+        day = 5500;
+        night = 3500;
+      };
     };
-  services.libinput.enable = true;
-  services.displayManager.defaultSession = lib.mkDefault "none+i3";
-  services.autorandr.enable = true;
 
-  hardware.acpilight.enable = true;
+    # Enable CUPS to print documents.
+    #services.printing.logLevel = "debug";
+    services.printing = {
+      enable = true;
+      browsed.enable = false;
+      browsing = false;
+      drivers = [ pkgs.hplipWithPlugin ];
+      extraConf = ''
+        ErrorPolicy retry-job
+      '';
+    };
+    hardware.printers = {
+      ensurePrinters = [
+        {
+          name = "HP3639";
+          location = "Bureau";
+          deviceUri = "hp:/net/DeskJet_3630_series?ip=192.168.1.40";
+          model = "HP/hp-deskjet_3630_series.ppd.gz";
+          ppdOptions = {
+            PageSize = "A4";
+          };
+        }
+        # Potentially use IPP Eve instead; we could then cleanup all references to hplipWithPlugin
+        #{
+        #  name = "HP3639-IPP";
+        #  location = "Bureau";
+        #  deviceUri = "ipp://192.168.1.40/ipp/print";
+        #  model = "everywhere";
+        #}
+      ];
+      ensureDefaultPrinter = "HP3639";
+    };
 
-  services.udev.packages = [ pkgs.sane-airscan ];
-  # Temp fix for https://github.com/NixOS/nixpkgs/issues/292638
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="kbd_backlight", GROUP="video", MODE="0664"
-  '';
-
-  programs.evince.enable = true;
-  programs.adb.enable = true;
-  programs.nm-applet.enable = true;
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    defaultEditor = true;
-  };
-
-  users.users.thomas = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel" # Admin of the system
-      "networkmanager"
-      "clamav" # To trigger scans
-      "docker" # To manipulate docker
-      "video"
-      "plugdev"
-      "adbusers" # To use ADB
-      "dialout" # For Arduino / Esp32 access through tty
+    hardware.sane.enable = true;
+    hardware.sane.extraBackends = [
+      pkgs.hplipWithPlugin
+      pkgs.sane-airscan
     ];
-    packages = with pkgs; [
-      firefox
-      vlc
-      transmission_4
-      gimp
-      gthumb
-      pavucontrol
-      gsmartcontrol
-      gparted
-      audacity
-      naps2
-    ];
-    shell = pkgs.zsh;
-  };
 
-  # Hide logs or on workstations & add plymouth
-  boot.loader.timeout = 0;
-  boot.consoleLogLevel = 3;
-  boot.initrd.verbose = false;
-  boot.kernelParams = [
-    "quiet"
-    "splash"
-    "boot.shell_on_fail"
-    "udev.log_priority=3"
-    "rd.systemd.show_status=auto"
-  ];
-  boot.plymouth = {
-    enable = true;
-    theme = "pixels";
-    themePackages = with pkgs; [
-      (adi1090x-plymouth-themes.override {
-        selected_themes = [ "pixels" ];
-      })
-    ];
-  };
+    # Enables sound using PW
+    services.pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
 
+    # Enable bt
+    services.blueman.enable = true;
+    hardware.bluetooth.enable = true;
+    hardware.bluetooth.powerOnBoot = true;
+    hardware.bluetooth.settings = {
+      General = {
+        Experimental = true;
+      };
+    };
+
+    # Enable the X11 windowing system.
+    services.xserver =
+      {
+        enable = true;
+        xkb.layout = "fr";
+        xkb.options = "eurosign:e,compose:rctrl";
+        desktopManager =
+          {
+            wallpaper.mode = "max";
+            xterm.enable = false;
+          };
+        displayManager =
+          {
+            lightdm = {
+              background = pkgs.nixos-artwork.wallpapers.moonscape.gnomeFilePath;
+              greeters.gtk.enable = true;
+              greeters.gtk.theme.name = "Arc";
+              greeters.gtk.theme.package = pkgs.arc-theme;
+              greeters.gtk.iconTheme.name = "Arc";
+              greeters.gtk.iconTheme.package = pkgs.arc-icon-theme;
+              greeters.gtk.cursorTheme.name = "material_light_cursors";
+              greeters.gtk.cursorTheme.package = pkgs.material-cursors;
+            };
+          };
+        windowManager.i3 = {
+          enable = true;
+          extraPackages =
+            with pkgs;
+            let
+              polybar = pkgs.polybar.override {
+                i3Support = true;
+                pulseSupport = true;
+              };
+            in
+            [
+              rofi
+              xdotool
+              feh
+              arandr
+              polybar
+              i3lock
+              pkgs.xfce.xfce4-terminal
+              arc-icon-theme
+              arc-theme
+              material-cursors
+              pkgs.xfce.xfce4-screenshooter
+              pkgs.xfce.thunar
+              pkgs.xfce.ristretto
+              xclip
+              pkgs.xfce.xfce4-settings
+              pkgs.xfce.xfce4-power-manager
+              pkgs.xfce.xfce4-clipman-plugin
+              pkgs.xfce.xfconf
+              pkgs.xfce.exo
+              pkgs.xfce.tumbler
+              dunst
+              picom
+              xss-lock
+            ];
+        };
+
+      };
+    services.libinput.enable = true;
+    services.displayManager.defaultSession = lib.mkDefault "none+i3";
+    services.autorandr.enable = true;
+
+    hardware.acpilight.enable = true;
+
+    services.udev.packages = [ pkgs.sane-airscan ];
+    # Temp fix for https://github.com/NixOS/nixpkgs/issues/292638
+    services.udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="kbd_backlight", GROUP="video", MODE="0664"
+    '';
+
+    programs.evince.enable = true;
+    programs.adb.enable = true;
+    programs.nm-applet.enable = true;
+
+    programs.neovim = {
+      enable = config.my.editor == "neovim";
+      viAlias = config.my.editor == "neovim";
+      vimAlias = config.my.editor == "neovim";
+      defaultEditor = config.my.editor == "neovim";
+    };
+
+    users.users.thomas = {
+      isNormalUser = true;
+      extraGroups = [
+        "wheel" # Admin of the system
+        "networkmanager"
+        "clamav" # To trigger scans
+        "docker" # To manipulate docker
+        "video"
+        "plugdev"
+        "adbusers" # To use ADB
+        "dialout" # For Arduino / Esp32 access through tty
+      ];
+      packages = with pkgs; [
+        firefox
+        vlc
+        transmission_4
+        gimp
+        gthumb
+        pavucontrol
+        gsmartcontrol
+        gparted
+        audacity
+        naps2
+      ];
+      shell = pkgs.zsh;
+    };
+
+    # Hide logs or on workstations & add plymouth
+    boot.loader.timeout = 0;
+    boot.consoleLogLevel = 3;
+    boot.initrd.verbose = false;
+    boot.kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
+    boot.plymouth = {
+      enable = true;
+      theme = "pixels";
+      themePackages = with pkgs; [
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [ "pixels" ];
+        })
+      ];
+    };
+
+  };
 }
