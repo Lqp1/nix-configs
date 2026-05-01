@@ -52,6 +52,7 @@ in
     nil
     statix
     nvd
+    nix-diff
     pciutils
     pipx
     rclone

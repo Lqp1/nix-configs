@@ -16,4 +16,5 @@ case "$(uname -s)" in
         ;;
 esac
 
+nix-diff /run/current-system result
 nvd diff /run/current-system result
