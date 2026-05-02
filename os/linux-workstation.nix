@@ -202,6 +202,17 @@ in
       defaultEditor = useNeovim;
     };
 
+    services.tlp.enable = !isDesktop;
+
+    services.usbguard = {
+      enable = !isDesktop;
+      implicitPolicyTarget = "block";
+      presentControllerPolicy = "allow";
+      presentDevicePolicy = "allow";
+      insertedDevicePolicy = "apply-policy";
+      IPCAllowedGroups = [ "wheel" ];
+    };
+
     users.users.thomas = {
       isNormalUser = true;
       extraGroups = [
