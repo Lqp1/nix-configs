@@ -63,17 +63,6 @@
         ];
         specialArgs = { inherit inputs; };
       };
-      nixosConfigurations."wsl" = nixpkgs.lib.nixosSystem {
-        modules = [
-          overlayModule
-          nixos-wsl.nixosModules.default
-          ./os/linux-base.nix
-          ./os/linux-headless.nix
-          ./base.nix
-          ./hosts/wsl.nix
-        ];
-        specialArgs = { inherit inputs; };
-      };
       nixosConfigurations."thomas-desktop" = nixpkgs.lib.nixosSystem {
         modules = [
           overlayModule
