@@ -185,7 +185,9 @@ in
 
     hardware.acpilight.enable = true;
 
-    services.udev.packages = [ pkgs.sane-airscan ];
+    services.pcscd.enable = true;
+
+    services.udev.packages = [ pkgs.sane-airscan pkgs.yubikey-personalization ];
     # Temp fix for https://github.com/NixOS/nixpkgs/issues/292638
     services.udev.extraRules = ''
       ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="kbd_backlight", GROUP="video", MODE="0664"
