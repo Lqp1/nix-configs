@@ -198,7 +198,6 @@
 
   users.users.root.hashedPassword = "!";
   nix.settings.max-jobs = 4;
-  nix.settings.auto-optimise-store = true;
   nix.settings.allowed-users = [ "@wheel" ];
   nix.gc = {
     automatic = true;

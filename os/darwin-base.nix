@@ -204,6 +204,7 @@ in
     ];
   };
 
+  nix.settings.allowed-users = [ "@admin" ];
   nix.gc = {
     automatic = true;
     interval = { Weekday = 0; Hour = 0; Minute = 0; };

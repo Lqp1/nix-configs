@@ -70,6 +70,7 @@ in
   programs.zsh.enable = true;
   nix.settings.experimental-features = "nix-command flakes";
   nix.optimise.automatic = true;
+  nix.settings.auto-optimise-store = false;
   nixpkgs.config.allowUnfree = true;
 
   # Set Git commit hash for darwin-version.
