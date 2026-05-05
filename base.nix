@@ -51,8 +51,6 @@ in
     netcat-gnu
     nil
     statix
-    nvd
-    nix-diff
     pciutils
     pipx
     rclone
