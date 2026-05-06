@@ -4,12 +4,10 @@ set -e
 
 case "$(uname -s)" in
     Darwin)
-        # macos
-        darwin-rebuild build --flake . 2>&1 | nom
+        PLATFORM=darwin
         ;;
     Linux)
-        # linux
-        nixos-rebuild build --flake . 2>&1 | nom
+        PLATFORM=nixos
         ;;
     *)
         echo "Unsupported OS"
@@ -17,7 +15,8 @@ case "$(uname -s)" in
         ;;
 esac
 
-DIFF_RESULT=$(mktemp -d)/$(cat result/nixos-version).diff
+${PLATFORM}-rebuild build --flake . 2>&1 | nom
+DIFF_RESULT=$(mktemp -d)/$(cat result/${PLATFORM}-version).diff
 nix-diff --color=always /run/current-system result > $DIFF_RESULT
 echo "Derivation diff in: $DIFF_RESULT"
 nvd diff /run/current-system result
