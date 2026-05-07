@@ -2,7 +2,8 @@
 , lib
 , pkgs
 , ...
-}:let
+}:
+let
   disabledModules = [
     "adfs"
     "affs"
@@ -187,8 +188,14 @@ in
 
   boot.blacklistedKernelModules = disabledModules;
   environment.etc."modprobe.d/disable-unneeded-kmodules.conf".text =
-      lib.concatMapStringsSep "\n" (m: "install ${m} /usr/bin/false") disabledModules + "\n";
+    lib.concatMapStringsSep "\n" (m: "install ${m} /usr/bin/false") disabledModules + "\n";
 
+  boot.kernelParams = [
+    "slab_nomerge"
+    "page_poison=1"
+    "page_alloc.shuffle=1"
+    "debugfs=off"
+  ];
   users.users.root.hashedPassword = "!";
   nix.settings.max-jobs = 4;
   nix.settings.allowed-users = [ "@wheel" ];
