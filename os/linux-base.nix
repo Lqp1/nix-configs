@@ -2,7 +2,46 @@
 , lib
 , pkgs
 , ...
-}:
+}:let
+  disabledModules = [
+    "adfs"
+    "affs"
+    "algif_aead" # CVE-2026-31431
+    "amd76x_edac"
+    "ath_pci"
+    "ax25"
+    "befs"
+    "bfs"
+    "cdrom"
+    "cramfs"
+    "efs"
+    "erofs"
+    "evbug"
+    "exofs"
+    "f2fs"
+    "freevxfs"
+    "hfs"
+    "hpfs"
+    "jfs"
+    "minix"
+    "netrom"
+    "nilfs2"
+    "ntfs"
+    "omfs"
+    "pcspkr"
+    "qnx4"
+    "qnx6"
+    "rose"
+    "snd_aw2"
+    "snd_intel8x0m"
+    "snd_pcsp"
+    "sr_mod"
+    "sysv"
+    "ufs"
+    "usbkbd"
+    "usbmouse"
+  ];
+in
 {
   imports = [ ./linux-tmpfs.nix ];
 
@@ -11,6 +50,7 @@
   security.pam.services.passwd.rules.password."unix".settings.rounds = 65536;
 
   security.allowSimultaneousMultithreading = false;
+  security.protectKernelImage = true;
 
   security.forcePageTableIsolation = true;
   security.auditd.enable = true;
@@ -112,9 +152,14 @@
     "kernel.ftrace_enabled" = false;
     "kernel.io_uring_disabled" = 2;
     "kernel.kptr_restrict" = 2;
+    #"kernel.modules_disabled" = 1; #Ideally!
+    "kernel.oops_limit" = 100;
+    "kernel.perf_event_paranoid" = 3;
     "kernel.randomize_va_space" = "2";
     "kernel.sysrq" = 0;
     "kernel.unprivileged_bpf_disabled" = 1;
+    "kernel.warn_limit" = 100;
+    "kernel.yama.ptrace_scope" = 3;
     "net.core.bpf_jit_enable" = false;
     "net.core.bpf_jit_harden" = 2;
     "net.ipv4.conf.all.accept_redirects" = "0";
@@ -128,73 +173,21 @@
     "net.ipv4.conf.default.send_redirects" = "0";
     "net.ipv4.icmp_echo_ignore_broadcasts" = true;
     "net.ipv4.ip_forward" = "0";
+    "net.ipv6.conf.all.accept_ra" = 0;
     "net.ipv6.conf.all.accept_redirects" = 0;
     "net.ipv6.conf.all.forwarding" = "0";
+    "net.ipv6.conf.default.accept_ra" = 0;
     "net.ipv6.conf.default.accept_redirects" = 0;
     "net.ipv6.conf.default.forwarding" = "0";
+    #"user.max_user_namespaces" = 0; # Prevents some sandboxing
+    "vm.mmap_rnd_bits" = 32;
+    "vm.mmap_rnd_compat_bits" = 16;
     "vm.swappiness" = 1;
   };
 
-  boot.blacklistedKernelModules = [
-    "cdrom"
-    "sr_mod"
-    "amd76x_edac"
-    "ath_pci"
-    "evbug"
-    "pcspkr"
-    "snd_aw2"
-    "snd_intel8x0m"
-    "snd_pcsp"
-    "usbkbd"
-    "usbmouse"
-    "algif_aead" # CVE-2026-31431
-  ];
-
-  environment.etc."modprobe.d/disable-uneeded-kmodules.conf" = {
-    text = ''
-      install mei /usr/bin/false
-      install mei-gsc /usr/bin/false
-      install mei_gsc_proxy /usr/bin/false
-      install mei_hdcp /usr/bin/false
-      install mei-me /usr/bin/false
-      install mei_phy /usr/bin/false
-      install mei_pxp /usr/bin/false
-      install mei-txe /usr/bin/false
-      install mei-vsc /usr/bin/false
-      install mei-vsc-hw /usr/bin/false
-      install mei_wdt /usr/bin/false
-      install microread_mei /usr/bin/false
-      install ax25 /usr/bin/false
-      install netrom /usr/bin/false
-      install rose /usr/bin/false
-      install tipc /usr/bin/false
-      install dccp /usr/bin/false
-      install sctp /usr/bin/false
-      install rds /usr/bin/false
-      install adfs /usr/bin/false
-      install affs /usr/bin/false
-      install bfs /usr/bin/false
-      install befs /usr/bin/false
-      install cramfs /usr/bin/false
-      install efs /usr/bin/false
-      install erofs /usr/bin/false
-      install exofs /usr/bin/false
-      install freevxfs /usr/bin/false
-      install f2fs /usr/bin/false
-      install hfs /usr/bin/false
-      install hpfs /usr/bin/false
-      install jfs /usr/bin/false
-      install minix /usr/bin/false
-      install nilfs2 /usr/bin/false
-      install ntfs /usr/bin/false
-      install omfs /usr/bin/false
-      install qnx4 /usr/bin/false
-      install qnx6 /usr/bin/false
-      install sysv /usr/bin/false
-      install ufs /usr/bin/false
-      install algif_aead /usr/bin/false
-    '';
-  };
+  boot.blacklistedKernelModules = disabledModules;
+  environment.etc."modprobe.d/disable-unneeded-kmodules.conf".text =
+      lib.concatMapStringsSep "\n" (m: "install ${m} /usr/bin/false") disabledModules + "\n";
 
   users.users.root.hashedPassword = "!";
   nix.settings.max-jobs = 4;
