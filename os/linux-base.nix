@@ -17,6 +17,8 @@ let
     "cramfs"
     "efs"
     "erofs"
+    "esp4" # https://github.com/V4bel/dirtyfrag
+    "esp6" # https://github.com/V4bel/dirtyfrag
     "evbug"
     "exofs"
     "f2fs"
@@ -33,6 +35,7 @@ let
     "qnx4"
     "qnx6"
     "rose"
+    "rxrpc" # https://github.com/V4bel/dirtyfrag
     "snd_aw2"
     "snd_intel8x0m"
     "snd_pcsp"
