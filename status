@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "$(uname -s)" in
+  Darwin) PLATFORM=darwin ;;
+  Linux)  PLATFORM=nixos ;;
+  *)
+    echo "Unsupported OS"
+    exit 1
+    ;;
+esac
+
+VERSION_CMD="${PLATFORM}-version"
+
+if [[ -t 1 ]] && command -v tput >/dev/null 2>&1; then
+  TITLE="$(tput bold)$(tput setaf 4)"
+  GOOD="$(tput setaf 2)"
+  WARN="$(tput setaf 3)"
+  RESET="$(tput sgr0)"
+else
+  TITLE="" GOOD="" WARN="" RESET=""
+fi
+
+section() {
+  printf "\n%s%s%s\n" "$TITLE" "$1" "$RESET"
+}
+
+REV="$("$VERSION_CMD" --json | jq -r '.configurationRevision // "unknown"')"
+HEAD="$(git rev-parse --short HEAD)"
+
+section "Current version"
+if [[ "$REV" =~ ^[0-9a-f]{40}$ ]]; then
+  git --no-pager show "$REV" --no-patch --decorate --pretty='format:%h %s (%cr)%d'
+else
+  echo "Revision: $REV"
+fi
+
+section "Tip"
+git --no-pager show HEAD --no-patch --decorate --pretty='format:%h %s (%cr)%d'
+
+section "Repo state"
+if [[ -z "$(git status --porcelain=v1)" ]]; then
+  echo "${GOOD}clean${RESET} @ $HEAD"
+else
+  echo "${WARN}dirty${RESET} @ $HEAD"
+  section "Local changes"
+  git --no-pager status -sb
+fi
+
+section "Changes to be applied"
+if [[ "$REV" =~ ^[0-9a-f]{40}$ ]]; then
+  if [[ "$REV" == "$(git rev-parse HEAD)" ]]; then
+    echo "${GOOD}Already at HEAD${RESET}"
+  elif git merge-base --is-ancestor "$REV" HEAD 2>/dev/null; then
+    git --no-pager log "$REV"..HEAD --graph --decorate --oneline
+  else
+    echo "${WARN}Running revision is not an ancestor of HEAD${RESET}"
+    git --no-pager log "$REV"...HEAD --graph --decorate --oneline --left-right
+  fi
+else
+  echo "${WARN}Cannot compute log range from revision: $REV${RESET}"
+fi

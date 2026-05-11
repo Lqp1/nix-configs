@@ -1,11 +1,46 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-function update_repo {
-    BRANCH=${1:-main}
-    git fetch
-    git log $BRANCH..origin/$BRANCH --oneline --color|tee
-    git rebase origin/$BRANCH
+update_repo() {
+  local branch="${1:-$(git branch --show-current)}"
+  local upstream="origin/$branch"
+
+  if [[ -t 1 ]] && command -v tput >/dev/null 2>&1; then
+    TITLE="$(tput bold)$(tput setaf 4)"
+    GOOD="$(tput setaf 2)"
+    WARN="$(tput setaf 3)"
+    RESET="$(tput sgr0)"
+  else
+    TITLE="" GOOD="" WARN="" RESET=""
+  fi
+
+  section() {
+    printf "\n%s== %s ==%s\n" "$TITLE" "$1" "$RESET"
+  }
+
+  git fetch --prune origin
+
+  section "Incoming commits"
+  if git rev-parse --verify "$upstream" >/dev/null 2>&1; then
+    if git merge-base --is-ancestor HEAD "$upstream"; then
+      git --no-pager log HEAD.."$upstream" --graph --decorate --oneline --color=always
+    else
+      echo "${WARN}Local and remote have diverged${RESET}"
+      git --no-pager log HEAD..."$upstream" --graph --decorate --oneline --left-right --color=always
+    fi
+  else
+    echo "${WARN}Missing upstream branch: $upstream${RESET}"
+    return 1
+  fi
+
+  section "Changed files"
+  git --no-pager diff --stat HEAD "$upstream" --color=always || true
+
+  section "Rebasing"
+  git rebase "$upstream"
+
+  section "Done"
+  echo "${GOOD}Now at $(git rev-parse --short HEAD) on $(git branch --show-current)${RESET}"
 }
 
-update_repo $@
+update_repo "$@"
