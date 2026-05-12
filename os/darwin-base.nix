@@ -1,17 +1,18 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
   nixpkgsUnstablePath = "/etc/nixpkgs/channels/nixpkgs-unstable";
   lunchy = pkgs.callPackage ../derivations/lunchy { };
   my-aerospace = pkgs.aerospace.overrideAttrs (oldAttrs:
     let
-      version = "0.20.2-Beta";
+      version = "0.20.3-Beta";
     in
     {
       inherit version;
       src = pkgs.fetchzip {
         url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${version}/AeroSpace-v${version}.zip";
-        sha256 = "sha256-PyWHtM38XPNkkEZ0kACPia0doR46FRpmSoNdsOhU4uw=";
+        #sha256 = lib.fakeSha256;
+        sha256 = "sha256-wrBcslp1W/lOmudMcW+SREL9LZY+wTwidh6Hot5ShGE=";
       };
     });
 
