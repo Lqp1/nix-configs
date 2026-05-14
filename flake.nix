@@ -20,18 +20,15 @@
   };
 
   outputs =
-    inputs@{ self
-    , nixpkgs
+    inputs@{ nixpkgs
     , nixpkgs-unstable
     , nix-darwin
     , nixos-hardware
     , flake-utils
-    , smount
-    , nixos-needsreboot
     , ...
     }:
     let
-      unstableOverlay = final: prev: {
+      unstableOverlay = _final: prev: {
         unstable = import nixpkgs-unstable {
           inherit (prev.stdenv.hostPlatform) system;
           config.allowUnfree = true;

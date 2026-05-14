@@ -1,4 +1,4 @@
-{ lib, pkgs, modulesPath, ... }:
+{ lib, ... }:
 
 {
   system.stateVersion = "24.11";

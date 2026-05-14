@@ -4,7 +4,7 @@
 , ...
 }:
 let
-  isDesktop = config.my.isDesktop;
+  inherit (config.my) isDesktop;
   useNeovim = config.my.editor == "neovim";
 in
 {

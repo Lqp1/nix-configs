@@ -1,9 +1,9 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, pkgs, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
   nixpkgsUnstablePath = "/etc/nixpkgs/channels/nixpkgs-unstable";
   lunchy = pkgs.callPackage ../derivations/lunchy { };
-  my-aerospace = pkgs.aerospace.overrideAttrs (oldAttrs:
+  my-aerospace = pkgs.aerospace.overrideAttrs (_oldAttrs:
     let
       version = "0.20.3-Beta";
     in

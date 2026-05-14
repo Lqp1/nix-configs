@@ -1,6 +1,6 @@
 { inputs, pkgs, ... }:
 let
-  smount = inputs.smount.packages.${pkgs.stdenv.hostPlatform.system}.smount;
+  inherit (inputs.smount.packages.${pkgs.stdenv.hostPlatform.system}) smount;
   my-python-packages = python-packages: with python-packages; [
     pip
     configargparse
