@@ -45,6 +45,12 @@ let
     "usbkbd"
     "usbmouse"
   ];
+  nameservers = [
+    "9.9.9.9"
+    "149.112.112.112"
+    "2620:fe::fe"
+    "2620:fe::9"
+  ];
 in
 {
   imports = [ ./linux-tmpfs.nix ];
@@ -131,7 +137,17 @@ in
     };
     # Enable IPv6 privacy extensions in NetworkManager.
     connectionConfig."ipv6.ip6-privacy" = 2;
+    dns = "systemd-resolved";
   };
+
+  services.resolved = {
+    enable = true;
+    dnssec = "false";
+    dnsovertls = "true";
+    domains = [ "~." ];
+    fallbackDns = nameservers;
+  };
+  networking.nameservers = nameservers;
 
   services.clamav.daemon.enable = true;
   services.clamav.updater.enable = true;
