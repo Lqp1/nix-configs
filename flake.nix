@@ -20,7 +20,8 @@
   };
 
   outputs =
-    inputs@{ nixpkgs
+    inputs@{ self
+    , nixpkgs
     , nixpkgs-unstable
     , nix-darwin
     , nixos-hardware
@@ -121,5 +122,16 @@
         ];
         specialArgs = { inherit inputs; };
       };
+      nixosConfigurations.test-vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          overlayModule
+          ./os/linux-base.nix
+          ./base.nix
+          ./hosts/vm.nix
+        ];
+        specialArgs = { inherit inputs; };
+      };
+      packages.x86_64-linux.vmImage = self.nixosConfigurations.test-vm.config.system.build.vm;
     };
 }

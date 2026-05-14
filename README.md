@@ -25,3 +25,11 @@ sudo darwin-rebuild --flake . switch
 ```
 sudo nixos-rebuild --flake . switch
 ```
+
+### Test image
+
+```
+nix build .#vmImage
+./result/bin/run-*-vm # CTRL-A X to close ;)
+ssh 127.0.0.1 -p 2222 -l admin
+```
