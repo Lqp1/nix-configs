@@ -12,7 +12,7 @@
     };
   services.openssh.enable = lib.mkForce true;
   services.openssh.settings.PasswordAuthentication = true;
-  security.sudo.wheelNeedsPassword = true;
+  security.sudo.wheelNeedsPassword = false;
   users.users.admin = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];

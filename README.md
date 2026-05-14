@@ -29,7 +29,6 @@ sudo nixos-rebuild --flake . switch
 ### Test image
 
 ```
-nix build .#vmImage
-./result/bin/run-*-vm # CTRL-A X to close ;)
-ssh 127.0.0.1 -p 2222 -l admin
+nix run .#vmImage # CTRL-A X to close ;)
+ssh 127.0.0.1 -o StrictHostKeyChecking=no -p 2222 -l admin # Password: admin
 ```
