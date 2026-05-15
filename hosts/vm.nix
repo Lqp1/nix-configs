@@ -16,6 +16,7 @@
   users.users.admin = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
-    initialPassword = "admin";
+    initialHashedPassword = "$y$j9T$C6saF1jLcaKQVFZXjpVCt.$CB81YdnzoQb1dej/uSTBAq8aQkF840oAMwIk2bbGJU/";
+    openssh.authorizedKeys.keys = [ ];
   };
 })

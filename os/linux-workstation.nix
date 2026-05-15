@@ -215,6 +215,8 @@ in
       IPCAllowedGroups = [ "wheel" ];
     };
 
+    users.mutableUsers = true;
+
     users.users.thomas = {
       isNormalUser = true;
       extraGroups = [
@@ -240,6 +242,8 @@ in
         naps2
       ];
       shell = pkgs.zsh;
+      # TODO: Should be changed anyway on each host! It just prevents being locked out by default
+      initialHashedPassword = "$y$j9T$NQnV5fxUh6Dza6fFQkP5B1$zu0JwCqa13sSpt1wvVhGB24xpAyiVKcfmxm06.8YYHA";
     };
 
     # Hide logs or on workstations & add plymouth
