@@ -17,6 +17,7 @@
     nixos-needsreboot.inputs.nixpkgs.follows = "nixpkgs";
 
     flake-utils.url = "github:numtide/flake-utils";
+    jail-nix.url = "sourcehut:~alexdavid/jail.nix";
   };
 
   outputs =
