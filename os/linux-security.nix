@@ -74,6 +74,11 @@ in
   services.clamav.daemon.enable = true;
   services.clamav.updater.enable = true;
   programs.firejail.enable = true;
+
+  ## Sysctl & Kernel security settings from:
+  # https://github.com/NixOS/nixpkgs/blob/d1adf7652500d3ef98cdadb411b6aea20e2d4339/nixos/modules/profiles/hardened.nix
+  # https://github.com/cynicsketch/nix-mineral/blob/main/nix-mineral.nix
+
   boot.kernel.sysctl = {
     "dev.tty.ldisc_autoload" = 0;
     "fs.protected_fifos" = 2;

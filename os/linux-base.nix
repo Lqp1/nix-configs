@@ -1,4 +1,5 @@
-{ inputs
+{ config
+, inputs
 , lib
 , pkgs
 , ...
@@ -17,101 +18,106 @@ in
     ./linux-security.nix
   ];
 
-
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "fr_FR.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "fr";
-  };
-
-  location = {
-    latitude = 48.86;
-    longitude = 2.333;
-  };
-
-  # Set your time zone.
-  time.timeZone = "Europe/Paris";
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    powertop
-    unzip
-    p7zip
-    ccze
-    samba
-    lshw
-    usbutils
-    mtpfs
-    hdparm
-    lm_sensors
-    iptraf-ng
-    fwupd
-  ];
-
-  # List services that you want to enable:
-  services.fstrim.enable = true;
-
-  # systemd logrotate serrvice
-  services.logrotate.enable = true;
-
-  boot.loader.systemd-boot.configurationLimit = 5;
-  boot.loader.grub.configurationLimit = 5;
-
-
-  # Enable the various daemons
-  services.openssh.enable = false;
-  services.fwupd.enable = true;
-  services.thermald.enable = true;
-
-  services.acpid.enable = true;
-
-  virtualisation.docker.enable = true;
-
-  networking.networkmanager = {
-    enable = true;
-    ethernet.macAddress = "random";
-    wifi = {
-      macAddress = "random";
-      scanRandMacAddress = true;
+  options = {
+    my.use-resolved = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to use systemd-resolved as the DNS resolver";
     };
-    # Enable IPv6 privacy extensions in NetworkManager.
-    connectionConfig."ipv6.ip6-privacy" = 2;
-    dns = "systemd-resolved";
   };
 
-  services.resolved = {
-    enable = true;
-    dnssec = "false";
-    dnsovertls = "true";
-    domains = [ "~." ];
-    fallbackDns = nameservers;
-  };
-  networking.nameservers = nameservers;
+  config = {
+
+    # Select internationalisation properties.
+    i18n.defaultLocale = "fr_FR.UTF-8";
+    console = {
+      font = "Lat2-Terminus16";
+      keyMap = "fr";
+    };
+
+    location = {
+      latitude = 48.86;
+      longitude = 2.333;
+    };
+
+    # Set your time zone.
+    time.timeZone = "Europe/Paris";
+
+    # List packages installed in system profile. To search, run:
+    # $ nix search wget
+    environment.systemPackages = with pkgs; [
+      powertop
+      unzip
+      p7zip
+      ccze
+      samba
+      lshw
+      usbutils
+      mtpfs
+      hdparm
+      lm_sensors
+      iptraf-ng
+      fwupd
+    ];
+
+    # List services that you want to enable:
+    services.fstrim.enable = true;
+
+    # systemd logrotate serrvice
+    services.logrotate.enable = true;
+
+    boot.loader.systemd-boot.configurationLimit = 5;
+    boot.loader.grub.configurationLimit = 5;
 
 
-  programs.less.enable = true;
-  programs.iotop.enable = true;
+    # Enable the various daemons
+    services.openssh.enable = false;
+    services.fwupd.enable = true;
+    services.thermald.enable = true;
 
-  hardware.enableRedistributableFirmware = true;
+    services.acpid.enable = true;
 
-  ## Sysctk & Kernel security settings from:
-  # https://github.com/NixOS/nixpkgs/blob/d1adf7652500d3ef98cdadb411b6aea20e2d4339/nixos/modules/profiles/hardened.nix
-  # https://github.com/cynicsketch/nix-mineral/blob/main/nix-mineral.nix
+    virtualisation.docker.enable = true;
 
-  nix.settings.max-jobs = 4;
-  nix.settings.allowed-users = [ "@wheel" ];
-  nix.gc = {
-    automatic = true;
-    dates = "monthly";
-    options = "--delete-older-than 60d";
-  };
-  system.activationScripts = {
-    nixos-needsreboot = {
-      supportsDryActivation = true;
-      text = "${lib.getExe inputs.nixos-needsreboot.packages.${pkgs.stdenv.hostPlatform.system}.default} \"$systemConfig\" || true";
+    networking.networkmanager = {
+      enable = true;
+      ethernet.macAddress = "random";
+      wifi = {
+        macAddress = "random";
+        scanRandMacAddress = true;
+      };
+      # Enable IPv6 privacy extensions in NetworkManager.
+      connectionConfig."ipv6.ip6-privacy" = 2;
+      dns = lib.mkIf config.my.use-resolved "systemd-resolved";
+    };
+
+    services.resolved = {
+      enable = config.my.use-resolved;
+      dnssec = "false";
+      dnsovertls = "true";
+      domains = [ "~." ];
+      fallbackDns = nameservers;
+    };
+    networking.nameservers = nameservers;
+
+
+    programs.less.enable = true;
+    programs.iotop.enable = true;
+
+    hardware.enableRedistributableFirmware = true;
+
+    nix.settings.max-jobs = 4;
+    nix.settings.allowed-users = [ "@wheel" ];
+    nix.gc = {
+      automatic = true;
+      dates = "monthly";
+      options = "--delete-older-than 60d";
+    };
+    system.activationScripts = {
+      nixos-needsreboot = {
+        supportsDryActivation = true;
+        text = "${lib.getExe inputs.nixos-needsreboot.packages.${pkgs.stdenv.hostPlatform.system}.default} \"$systemConfig\" || true";
+      };
     };
   };
 }
