@@ -9,13 +9,13 @@ let
   useNeovim = config.my.editor == "neovim";
   jail = inputs.jail-nix.lib.init pkgs;
   jailed-opencode = jail "jailed-opencode" pkgs.opencode (with jail.combinators; [
-   network
-   time-zone
-   no-new-session
-   mount-cwd
-   (readonly (noescape "~/.gitconfig"))
-   (readwrite (noescape "~/.config/opencode"))
-   (add-pkg-deps (with pkgs; [ git ripgrep bashInteractive curl jq yq]))
+    network
+    time-zone
+    no-new-session
+    mount-cwd
+    (readonly (noescape "~/.gitconfig"))
+    (readwrite (noescape "~/.config/opencode"))
+    (add-pkg-deps (with pkgs; [ git ripgrep bashInteractive curl jq yq ]))
   ]);
 in
 {

@@ -15,6 +15,8 @@
     thermald.enable = lib.mkForce false;
     openssh.enable = lib.mkForce true;             
     openssh.settings.PasswordAuthentication = true;
+    getty.autologinUser = "admin";
+
   };
   security.sudo.wheelNeedsPassword = false;
   users.users.admin = {

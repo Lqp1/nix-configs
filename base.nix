@@ -65,6 +65,24 @@ in
     yazi
   ];
 
+  programs.bash.interactiveShellInit = ''
+    __prompt_command() {
+      local nix_info=""
+      local shlvl_info=""
+
+      if [ -n "$IN_NIX_SHELL" ]; then
+        nix_info=" \[\e[35m\][nix:$IN_NIX_SHELL]\[\e[0m\]"
+      fi
+
+      if [ "''${SHLVL:-1}" -gt 1 ]; then
+        shlvl_info=" \[\e[33m\][shlvl:$SHLVL]\[\e[0m\]"
+      fi
+
+      PS1="\[\e[32m\]\u@\h\[\e[0m\]''${nix_info}''${shlvl_info}: \[\e[34m\]\w\[\e[0m\] \$ "
+    }
+
+    PROMPT_COMMAND=__prompt_command
+  '';
   programs.zsh.enable = true;
   nix.settings.experimental-features = "nix-command flakes";
   nix.optimise.automatic = true;
