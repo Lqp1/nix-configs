@@ -95,6 +95,7 @@ in
       enable = config.my.use-resolved;
       dnssec = "false";
       dnsovertls = "true";
+      llmnr = "false";
       domains = [ "~." ];
       fallbackDns = nameservers;
     };
