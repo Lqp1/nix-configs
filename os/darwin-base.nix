@@ -205,6 +205,23 @@ in
     ];
   };
 
+  # Lightweight aarch64-linux VM used as a remote builder so darwin can
+  # build linux derivations (e.g. .#vmImage).
+  nix.linux-builder = {
+    enable = true;
+    ephemeral = true;
+    maxJobs = 4;
+    config = {
+      virtualisation = {
+        darwin-builder.diskSize = 40 * 1024;
+        darwin-builder.memorySize = 8 * 1024;
+        cores = 4;
+      };
+    };
+  };
+  # linux-builder talks to the daemon as a trusted user.
+  nix.settings.trusted-users = [ "@admin" ];
+
   nix.settings.allowed-users = [ "@admin" ];
   nix.gc = {
     automatic = true;
