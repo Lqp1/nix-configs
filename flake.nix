@@ -40,6 +40,48 @@
       overlayModule = {
         nixpkgs.overlays = [ unstableOverlay ];
       };
+
+      commonSpecialArgs = { inherit inputs; };
+
+      # NixOS system on linux with the workstation profile.
+      mkLinuxWorkstation = { system ? "x86_64-linux", extraModules ? [ ] }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = commonSpecialArgs;
+          modules = [
+            overlayModule
+            ./os/linux-base.nix
+            ./os/linux-workstation.nix
+            ./base.nix
+            ./workstation.nix
+          ] ++ extraModules;
+        };
+
+      # NixOS test VM (no workstation profile).
+      mkTestVm = { system, extraModules ? [ ] }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = commonSpecialArgs;
+          modules = [
+            overlayModule
+            ./os/linux-base.nix
+            ./base.nix
+            ./hosts/vm.nix
+          ] ++ extraModules;
+        };
+
+      # Run-vm wrapper built with aarch64-darwin pkgs + HVF acceleration,
+      # so `nix build .#vmImage` on macOS yields a native darwin script.
+      darwinVmHostModule = {
+        virtualisation.host.pkgs = import nixpkgs {
+          system = "aarch64-darwin";
+          config.allowUnfree = true;
+        };
+        virtualisation.qemu.options = [
+          "-machine virt,accel=hvf,highmem=on"
+          "-cpu host"
+        ];
+      };
     in
     flake-utils.lib.eachDefaultSystem
       (system:
@@ -73,6 +115,7 @@
     // {
       darwinConfigurations."FV3Y4FYJ31" = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
+        specialArgs = commonSpecialArgs;
         modules = [
           overlayModule
           ./os/darwin-base.nix
@@ -80,59 +123,36 @@
           ./workstation.nix
           ./hosts/FV3Y4FYJ31.nix
         ];
-        specialArgs = { inherit inputs; };
       };
 
-      nixosConfigurations."thomas-x201" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          overlayModule
-          ./os/linux-base.nix
-          ./os/linux-workstation.nix
-          ./base.nix
-          ./workstation.nix
-          ./hosts/x201.nix
-          nixos-hardware.nixosModules.lenovo-thinkpad-x200s
-        ];
-        specialArgs = { inherit inputs; };
+      nixosConfigurations = {
+        "thomas-x201" = mkLinuxWorkstation {
+          extraModules = [
+            ./hosts/x201.nix
+            nixos-hardware.nixosModules.lenovo-thinkpad-x200s
+          ];
+        };
+
+        "thomas-t460" = mkLinuxWorkstation {
+          extraModules = [
+            ./hosts/t460.nix
+            nixos-hardware.nixosModules.lenovo-thinkpad-t460
+          ];
+        };
+
+        "thomas-desktop" = mkLinuxWorkstation {
+          extraModules = [ ./hosts/desktop.nix ];
+        };
+
+        test-vm = mkTestVm { system = "x86_64-linux"; };
+
+        test-vm-darwin = mkTestVm {
+          system = "aarch64-linux";
+          extraModules = [ darwinVmHostModule ];
+        };
       };
 
-      nixosConfigurations."thomas-t460" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          overlayModule
-          ./os/linux-base.nix
-          ./os/linux-workstation.nix
-          ./base.nix
-          ./workstation.nix
-          ./hosts/t460.nix
-          nixos-hardware.nixosModules.lenovo-thinkpad-t460
-        ];
-        specialArgs = { inherit inputs; };
-      };
-
-      nixosConfigurations."thomas-desktop" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          overlayModule
-          ./os/linux-base.nix
-          ./os/linux-workstation.nix
-          ./base.nix
-          ./workstation.nix
-          ./hosts/desktop.nix
-        ];
-        specialArgs = { inherit inputs; };
-      };
-      nixosConfigurations.test-vm = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          overlayModule
-          ./os/linux-base.nix
-          ./base.nix
-          ./hosts/vm.nix
-        ];
-        specialArgs = { inherit inputs; };
-      };
       packages.x86_64-linux.vmImage = self.nixosConfigurations.test-vm.config.system.build.vm;
+      packages.aarch64-darwin.vmImage = self.nixosConfigurations.test-vm-darwin.config.system.build.vm;
     };
 }

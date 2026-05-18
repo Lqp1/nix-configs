@@ -28,6 +28,7 @@
 
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.cpu.intel.updateMicrocode = true;
   hardware.nvidia.open = false; # Card is too old for the fresh and advised open source drivers
   hardware.nvidia.forceFullCompositionPipeline = true; # To reduce screen tearing
 

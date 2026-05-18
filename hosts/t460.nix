@@ -4,6 +4,8 @@
   system.stateVersion = "24.11";
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
+  hardware.cpu.intel.updateMicrocode = true;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.editor = false;

@@ -95,7 +95,6 @@ in
   programs.less.enable = true;
   programs.iotop.enable = true;
 
-  hardware.cpu.intel.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
   ## Sysctk & Kernel security settings from:

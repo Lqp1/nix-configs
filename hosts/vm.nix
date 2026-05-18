@@ -10,8 +10,12 @@
       forwardPorts = [{ from = "host"; host.port = 2222; guest.port = 22; }];
       graphics = false;
     };
-  services.openssh.enable = lib.mkForce true;
-  services.openssh.settings.PasswordAuthentication = true;
+
+  services = {
+    thermald.enable = lib.mkForce false;
+    openssh.enable = lib.mkForce true;             
+    openssh.settings.PasswordAuthentication = true;
+  };
   security.sudo.wheelNeedsPassword = false;
   users.users.admin = {
     isNormalUser = true;
