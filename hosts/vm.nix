@@ -13,7 +13,7 @@
 
   services = {
     thermald.enable = lib.mkForce false;
-    openssh.enable = lib.mkForce true;             
+    openssh.enable = lib.mkForce true;
     openssh.settings.PasswordAuthentication = true;
     getty.autologinUser = "admin";
 
@@ -21,7 +21,7 @@
   security.sudo.wheelNeedsPassword = false;
   users.users.admin = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     initialHashedPassword = "$y$j9T$C6saF1jLcaKQVFZXjpVCt.$CB81YdnzoQb1dej/uSTBAq8aQkF840oAMwIk2bbGJU/";
     openssh.authorizedKeys.keys = [ ];
   };
