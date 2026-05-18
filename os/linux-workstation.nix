@@ -7,9 +7,30 @@
 let
   inherit (config.my) isDesktop;
   useNeovim = config.my.editor == "neovim";
-  jail = inputs.jail-nix.lib.init pkgs;
+  staticResolvConf = pkgs.writeText "jailed-resolv.conf" ''
+    nameserver 1.1.1.1
+    nameserver 9.9.9.9
+    options edns0
+  '';
+  jail = inputs.jail-nix.lib.extend {
+    inherit pkgs;
+    additionalCombinators = builtinCombinators: with builtinCombinators; {
+      # Add custom combinator to prevent attempting to bind mount systemd stub resolved
+      # Should be removed once upstream fixed it
+      my-network = state: compose [
+        (share-ns "net")
+        (runtime-deep-ro-bind "/etc/hosts")
+        (runtime-deep-ro-bind "/etc/nsswitch.conf")
+        (bind-pkg "/etc/resolv.conf" staticResolvConf)
+        (runtime-deep-ro-bind "/etc/ssl")
+        (write-text "/etc/hostname" "${state.hostname}\n")
+        (unsafe-add-raw-args "--hostname ${escape state.hostname}")
+      ]
+        state;
+    };
+  };
   jailed-opencode = jail "jailed-opencode" pkgs.opencode (with jail.combinators; [
-    network
+    my-network
     time-zone
     no-new-session
     mount-cwd
