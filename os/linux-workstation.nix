@@ -257,7 +257,8 @@ in
       percentageLow = 25;
       percentageCritical = 15;
       percentageAction = 14;
-      criticalPowerAction = "Sleep";
+      criticalPowerAction = "Suspend";
+      allowRiskyCriticalPowerAction = true; # 😈
     };
     services.logind.settings.Login = {
       HandleLidSwitch = "suspend";
