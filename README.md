@@ -1,5 +1,18 @@
 # My Nix Flake
 
+## Module inheritance
+
+Each module imports its parent, so a host only references the leaf profile.
+Arrows (`->`) read as "imports":
+
+```
+linux-workstation -> os/linux-workstation -> os/linux-base -> base
+                                          -> workstation
+test-vm           -> os/linux-base        -> base
+darwin            -> os/darwin            -> base
+                  -> workstation
+```
+
 ## Flake format
 ```
 nix fmt .

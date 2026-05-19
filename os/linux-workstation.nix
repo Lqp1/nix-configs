@@ -40,6 +40,11 @@ let
   ]);
 in
 {
+  imports = [
+    ./linux-base.nix
+    ../workstation.nix
+  ];
+
   options = {
     my.editor = lib.mkOption {
       type = lib.types.enum [ "neovim" "vim" ];

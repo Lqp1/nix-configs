@@ -50,10 +50,7 @@
           specialArgs = commonSpecialArgs;
           modules = [
             overlayModule
-            ./os/linux-base.nix
             ./os/linux-workstation.nix
-            ./base.nix
-            ./workstation.nix
           ] ++ extraModules;
         };
 
@@ -65,7 +62,6 @@
           modules = [
             overlayModule
             ./os/linux-base.nix
-            ./base.nix
             ./hosts/vm.nix
           ] ++ extraModules;
         };
@@ -118,8 +114,7 @@
         specialArgs = commonSpecialArgs;
         modules = [
           overlayModule
-          ./os/darwin-base.nix
-          ./base.nix
+          ./os/darwin.nix
           ./workstation.nix
           ./hosts/FV3Y4FYJ31.nix
         ];

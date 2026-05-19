@@ -14,6 +14,7 @@ let
 in
 {
   imports = [
+    ../base.nix
     ./linux-tmpfs.nix
     ./linux-security.nix
   ];

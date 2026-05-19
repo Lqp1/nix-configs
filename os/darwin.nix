@@ -18,6 +18,8 @@ let
 
 in
 {
+  imports = [ ../base.nix ];
+
   environment.systemPackages = with pkgs; [
     unstable.choose-gui
     unstable.colima
