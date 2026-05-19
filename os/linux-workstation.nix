@@ -5,7 +5,7 @@
 , ...
 }:
 let
-  inherit (config.my) isDesktop;
+  inherit (config.my) linuxType;
   useNeovim = config.my.editor == "neovim";
   staticResolvConf = pkgs.writeText "jailed-resolv.conf" ''
     nameserver 1.1.1.1
@@ -51,14 +51,20 @@ in
       default = "neovim";
       description = "Default editor";
     };
-    my.isDesktop = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
+    my.linuxType = lib.mkOption {
+      type = lib.types.enum [ "laptop" "desktop" "none" ];
+      default = "none";
       description = "Whether this is a desktop (GNOME + avahi) rather than a laptop (i3)";
     };
   };
 
   config = {
+    assertions = [
+      {
+        assertion = linuxType != "none";
+        message = "linuxType must not be \"none\"";
+      }
+    ];
 
     environment.systemPackages = with pkgs; [
       veracrypt
@@ -70,7 +76,7 @@ in
       hunspellDicts.en_US
     ];
 
-    services.avahi.enable = isDesktop;
+    services.avahi.enable = linuxType == "desktop";
 
     # VPN
     services.tailscale =
@@ -88,7 +94,7 @@ in
     services.gvfs.package = pkgs.lib.mkForce pkgs.gvfs;
 
     services.redshift = {
-      enable = !isDesktop;
+      enable = linuxType == "laptop";
       temperature = {
         day = 5500;
         night = 3500;
@@ -215,9 +221,9 @@ in
 
       };
 
-    services.desktopManager.gnome.enable = isDesktop;
+    services.desktopManager.gnome.enable = linuxType == "desktop";
     services.libinput.enable = true;
-    services.displayManager.defaultSession = lib.mkIf (!isDesktop) "none+i3";
+    services.displayManager.defaultSession = lib.mkIf (linuxType == "laptop") "none+i3";
     services.autorandr.enable = true;
 
     hardware.acpilight.enable = true;
@@ -241,10 +247,26 @@ in
       defaultEditor = useNeovim;
     };
 
-    services.tlp.enable = !isDesktop;
+    services.tlp.enable = linuxType == "laptop";
+    services.power-profiles-daemon.enable = false; # Conflicts with TLP when activated.
+    powerManagement.powertop.enable = false; # Same
+    networking.networkmanager.wifi.powersave = linuxType == "laptop";
+    powerManagement.enable = true;
+    services.upower = lib.mkIf (linuxType == "laptop") {
+      enable = true;
+      percentageLow = 25;
+      percentageCritical = 15;
+      percentageAction = 14;
+      criticalPowerAction = "Sleep";
+    };
+    services.logind.settings.Login = {
+      HandleLidSwitch = "suspend";
+      HandleLidSwitchExternalPower = "ignore";
+      HandlePowerKey = "suspend";
+    };
 
     services.usbguard = {
-      enable = !isDesktop;
+      enable = linuxType == "laptop";
       implicitPolicyTarget = "block";
       presentControllerPolicy = "allow";
       presentDevicePolicy = "allow";

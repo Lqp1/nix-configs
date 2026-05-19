@@ -21,7 +21,6 @@
     options btusb enable_autosuspend=N
   '';
   networking.hostName = "thomas-desktop"; # Define your hostname.
-  my.isDesktop = true;
   environment.variables.TERMINAL = [ "kitty" ];
 
   services.libinput.mouse.accelProfile = "flat";

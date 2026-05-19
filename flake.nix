@@ -44,13 +44,14 @@
       commonSpecialArgs = { inherit inputs; };
 
       # NixOS system on linux with the workstation profile.
-      mkLinuxWorkstation = { system ? "x86_64-linux", extraModules ? [ ] }:
+      mkLinuxWorkstation = { type, system ? "x86_64-linux", extraModules ? [ ] }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = commonSpecialArgs;
           modules = [
             overlayModule
             ./os/linux-workstation.nix
+            { my.linuxType = type; }
           ] ++ extraModules;
         };
 
@@ -122,6 +123,7 @@
 
       nixosConfigurations = {
         "thomas-x201" = mkLinuxWorkstation {
+          type = "laptop";
           extraModules = [
             ./hosts/x201.nix
             nixos-hardware.nixosModules.lenovo-thinkpad-x200s
@@ -129,6 +131,7 @@
         };
 
         "thomas-t460" = mkLinuxWorkstation {
+          type = "laptop";
           extraModules = [
             ./hosts/t460.nix
             nixos-hardware.nixosModules.lenovo-thinkpad-t460
@@ -136,7 +139,10 @@
         };
 
         "thomas-desktop" = mkLinuxWorkstation {
-          extraModules = [ ./hosts/desktop.nix ];
+          type = "desktop";
+          extraModules = [
+            ./hosts/desktop.nix
+          ];
         };
 
         test-vm = mkTestVm { system = "x86_64-linux"; };

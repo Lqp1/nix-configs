@@ -15,7 +15,6 @@
   environment.variables.TERMINAL = [ "xfce4-terminal" ];
   networking.hostName = "thomas-x201"; # Define your hostname.
   networking.interfaces.enp0s25.useDHCP = true;
-  networking.networkmanager.wifi.powersave = true;
 
   boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
