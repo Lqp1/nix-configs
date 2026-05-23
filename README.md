@@ -13,6 +13,23 @@ darwin            -> os/darwin            -> base
                   -> workstation
 ```
 
+## First install
+
+Format disks according to:
+-
+-
+-
+-
+
+Then generate config, merge it into flake, and install:
+```
+nixos-generate-config --root /mnt
+git clone https://github.com/lqp1/nix-configs
+nixos-install --flake .#thomas-xxx --no-root-passwd
+# Backup the edited repo to push later on when ssh keys, vault, rclone config etc... are setup
+nixos-enter --root /mnt -c "passwd thomas"
+```
+
 ## Flake format
 ```
 nix fmt .

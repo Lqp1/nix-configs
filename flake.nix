@@ -130,6 +130,14 @@
           ];
         };
 
+        "thomas-x1gen9" = mkLinuxWorkstation {
+          type = "laptop";
+          extraModules = [
+            ./hosts/x1gen9.nix
+            nixos-hardware.nixosModules.lenovo-thinkpad-x1-9th-gen
+          ];
+        };
+
         "thomas-t460" = mkLinuxWorkstation {
           type = "laptop";
           extraModules = [
