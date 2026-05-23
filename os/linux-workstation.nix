@@ -12,6 +12,7 @@ let
     nameserver 9.9.9.9
     options edns0
   '';
+  usbguard-select = pkgs.callPackage ../derivations/usbguard-select { };
   jail = inputs.jail-nix.lib.extend {
     inherit pkgs;
     additionalCombinators = builtinCombinators: with builtinCombinators; {
@@ -74,7 +75,7 @@ in
       hunspell
       hunspellDicts.fr-moderne
       hunspellDicts.en_US
-    ];
+    ] ++ lib.optionals (linuxType == "laptop") [ usbguard-select ];
 
     services.avahi.enable = linuxType == "desktop";
 
@@ -269,7 +270,7 @@ in
     services.usbguard = {
       enable = linuxType == "laptop";
       implicitPolicyTarget = "block";
-      presentControllerPolicy = "allow";
+      presentControllerPolicy = "keep";
       presentDevicePolicy = "allow";
       insertedDevicePolicy = "apply-policy";
       IPCAllowedGroups = [ "wheel" ];
