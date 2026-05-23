@@ -16,10 +16,9 @@ darwin            -> os/darwin            -> base
 ## First install
 
 Format disks according to:
--
--
--
--
+- https://nixos.org/manual/nixos/stable/#sec-installation
+- https://nixos.wiki/wiki/LVM
+- https://nixos.org/manual/nixos/stable/#sec-luks-file-systems
 
 Then generate config, merge it into flake, and install:
 ```
