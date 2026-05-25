@@ -5,8 +5,7 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+    [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   system.stateVersion = "25.11"; # Did you read the comment?
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
@@ -16,6 +15,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.editor = false;
 
+  services.fprintd.enable = true;
   services.xserver.videoDrivers = [ "modesetting" ];
   environment.variables.TERMINAL = [ "kitty" ];
   networking.hostName = "thomas-x1gen9";

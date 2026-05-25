@@ -53,6 +53,7 @@ in
   imports = [
     ./linux-base.nix
     ../workstation.nix
+    ./linux-polkit.nix
   ];
 
   options = {
