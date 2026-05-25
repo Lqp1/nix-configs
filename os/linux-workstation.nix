@@ -169,6 +169,7 @@ in
     };
 
     # Enable the X11 windowing system.
+    programs.ssh.enableAskPassword = false;
     services.xserver =
       {
         enable = true;
