@@ -30,6 +30,15 @@ let
         state;
     };
   };
+  jailed-gemini = jail "jailed-gemini" pkgs.gemini-cli (with jail.combinators; [
+    my-network
+    time-zone
+    no-new-session
+    mount-cwd
+    (readonly (noescape "~/.gitconfig"))
+    (readwrite (noescape "~/.gemini"))
+    (add-pkg-deps (with pkgs; [ git ripgrep bashInteractive curl jq yq ]))
+  ]);
   jailed-opencode = jail "jailed-opencode" pkgs.opencode (with jail.combinators; [
     my-network
     time-zone
@@ -302,6 +311,7 @@ in
         audacity
         naps2
         jailed-opencode
+        jailed-gemini
       ];
       shell = pkgs.zsh;
       # TODO: Should be changed anyway on each host! It just prevents being locked out by default
