@@ -41,6 +41,7 @@ in
     htop
     httpie
     iftop
+    jq
     lazygit
     less
     lsof
@@ -50,7 +51,6 @@ in
     my-ruby
     netcat-gnu
     nil
-    statix
     pciutils
     pipx
     rclone
@@ -58,11 +58,13 @@ in
     screen
     smount
     sshfs
+    statix
     tig
     tree
     vgrep
     vim
     yazi
+    yq
   ];
 
   programs.bash.interactiveShellInit = ''
