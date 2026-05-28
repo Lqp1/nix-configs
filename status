@@ -21,42 +21,64 @@ else
   TITLE="" GOOD="" WARN="" RESET=""
 fi
 
+endsection() {
+  printf "\n"
+}
 section() {
-  printf "\n%s%s%s\n" "$TITLE" "$1" "$RESET"
+  printf "%s%s%s\n" "$TITLE" "$1" "$RESET"
 }
 
 REV="$("$VERSION_CMD" --json | jq -r '.configurationRevision // "unknown"')"
+
+DIRTY=false
+if [[ "$REV" == *"-dirty" ]]; then
+  DIRTY=true
+  CLEAN_REV="${REV%-dirty}" # Trim -dirty suffix
+fi
+
 HEAD="$(git rev-parse --short HEAD)"
 
 section "Current version"
-if [[ "$REV" =~ ^[0-9a-f]{40}$ ]]; then
-  git --no-pager show "$REV" --no-patch --decorate --pretty='format:%h %s (%cr)%d'
-else
-  echo "Revision: $REV"
+if $DIRTY; then
+  echo "${WARN}Warning: The reported revision was dirty. Showing info from the base commit.${RESET}"
 fi
+git --no-pager show "$CLEAN_REV" --no-patch --decorate --pretty='format:%h %s (%cr)%d'
+printf "\n"
+endsection
 
 section "Tip"
 git --no-pager show HEAD --no-patch --decorate --pretty='format:%h %s (%cr)%d'
+printf "\n"
+endsection
 
 section "Repo state"
+NEW_DIRTY=false
 if [[ -z "$(git status --porcelain=v1)" ]]; then
   echo "${GOOD}clean${RESET} @ $HEAD"
 else
   echo "${WARN}dirty${RESET} @ $HEAD"
-  section "Local changes"
   git --no-pager status -sb
+  NEW_DIRTY=true
 fi
+endsection
 
 section "Changes to be applied"
-if [[ "$REV" =~ ^[0-9a-f]{40}$ ]]; then
-  if [[ "$REV" == "$(git rev-parse HEAD)" ]]; then
+if $DIRTY; then
+  echo "${WARN}Warning: The reported revision was dirty. Showing history from the base commit.${RESET}"
+fi
+if $NEW_DIRTY; then
+  echo "${WARN}Warning: The current repo is dirty. Showing history up to last commited change.${RESET}"
+fi
+if [[ "$CLEAN_REV" =~ ^[0-9a-f]{40}$ ]]; then
+  if [[ "$CLEAN_REV" == "$(git rev-parse HEAD)" ]]; then
     echo "${GOOD}Already at HEAD${RESET}"
-  elif git merge-base --is-ancestor "$REV" HEAD 2>/dev/null; then
-    git --no-pager log "$REV"..HEAD --graph --decorate --oneline
+  elif git merge-base --is-ancestor "$CLEAN_REV" HEAD 2>/dev/null; then
+    git --no-pager log "$CLEAN_REV"..HEAD --graph --decorate --oneline
   else
     echo "${WARN}Running revision is not an ancestor of HEAD${RESET}"
-    git --no-pager log "$REV"...HEAD --graph --decorate --oneline --left-right
+    git --no-pager log "$CLEAN_REV"...HEAD --graph --decorate --oneline --left-right
   fi
 else
   echo "${WARN}Cannot compute log range from revision: $REV${RESET}"
 fi
+endsection
