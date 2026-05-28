@@ -31,6 +31,7 @@ section() {
 REV="$("$VERSION_CMD" --json | jq -r '.configurationRevision // "unknown"')"
 
 DIRTY=false
+CLEAN_REV="$REV"
 if [[ "$REV" == *"-dirty" ]]; then
   DIRTY=true
   CLEAN_REV="${REV%-dirty}" # Trim -dirty suffix
