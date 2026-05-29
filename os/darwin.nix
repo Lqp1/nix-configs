@@ -42,10 +42,11 @@ in
       cmd-shift-z = "move-workspace-to-monitor --wrap-around next"; # it's the w on an azerty
 
       # i3 wraps focus by default
-      cmd-j = "focus --boundaries-action wrap-around-the-workspace left";
-      cmd-left = "focus --boundaries-action wrap-around-the-workspace left";
+      # Workaround for https://github.com/nikitabobko/AeroSpace/issues/1311 requires --ignore-floating
+      cmd-j = "focus --ignore-floating --boundaries-action wrap-around-the-workspace left";
+      cmd-left = "focus --ignore-floating --boundaries-action wrap-around-the-workspace left";
       #cmd-l = "focus --boundaries-action wrap-around-the-workspace right";
-      cmd-right = "focus --boundaries-action wrap-around-the-workspace right";
+      cmd-right = "focus --ignore-floating --boundaries-action wrap-around-the-workspace right";
 
       cmd-shift-j = "move left";
       cmd-shift-left = "move left";
@@ -147,8 +148,8 @@ in
     cmd - 0x2B : rofimoji -a clipboard -s neutral
     cmd + shift - j : cat ~/.cache/jira_tickets | choose | cut -d' ' -f1 | tr -d '\n' | pbcopy - && cliclick -w 100 kd:cmd t:v ku:cmd
     alt - tab : aerospace focus-back-and-forth || aerospace workspace-back-and-forth
-    cmd - 0x0A : aerospace focus --boundaries-action wrap-around-the-workspace right
-    cmd - 0x32 : aerospace focus --boundaries-action wrap-around-the-workspace right
+    cmd - 0x0A : aerospace focus --ignore-floating --boundaries-action wrap-around-the-workspace right
+    cmd - 0x32 : aerospace focus --ignore-floating --boundaries-action wrap-around-the-workspace right
   '';
 
   system.defaults = {
