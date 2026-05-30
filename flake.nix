@@ -122,13 +122,6 @@
       };
 
       nixosConfigurations = {
-        "thomas-x201" = mkLinuxWorkstation {
-          type = "laptop";
-          extraModules = [
-            ./hosts/x201.nix
-            nixos-hardware.nixosModules.lenovo-thinkpad-x200s
-          ];
-        };
 
         "thomas-x1gen9" = mkLinuxWorkstation {
           type = "laptop";
