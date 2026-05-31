@@ -80,6 +80,7 @@ in
       cmd-shift-3 = "move-node-to-workspace 3";
       cmd-shift-4 = "move-node-to-workspace 4";
       cmd-shift-5 = "move-node-to-workspace 5";
+      cmd-shift-6 = "move-node-to-workspace 6";
 
       cmd-shift-c = "reload-config";
 
@@ -184,6 +185,24 @@ in
     loginwindow.GuestEnabled = false;
     trackpad.Clicking = true;
     trackpad.TrackpadRightClick = true;
+
+    # Disable all 3+ finger gestures
+    trackpad.TrackpadThreeFingerDrag = false;
+    trackpad.TrackpadThreeFingerTapGesture = 0;
+    trackpad.TrackpadThreeFingerVertSwipeGesture = 0;
+    trackpad.TrackpadThreeFingerHorizSwipeGesture = 0;
+    trackpad.TrackpadFourFingerVertSwipeGesture = 0;
+    trackpad.TrackpadFourFingerHorizSwipeGesture = 0;
+    trackpad.TrackpadFourFingerPinchGesture = 0;
+
+    CustomUserPreferences = {
+      "com.apple.dock" = {
+        showMissionControlGestureEnabled = false;
+        showAppExposeGestureEnabled = false;
+        showLaunchpadGestureEnabled = false;
+        showDesktopGestureEnabled = false;
+      };
+    };
   };
 
   # This is more natural on the MacOS keyboard buuuuut is not with a real PC keyboard :(
@@ -235,5 +254,7 @@ in
   system.activationScripts.activateDarwinSettings.text = ''
     # Following line should allow us to avoid a logout/login cycle
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    # Restart services that cache preferences so settings actually take effect
+    killall Dock Finder SystemUIServer 2>/dev/null || true
   '';
 }
