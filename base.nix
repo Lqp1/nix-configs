@@ -52,7 +52,7 @@ in
     netcat-gnu
     nil
     pciutils
-    pipx
+    #pipx # Keep it for future reference but not used anymore and broken for now in 26.05
     rclone
     ripgrep
     screen

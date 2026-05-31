@@ -65,9 +65,7 @@ in
   security.rtkit.enable = true;
 
   # Don't save coredumps
-  systemd.coredump.extraConfig = ''
-    Storage=none
-  '';
+  systemd.coredump.settings.Coredump.Storage = "node";
 
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.enable = true;

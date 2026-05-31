@@ -33,25 +33,29 @@
   };
 
   fileSystems."/" =
-    { device = "/dev/mapper/vg0-root";
+    {
+      device = "/dev/mapper/vg0-root";
       fsType = "ext4";
       options = [ "discard" "noatime" "nodiratime" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/752E-749C";
+    {
+      device = "/dev/disk/by-uuid/752E-749C";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" "discard" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/mapper/vg0-home";
+    {
+      device = "/dev/mapper/vg0-home";
       fsType = "ext4";
       options = [ "discard" "noatime" "nodiratime" "nodev" "nosuid" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/mapper/vg0-nix";
+    {
+      device = "/dev/mapper/vg0-nix";
       fsType = "ext4";
       options = [ "discard" "noatime" "nodiratime" ];
     };

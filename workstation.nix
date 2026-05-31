@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [
     keepassxc
     kitty
-    unstable.rofimoji
+    rofimoji
 
     # For Neovim/Lazyvim
     neovim # Defined already in ./linux-workstation.nix but needed for darwin too

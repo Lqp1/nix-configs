@@ -1,4 +1,4 @@
-{ lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 
 {
   system.stateVersion = "25.05"; # Did you read the comment?
@@ -26,18 +26,21 @@
   services.libinput.mouse.accelProfile = "flat";
 
   hardware.graphics.enable = true;
+  nixpkgs.config.nvidia.acceptLicense = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.cpu.intel.updateMicrocode = true;
   hardware.nvidia.open = false; # Card is too old for the fresh and advised open source drivers
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   hardware.nvidia.forceFullCompositionPipeline = true; # To reduce screen tearing
 
   # Suspend is buggy with the "old" nvidia card and not really useful wrt how I use the desktop
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
+  systemd.sleep.settings.Sleep =
+    {
+      AllowSuspend = "no";
+      AllowHibernation = "no";
+      AllowHybridSleep = "no";
+      AllowSuspendThenHibernate = "no";
+    };
 
   fileSystems."/" =
     {

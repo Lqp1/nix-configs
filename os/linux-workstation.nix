@@ -30,15 +30,6 @@ let
         state;
     };
   };
-  jailed-gemini = jail "jailed-gemini" pkgs.gemini-cli (with jail.combinators; [
-    my-network
-    time-zone
-    no-new-session
-    mount-cwd
-    (readonly (noescape "~/.gitconfig"))
-    (readwrite (noescape "~/.gemini"))
-    (add-pkg-deps (with pkgs; [ git ripgrep bashInteractive curl jq yq ]))
-  ]);
   jailed-opencode = jail "jailed-opencode" pkgs.opencode (with jail.combinators; [
     my-network
     time-zone
@@ -85,6 +76,7 @@ in
       hunspell
       hunspellDicts.fr-moderne
       hunspellDicts.en_US
+      android-tools
     ] ++ lib.optionals (linuxType == "laptop") [ usbguard-select ];
 
     services.avahi.enable = linuxType == "desktop";
@@ -210,20 +202,20 @@ in
               arandr
               polybar
               i3lock
-              pkgs.xfce.xfce4-terminal
+              xfce4-terminal
               arc-icon-theme
               arc-theme
               material-cursors
-              pkgs.xfce.xfce4-screenshooter
-              pkgs.xfce.thunar
-              pkgs.xfce.ristretto
+              xfce4-screenshooter
+              thunar
+              ristretto
               xclip
-              pkgs.xfce.xfce4-settings
-              pkgs.xfce.xfce4-power-manager
-              pkgs.xfce.xfce4-clipman-plugin
-              pkgs.xfce.xfconf
-              pkgs.xfce.exo
-              pkgs.xfce.tumbler
+              xfce4-settings
+              xfce4-power-manager
+              xfce4-clipman-plugin
+              xfconf
+              xfce4-exo
+              tumbler
               dunst
               picom
               xss-lock
@@ -248,7 +240,6 @@ in
     '';
 
     programs.evince.enable = true;
-    programs.adb.enable = true;
     programs.nm-applet.enable = true;
 
     programs.neovim = {
@@ -297,7 +288,6 @@ in
         "docker" # To manipulate docker
         "video"
         "plugdev"
-        "adbusers" # To use ADB
         "dialout" # For Arduino / Esp32 access through tty
       ];
       packages = with pkgs; [
@@ -312,7 +302,6 @@ in
         audacity
         naps2
         jailed-opencode
-        jailed-gemini
       ];
       shell = pkgs.zsh;
       # TODO: Should be changed anyway on each host! It just prevents being locked out by default

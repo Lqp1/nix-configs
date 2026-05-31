@@ -92,13 +92,13 @@ in
       dns = lib.mkIf config.my.use-resolved "systemd-resolved";
     };
 
-    services.resolved = {
-      enable = config.my.use-resolved;
-      dnssec = "false";
-      dnsovertls = "true";
-      llmnr = "false";
-      domains = [ "~." ];
-      fallbackDns = nameservers;
+    services.resolved.enable = config.my.use-resolved;
+    services.resolved.settings.Resolve = {
+      DNSSEC = "false";
+      DNSOverTLS = "true";
+      LLMNR = "false";
+      Domains = [ "~." ];
+      FallbackDns = nameservers;
     };
     networking.nameservers = nameservers;
 
