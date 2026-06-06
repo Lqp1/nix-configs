@@ -36,7 +36,7 @@
     {
       device = "/dev/mapper/vg0-root";
       fsType = "ext4";
-      options = [ "discard" "noatime" "nodiratime" ];
+      options = [ "discard" "noatime" "nodiratime" "x-systemd.device-timeout=infinity" ];
     };
 
   fileSystems."/boot" =

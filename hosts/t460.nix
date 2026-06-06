@@ -31,7 +31,7 @@
     {
       device = "/dev/disk/by-uuid/89b66f19-17c1-45ee-9bf4-de2f798e33d1";
       fsType = "ext4";
-      options = [ "discard" "noatime" "nodiratime" ];
+      options = [ "discard" "noatime" "nodiratime" "x-systemd.device-timeout=infinity" ];
     };
 
   fileSystems."/home" =
