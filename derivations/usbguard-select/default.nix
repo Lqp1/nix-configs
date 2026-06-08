@@ -2,7 +2,7 @@
 
 pkgs.stdenv.mkDerivation {
   pname = "usbguard-select";
-  version = "1.0.1";
+  version = "1.0.2";
 
   dontUnpack = true;
 
@@ -14,7 +14,7 @@ pkgs.stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
 
-    cat > $out/bin/usb-select <<'EOF'
+    cat > $out/bin/usbguard-select <<'EOF'
     #!${pkgs.runtimeShell}
     set -euo pipefail
 
@@ -67,7 +67,7 @@ pkgs.stdenv.mkDerivation {
     exec ${pkgs.usbguard}/bin/usbguard allow-device "$id"
     EOF
 
-    chmod +x $out/bin/usb-select
+    chmod +x $out/bin/usbguard-select
 
     mkdir -p $out/share/applications
 
@@ -76,7 +76,7 @@ pkgs.stdenv.mkDerivation {
     Type=Application
     Name=USBGuard Select
     Comment=Authorize USB devices via USBGuard
-    Exec=$out/bin/usb-select rofi
+    Exec=$out/bin/usbguard-select rofi
     Icon=usb
     Categories=System;Security;
     Terminal=false
