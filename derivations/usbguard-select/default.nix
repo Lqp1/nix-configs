@@ -2,7 +2,7 @@
 
 pkgs.stdenv.mkDerivation {
   pname = "usbguard-select";
-  version = "1.0.2";
+  version = "1.0.3";
 
   dontUnpack = true;
 
@@ -23,6 +23,7 @@ pkgs.stdenv.mkDerivation {
     devices="$(
       ${pkgs.usbguard}/bin/usbguard list-devices | \
         ${pkgs.gawk}/bin/awk '
+          $2 == "block" &&
           match($0, /^([0-9]+):/, m) &&
           match($0, /name "([^"]+)"/, n) &&
           n[1] != "" &&
