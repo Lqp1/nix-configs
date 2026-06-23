@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p nix-diff nix-output-monitor nvd
-set -e
+set -euo pipefail
 home-manager build 2>&1 | nom
 nvd diff ~/.nix-profile result
