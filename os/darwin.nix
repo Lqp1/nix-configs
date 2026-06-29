@@ -248,7 +248,7 @@ in
   nix.gc = {
     automatic = true;
     interval = { Weekday = 0; Hour = 0; Minute = 0; };
-    options = "--delete-older-than 60d";
+    options = "--delete-older-than 30d";
   };
 
   system.activationScripts.activateDarwinSettings.text = ''

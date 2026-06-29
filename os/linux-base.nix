@@ -113,7 +113,7 @@ in
     nix.gc = {
       automatic = true;
       dates = "monthly";
-      options = "--delete-older-than 60d";
+      options = "--delete-older-than 30d";
     };
     system.activationScripts = {
       nixos-needsreboot = {
