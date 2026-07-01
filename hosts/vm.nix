@@ -16,6 +16,8 @@
     openssh.enable = lib.mkForce true;
     openssh.settings.PasswordAuthentication = true;
     getty.autologinUser = "admin";
+    qemuGuest.enable = true;
+    spice-vdagentd.enable = true;
 
   };
   security.sudo.wheelNeedsPassword = false;
