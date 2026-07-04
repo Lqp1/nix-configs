@@ -80,11 +80,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782496281,
-        "narHash": "sha256-kiD2LQGCxXM7yUXxmdm4F3d4+VUrKC22qB/c/A752wI=",
-        "rev": "70bcee1768e6b13c411fc77d51be3e3cf5b4d6e3",
+        "lastModified": 1783101583,
+        "narHash": "sha256-u17Bgeo1/K3eEZuEWpZLEuT0QLCQjAa90coTemfystU=",
+        "rev": "a214d9c86c3ce092944a6cc228dd2c6492950d76",
         "type": "tarball",
-        "url": "https://codeberg.org/api/v1/repos/Mynacol/nixos-needsreboot/archive/70bcee1768e6b13c411fc77d51be3e3cf5b4d6e3.tar.gz"
+        "url": "https://codeberg.org/api/v1/repos/Mynacol/nixos-needsreboot/archive/a214d9c86c3ce092944a6cc228dd2c6492950d76.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -106,11 +106,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1782545840,
-        "narHash": "sha256-PkBPmP5ofNtunCU7/tfn6wi9OLlzFGcHAqqmY+/mwUI=",
+        "lastModified": 1782978903,
+        "narHash": "sha256-bG1LAS3YehMzp4RSXw99o3yMEO/Ktb0Tx29RCtEU0Tk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3d46470bb3030020f7e1361f33514854f5bfa86d",
+        "rev": "d33369954a67ae3322177dc9a3d564092912120c",
         "type": "github"
       },
       "original": {
@@ -122,11 +122,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1782375420,
-        "narHash": "sha256-f+/IH5ng5P91VHrhcNxqpW2RYDySD68V1fcX00COQy4=",
-        "rev": "4062d36ebeae843c750011eef6b61ec9a9dbc9a9",
+        "lastModified": 1783148766,
+        "narHash": "sha256-H9+N+GFtsbVC8ZniHliChM7ndizxtqVZs6bnGOLM3WQ=",
+        "rev": "a50de1b7d8a586adc18d2395c19de7d6058e6030",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.3250.4062d36ebeae/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.4193.a50de1b7d8a5/nixexprs.tar.xz"
       },
       "original": {
         "id": "nixpkgs",
