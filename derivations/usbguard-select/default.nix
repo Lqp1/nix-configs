@@ -71,6 +71,9 @@ pkgs.stdenv.mkDerivation {
     chmod +x $out/bin/usbguard-select
 
     mkdir -p $out/share/applications
+    mkdir -p $out/share/icons/hicolor/scalable/apps
+
+    cp ${./usbguard-select.svg} $out/share/icons/hicolor/scalable/apps/usbguard-select.svg
 
     cat > $out/share/applications/usbguard-select.desktop <<EOF
     [Desktop Entry]
@@ -78,7 +81,7 @@ pkgs.stdenv.mkDerivation {
     Name=USBGuard Select
     Comment=Authorize USB devices via USBGuard
     Exec=$out/bin/usbguard-select rofi
-    Icon=usb
+    Icon=usbguard-select
     Categories=System;Security;
     Terminal=false
     EOF
