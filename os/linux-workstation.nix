@@ -177,10 +177,10 @@ in
             lightdm = {
               background = pkgs.nixos-artwork.wallpapers.moonscape.gnomeFilePath;
               greeters.gtk.enable = true;
-              greeters.gtk.theme.name = "Arc";
+              greeters.gtk.theme.name = "Arc-Dark";
               greeters.gtk.theme.package = pkgs.arc-theme;
-              greeters.gtk.iconTheme.name = "Arc";
-              greeters.gtk.iconTheme.package = pkgs.arc-icon-theme;
+              greeters.gtk.iconTheme.name = "Papirus-Dark";
+              greeters.gtk.iconTheme.package = pkgs.papirus-icon-theme;
               greeters.gtk.cursorTheme.name = "material_light_cursors";
               greeters.gtk.cursorTheme.package = pkgs.material-cursors;
             };
@@ -203,11 +203,12 @@ in
               polybar
               i3lock
               xfce4-terminal
-              arc-icon-theme
+              papirus-icon-theme
               arc-theme
               material-cursors
               xfce4-screenshooter
               thunar
+              file-roller
               ristretto
               xclip
               xfce4-settings
