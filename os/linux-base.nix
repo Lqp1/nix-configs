@@ -6,10 +6,10 @@
 }:
 let
   nameservers = [
-    "9.9.9.9"
-    "149.112.112.112"
-    "2620:fe::fe"
-    "2620:fe::9"
+    "9.9.9.9#dns.quad9.net"
+    "149.112.112.112#dns.quad9.net"
+    "2620:fe::fe#dns.quad9.net"
+    "2620:fe::9#dns.quad9.net"
   ];
 in
 {
@@ -89,6 +89,8 @@ in
       };
       # Enable IPv6 privacy extensions in NetworkManager.
       connectionConfig."ipv6.ip6-privacy" = 2;
+      connectionConfig."connection.dns-over-tls" = 1;
+      connectionConfig."connection.dnssec" = 1;
       dns = lib.mkIf config.my.use-resolved "systemd-resolved";
       settings = {
         connectivity = {
@@ -101,11 +103,12 @@ in
 
     services.resolved.enable = config.my.use-resolved;
     services.resolved.settings.Resolve = {
-      DNSSEC = "false";
+      DNSSEC = "true";
       DNSOverTLS = "true";
       LLMNR = "false";
       Domains = [ "~." ];
-      FallbackDns = nameservers;
+      DNS = nameservers;
+      FallbackDNS = nameservers;
     };
     networking.nameservers = nameservers;
 
