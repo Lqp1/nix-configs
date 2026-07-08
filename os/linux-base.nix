@@ -90,6 +90,13 @@ in
       # Enable IPv6 privacy extensions in NetworkManager.
       connectionConfig."ipv6.ip6-privacy" = 2;
       dns = lib.mkIf config.my.use-resolved "systemd-resolved";
+      settings = {
+        connectivity = {
+          uri = "http://ping.archlinux.org/";
+          response = "Arch Linux online check";
+          interval = 300;
+        };
+      };
     };
 
     services.resolved.enable = config.my.use-resolved;

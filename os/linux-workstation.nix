@@ -81,6 +81,8 @@ in
 
     services.avahi.enable = linuxType == "desktop";
 
+    programs.captive-browser.enable = true;
+
     # VPN
     services.tailscale =
       {
@@ -226,7 +228,14 @@ in
       };
 
     services.desktopManager.gnome.enable = linuxType == "desktop";
-    services.libinput.enable = true;
+    services.libinput = {
+      enable = true;
+      touchpad = {
+        tapping = true;
+        tappingDragLock = false;
+        accelProfile = "flat";
+      };
+    };
     services.displayManager.defaultSession = lib.mkIf (linuxType == "laptop") "none+i3";
     services.autorandr.enable = true;
 
