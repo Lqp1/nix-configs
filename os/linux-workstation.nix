@@ -228,13 +228,19 @@ in
       };
 
     services.desktopManager.gnome.enable = linuxType == "desktop";
-    services.libinput = {
-      enable = true;
-      touchpad = {
+    services.libinput = let
+      opts = {
         tapping = true;
         tappingDragLock = false;
-        accelProfile = "flat";
+        additionalOptions = ''
+          Option "TappingDrag" "off"
+          '';
       };
+    in
+    {
+      enable = true;
+      touchpad = opts;
+      mouse = opts;
     };
     services.displayManager.defaultSession = lib.mkIf (linuxType == "laptop") "none+i3";
     services.autorandr.enable = true;
