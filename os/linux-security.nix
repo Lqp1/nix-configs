@@ -48,7 +48,10 @@ let
 in
 {
 
-  security.sudo.package = pkgs.sudo.override { withInsults = true; };
+  security.sudo = {
+    package = pkgs.sudo.override { withInsults = true; };
+    extraConfig = "Defaults passprompt=\"🔒 [sudo] Password for %p: \"";
+  };
 
   security.pam.services.passwd.rules.password."unix".settings.rounds = 65536;
 
