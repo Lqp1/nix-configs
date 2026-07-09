@@ -81,7 +81,7 @@ in
 
     services.avahi.enable = linuxType == "desktop";
 
-    programs.captive-browser.enable = true;
+    programs.captive-browser.enable = linuxType == "laptop";
 
     # VPN
     services.tailscale =
@@ -228,20 +228,21 @@ in
       };
 
     services.desktopManager.gnome.enable = linuxType == "desktop";
-    services.libinput = let
-      opts = {
-        tapping = true;
-        tappingDragLock = false;
-        additionalOptions = ''
-          Option "TappingDrag" "off"
+    services.libinput =
+      let
+        opts = {
+          tapping = true;
+          tappingDragLock = false;
+          additionalOptions = ''
+            Option "TappingDrag" "off"
           '';
+        };
+      in
+      {
+        enable = true;
+        touchpad = opts;
+        mouse = opts;
       };
-    in
-    {
-      enable = true;
-      touchpad = opts;
-      mouse = opts;
-    };
     services.displayManager.defaultSession = lib.mkIf (linuxType == "laptop") "none+i3";
     services.autorandr.enable = true;
 
