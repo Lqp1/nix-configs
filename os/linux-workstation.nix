@@ -220,6 +220,7 @@ in
               xfce4-exo
               tumbler
               dunst
+              snixembed
               picom
               xss-lock
             ];
