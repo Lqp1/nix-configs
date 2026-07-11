@@ -43,12 +43,12 @@ nix flake update --commit-lock-file
 
 Update with upstream code review:
 ```
-./lock-review update --commit-lock-file
+scripts/lock-review update --commit-lock-file
 ```
 
 To update and review a specific input:
 ```
-./lock-review lock --update-input <input-name> --commit-lock-file
+scripts/lock-review lock --update-input <input-name> --commit-lock-file
 ```
 
 ## Upgrade systems
