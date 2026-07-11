@@ -30,6 +30,7 @@ in
     curl
     delta
     dfc
+    fzf
     eza
     git
     gnugrep
