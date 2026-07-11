@@ -320,6 +320,7 @@ in
         audacity
         naps2
         jailed-opencode
+        inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}.google-antigravity-cli
       ];
       shell = pkgs.zsh;
       # TODO: Should be changed anyway on each host! It just prevents being locked out by default
