@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure we are in a flake directory
+if [ ! -f flake.nix ] || [ ! -f flake.lock ]; then
+  echo "Error: Must be run in a directory containing flake.nix and flake.lock" >&2
+  exit 1
+fi
+
+# Create a temporary directory to hold the original lock file and flake
+TEMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TEMP_DIR"' EXIT
+
+# Copy current flake.nix and flake.lock (representing the "before" state)
+cp flake.nix flake.lock "$TEMP_DIR/"
+
+# Run the user's nix flake command (default to update if no args provided)
+echo "Running nix flake..."
+if [ "$#" -eq 0 ]; then
+  nix flake update
+else
+  nix flake "$@"
+fi
+
+# Find the inputs that changed
+CHANGED_INPUTS=$(python3 -c '
+import json, sys
+with open(sys.argv[1]) as f1, open(sys.argv[2]) as f2:
+    lock1 = json.load(f1).get("nodes", {})
+    lock2 = json.load(f2).get("nodes", {})
+for name, node2 in lock2.items():
+    if name == "root": continue
+    node1 = lock1.get(name)
+    if not node1:
+        print(f"+{name}") # New input
+    elif node1.get("locked", {}).get("rev") != node2.get("locked", {}).get("rev"):
+        print(f"~{name}") # Changed input
+' "$TEMP_DIR/flake.lock" flake.lock)
+
+if [ -z "$CHANGED_INPUTS" ]; then
+  echo "No inputs were updated."
+  exit 0
+fi
+
+for change in $CHANGED_INPUTS; do
+  action="${change:0:1}"
+  input="${change:1}"
+
+  if [ "$action" = "+" ]; then
+    echo -e "\n=== New Input Added: $input ==="
+    new_path=$(nix eval --raw --impure --expr "(builtins.getFlake \"path:$PWD\").inputs.${input}.outPath" --extra-experimental-features "nix-command flakes" 2>/dev/null || true)
+    if [ -n "$new_path" ]; then
+      echo "Source files resolved in: $new_path"
+    fi
+  elif [ "$action" = "~" ]; then
+    echo -e "\n============================================="
+    echo "  Upstream diff for input: $input"
+    echo -e "============================================="
+    
+    # Resolve the store path of the old revision
+    old_path=$(nix eval --raw --impure --expr "(builtins.getFlake \"path:$TEMP_DIR\").inputs.${input}.outPath" --extra-experimental-features "nix-command flakes" 2>/dev/null || true)
+    
+    # Resolve the store path of the new revision
+    new_path=$(nix eval --raw --impure --expr "(builtins.getFlake \"path:$PWD\").inputs.${input}.outPath" --extra-experimental-features "nix-command flakes" 2>/dev/null || true)
+
+    if [ -z "$old_path" ] || [ -z "$new_path" ]; then
+      echo "Could not resolve store paths for $input"
+      continue
+    fi
+
+    # Generate colorized diff comparing the two directories
+    git diff --no-index --color=always "$old_path" "$new_path" || true
+  fi
+done

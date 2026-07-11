@@ -36,8 +36,19 @@ nix fmt .
 
 ## Lock update
 
+Standard update:
 ```
 nix flake update --commit-lock-file
+```
+
+Update with upstream code review:
+```
+./lock-review update --commit-lock-file
+```
+
+To update and review a specific input:
+```
+./lock-review lock --update-input <input-name> --commit-lock-file
 ```
 
 ## Upgrade systems
