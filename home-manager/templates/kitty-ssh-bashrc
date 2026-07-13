@@ -1,0 +1,22 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+if [ "$TERM" = "xterm-kitty" ]; then
+    alias sudo='sudo --preserve-env=TERMINFO'
+fi
+
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias ip='ip --color=auto'
+
+if [ -f ~/.aliases ]; then
+    source ~/.aliases
+    return
+fi
+
+if [ -d ~/.aliases ]; then
+    if [ -n "$(ls -A ~/.aliases)" ]; then
+        for f in ~/.aliases/*; do source $f; done
+        return
+    fi
+fi

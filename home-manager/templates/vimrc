@@ -1,0 +1,193 @@
+" VIMRC
+
+" Global settings
+set nocompatible
+set cursorline
+set history=100
+set hidden
+set timeoutlen=200
+set lazyredraw
+set sessionoptions=buffers,folds
+filetype plugin on
+filetype indent on
+"autocmd BufEnter * if &buftype == "" && isdirectory(expand('%:p:h'))| cd %:p:h | endif
+set backspace=indent,eol,start
+
+" Set cursor to last known position
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" Auto create directories when writing files
+autocmd BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
+
+" Encoding
+set encoding=utf8
+set ffs=unix,dos,mac
+
+" Avoid conflicts; re-read changed files
+set autoread
+
+" Set Leader key to Space and add several shortcuts
+let mapleader=" "
+nnoremap <silent> <Leader><Tab> :b#<CR>
+nnoremap <silent> <Leader>n :bnext<CR>
+nnoremap <silent> <Leader>b :ls<CR>
+nnoremap <silent> <Leader>d :bdelete<CR>
+nnoremap <Leader><Leader> :
+
+" Shortcut to sudo-save a file
+command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+
+" Auto-save sessions
+"autocmd VimLeave * mksession! ~/.vimdat/session.vim
+"autocmd VimEnter * silent! source ~/.vimdat/session.vim | silent! edit #
+
+" Shortcut to exit insert mode faster
+inoremap jk <ESC>
+if has("terminal") || has("nvim")
+    tnoremap jk <C-\><C-n>
+end
+
+" Indent and dev and tabs
+syntax on
+set smartindent
+set autoindent
+set shiftwidth=4
+filetype on
+set showmatch
+set mat=4
+set smarttab
+set tabstop=4
+set softtabstop=4
+set expandtab
+set cc=80
+
+augroup tabs
+    autocmd!
+    autocmd FileType make,go setlocal noexpandtab
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+augroup end
+
+" Ripgrep search setup
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+    set grepformat=%f:%l:%c:%m
+endif
+nnoremap gw :grep <cword> . <cr>
+
+
+" Status line
+set laststatus=2
+set statusline=%1*%m%*%r%h\ %2*%f%*\ [%{strlen(&fenc)?&fenc:'none'},%{&ff},%{strlen(&ft)?&ft:'none'}]%=%c,%l/%L
+augroup statusline
+    autocmd!
+    autocmd VimEnter * if &readonly | hi StatusLine ctermfg=red | endif
+    autocmd InsertEnter * hi StatusLine ctermfg=darkgreen
+    autocmd InsertLeave * hi StatusLine ctermfg=236
+augroup end
+
+" Backup
+if has("nvim")
+    let vimdat=$HOME . "/.nvimdat/"
+else
+    let vimdat=$HOME . "/.vimdat/"
+end
+
+if !isdirectory(vimdat)
+    call mkdir(vimdat . "backups", "p", 0700)
+    call mkdir(vimdat . "swaps", "p", 0700)
+    call mkdir(vimdat . "undos", "p", 0700)
+endif
+
+set backup
+set udf
+execute "set backupdir=".vimdat."backups"
+execute "set dir=".vimdat."swaps"
+execute "set udir=".vimdat."undos"
+
+" Search tips
+set wrapscan
+set hlsearch
+set ignorecase
+set smartcase
+set incsearch
+
+" Concealing & display
+set conceallevel=2
+set list
+set showbreak=↪
+set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+" Spelling tips
+augroup textfiles
+    autocmd!
+    autocmd BufEnter *.txt,README,*.md,*.org set spell textwidth=80 cc=80
+    autocmd FileType gitcommit set spell textwidth=72 cc=72 spelllang=en_us
+    autocmd BufEnter *.txt,README,*.md,*.org syntax match arrow "->" conceal cchar=→
+augroup end
+
+" Show line number
+set number relativenumber
+highlight LineNr term=bold ctermfg=darkgray guifg=darkgray
+
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+endif
+
+
+" Highlight trailing Tabs, Spaces and special chars
+augroup specialchars
+  autocmd!
+
+  " Define now (so BufWinEnter can't beat it)
+  highlight Tab   ctermbg=darkgray guibg=darkgray
+  highlight Space ctermbg=darkblue guibg=darkblue
+  highlight nonAscii ctermfg=blue guifg=blue
+
+  " Re-apply after :colorscheme (colorschemes often reset highlights)
+  autocmd ColorScheme * highlight Tab   ctermbg=darkgray guibg=darkgray
+  autocmd ColorScheme * highlight Space ctermbg=darkblue guibg=darkblue
+  autocmd ColorScheme * highlight nonAscii ctermfg=blue guifg=blue
+
+  " Add matches
+  autocmd BufWinEnter * let w:m2 = matchadd('Tab', '\t', -1)
+  autocmd BufWinEnter * let w:m3 = matchadd('Space', '\s\+$\| \+\ze\t', -1)
+  autocmd BufWinEnter *.txt,README,*.md let w:m4 = matchadd('nonAscii', '[^\x00-\x7F]', -1)
+augroup end
+
+" Allow mouse and system clipboard smoothly
+set mouse=a
+set clipboard=unnamedplus
+
+" Misc
+set wildmode=longest,list,full
+set wildmenu
+set path+=**
+set showcmd
+imap <C-d> <C-o>dw
+
+" Folding
+set foldmethod=syntax
+set foldlevel=99
+
+" NetRW config
+let g:netrw_banner=0
+let g:netrw_browse_split=4
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+
+" Modeline
+ab MODELINE vim: set ts=4 sw=4 ai ff=unix:
+" set modeline
+
+" Local VIMRC
+if filereadable(expand("~/.vim_local"))
+    source ~/.vim_local
+endif
+
+" Theming
+set background=dark
+set termguicolors
+set t_ut=
+silent! colorscheme solarized
+highlight Comment cterm=italic

@@ -1,0 +1,281 @@
+# i3 config file (v4)
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+# Define leader key
+set $mod Mod4
+
+# Define workspaces
+set $ws1 "1:internet"
+set $ws2 "2:terminal"
+set $ws3 "3:chat"
+set $ws4 "4:music"
+set $ws5 "5:misc"
+
+# Set colors
+set $color_background "{{ common_ui_color_palette.blue.background }}"
+set $color_surface "{{ common_ui_color_palette.blue.surface }}"
+set $color_surface_alt "{{ common_ui_color_palette.blue.surface_alt }}"
+set $color_focus "{{ common_ui_color_palette.blue.focus }}"
+set $color_text "{{ common_ui_color_palette.neutral.text }}"
+set $color_text_muted "{{ common_ui_color_palette.neutral.muted }}"
+set $color_red "{{ common_ui_color_palette.status.red }}"
+set $color_green "{{ common_ui_color_palette.status.green }}"
+
+# Don't put i3socket in /tmp
+ipc-socket ~/.i3-ipc.sock
+
+# Some sane configuration
+focus_follows_mouse no
+focus_wrapping force
+focus_on_window_activation smart
+workspace_layout tabbed
+force_display_urgency_hint 500 ms
+bindsym $mod+colon exec i3-input
+bindsym $mod+Tab exec rofi -show window
+bindsym $mod+semicolon exec rofimoji -s neutral
+bindsym $mod+i exec timeout 5 polybar -c ~/.config/polybar/config.ini info
+bindsym $mod+Print exec xfce4-screenshooter -rc
+
+# Disable mouse scrolls
+bindsym button4 nop
+bindsym button5 nop
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:Noto Sans Mono 12
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# share other screen
+bindsym $mod+shift+w move workspace to output right
+bindsym $mod+shift+p move container to output right
+
+# use scratch pad
+bindsym $mod+shift+U move scratchpad
+bindsym $mod+u scratchpad show
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+Q kill
+
+# use rofi to start apps
+bindsym $mod+d exec rofi -show drun
+
+# change focus
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# focus next container, fast switch on azerty
+bindsym $mod+twosuperior focus right
+
+# move focused window
+bindsym $mod+Shift+J move down
+bindsym $mod+Shift+K move up
+bindsym $mod+Shift+L move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+s sticky toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+bindsym $mod+q focus child
+
+# switch to workspace
+bindsym $mod+ampersand workspace $ws1
+bindsym $mod+eacute workspace $ws2
+bindsym $mod+quotedbl workspace $ws3
+bindsym $mod+apostrophe workspace $ws4
+bindsym $mod+parenleft workspace $ws5
+
+# move focused container to workspace
+bindsym $mod+Shift+ampersand move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+
+
+## Taken from https://faq.i3wm.org/question/3747/enabling-multimedia-keys.1.html
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle # mute sound
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle # mute mic
+
+# Music control
+bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+bindsym XF86AudioPause exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+bindsym XF86AudioStop exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop
+bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+
+# Screen locking
+bindsym XF86ScreenSaver exec --no-startup-id exec loginctl lock-session
+
+# resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+shift+e mode "power"
+mode "power" {
+        # exit i3 (logs you out of your X session)
+        bindsym q exit
+        # poweroff
+        bindsym e exec systemctl poweroff
+        # reboot
+        bindsym b exec systemctl reboot
+        # sleep
+        bindsym s mode "default"; exec systemctl suspend
+        # lock
+        bindsym x mode "default"; exec loginctl lock-session
+        # reload the configuration file
+        bindsym c mode "default"; reload
+        # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+        bindsym r exec polybar-msg cmd restart; restart
+        # debug mode
+        bindsym d mode "default"; debuglog on; shmlog on; reload
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+default_border pixel 3
+exec --no-startup-id ~/.fehbg
+exec --no-startup-id polybar -c ~/.config/polybar/config.ini main
+exec --no-startup-id xss-lock -- i3lock -c $color_background
+exec_always --no-startup-id bash -c "source ~/.profile && autotiling"
+
+# Theming
+# class                 border  backgr. text    indicator child_border
+client.focused          $color_focus       $color_focus       $color_background $color_green $color_focus
+client.focused_inactive $color_surface_alt $color_surface_alt $color_text       $color_green $color_surface_alt
+client.unfocused        $color_surface     $color_surface     $color_text_muted $color_green $color_surface
+client.urgent           $color_red         $color_red         $color_text       $color_green $color_red
+client.placeholder      $color_surface     $color_background  $color_text       $color_green $color_background
+
+client.background       $color_background
+
+# Activate windows on open - disable for now as it kind of conflicts with focus_on_window_activation
+#for_window [class="^(?i)(?!discord)(?!steam).*"] focus
+
+# Set floating window for some apps
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [class="Gnome-pomodoro"] floating enable
+for_window [class="KeePassXC"] floating enable
+for_window [class="(?i)blueman"] floating enable
+for_window [class="(?i)pinentry"] floating enable
+for_window [class="(?i)nm-connection-editor"] floating enable
+for_window [title="^zoom$" class="[zoom]*"] floating enable
+for_window [class="(?i)pavucontrol"] floating enable, move position mouse
+for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down $height px
+for_window [instance="__scratchpad"] floating enable, resize set 900 px 500 px, move position center
+for_window [instance="__nmtui"] floating enable
+
+# Set stickiness for some other apps
+for_window [class="KeePassXC"] sticky enable
+
+# Browser
+assign [class="(?i)firefox"]        $ws1
+assign [class="(?i)chromium"]       $ws1
+assign [class="(?i)google-chrome"]  $ws1
+
+# Terminal
+assign [class="(?i)emacs"]          $ws2
+assign [class="(?i)kitty"]          $ws2
+assign [class="(?i).*terminal.*"]   $ws2
+
+# Chat
+assign [class="(?i)zoom"]           $ws3
+assign [class="(?i)discord"]        $ws3
+assign [class="(?i)slack"]          $ws3
+
+# Music
+assign [class="(?i)spotify"]        $ws4
+# Due to bug in how spotify assigns its class; workaround:
+for_window [class="Spotify"] move to workspace $ws4
+
+# Other
+assign [class="(?i)steam"]          $ws5
+
+# Set autostart
+exec_always --no-startup-id exec systemctl --user start --no-block i3-session.target
+exec --no-startup-id bash -c "[[ -x ~/.config/i3/autostart.sh ]] && ~/.config/i3/autostart.sh"
+
+# UI >= 4.20
+for_window [class=".*"] title_window_icon on
+
+# Inspired from https://gist.github.com/dmelliot/437924ff581f3f1edd59f44833be6cc6
+# for_window [class="(?i)emacs"] title_format "<tt></tt><span> 🐃 </span><tt> </tt>%title"
+# for_window [class="(?i)(.*)terminal(.*)"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.status.green }}' background='{{ common_ui_color_palette.blue.background }}'>  </span><tt> </tt>%title"
+# for_window [class="(?i)kitty"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.status.green }}' background='{{ common_ui_color_palette.blue.background }}'>  </span><tt> </tt>%title"
+# for_window [class="(?i)chromium"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.blue.base }}'> 🌍 </span><tt> </tt>%title"
+# for_window [class="(?i)google-chrome"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.blue.base }}'> 🌍 </span><tt> </tt>%title"
+# for_window [class="(?i)firefox"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.status.deep_orange }}'> 🦊 </span><tt> </tt>%title"
+# for_window [Evolution] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.neutral.text }}' >   </span><tt> </tt>%title"
+# for_window [title=".* Evolution"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.neutral.text }}' >  </span><tt> </tt>%title"
+for_window [class="(?i)slack"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.neutral.text }}' >  </span><tt> </tt>%title"
+# for_window [class="(?i)discord"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.neutral.text }}' > 💬 </span><tt> </tt>%title"
+# for_window [class="(?i)zoom"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.neutral.text }}' > 📺️ </span><tt> </tt>%title"
+# for_window [class="(?i)spotify"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.blue.base }}'> 🎶 </span><tt> </tt>%title"
+# for_window [class="libreoffice-writer"] title_format "<tt></tt><span  background='{{ common_ui_color_palette.blue.surface }}' foreground='{{ common_ui_color_palette.neutral.soft }}' >  </span><tt> </tt>%title"
+# for_window [class="libreoffice-calc"] title_format "<tt></tt><span  background='{{ common_ui_color_palette.blue.surface }}' foreground='{{ common_ui_color_palette.status.light_green }}' >  </span><tt> </tt>%title"
+# for_window [class="libreoffice-impress"] title_format "<tt></tt><span  background='{{ common_ui_color_palette.blue.surface }}' foreground='{{ common_ui_color_palette.status.red }}' >  </span><tt> </tt>%title"
+# for_window [class="KeePassXC"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.blue.base }}'> 🔐 </span><tt> </tt>%title"
+# for_window [class="Thunar"] title_format "<tt></tt><span foreground='{{ common_ui_color_palette.blue.base }}'> 📁 </span><tt> </tt>%title"

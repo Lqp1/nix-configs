@@ -1,0 +1,459 @@
+; Slightly adapted from https://github.com/adi1090x/polybar-themes
+;
+;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+;;
+;;	    ____        __      __              
+;;	   / __ \____  / /_  __/ /_  ____ ______
+;;	  / /_/ / __ \/ / / / / __ \/ __ `/ ___/
+;;	 / ____/ /_/ / / /_/ / /_/ / /_/ / /    
+;;	/_/    \____/_/\__, /_.___/\__,_/_/     
+;;	              /____/                    
+;;
+;; Created By Aditya Shakya @adi1090x
+;;
+;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
+[settings]
+screenchange-reload = true
+
+[color]
+
+bg = {{ common_ui_color_palette.blue.surface }}
+fg = {{ common_ui_color_palette.neutral.text }}
+fg-alt = {{ common_ui_color_palette.neutral.muted }}
+
+acolor = {{ common_ui_color_palette.blue.focus }}
+curgent = {{ common_ui_color_palette.status.red_urgent }}
+coccupied = {{ common_ui_color_palette.blue.focus }}
+
+shade1 = {{ common_ui_color_palette.blue.surface }}
+shade2 = {{ common_ui_color_palette.blue.surface_alt }}
+shade3 = {{ common_ui_color_palette.blue.dark }}
+shade4 = {{ common_ui_color_palette.blue.dark }}
+shade5 = {{ common_ui_color_palette.blue.base }}
+shade6 = {{ common_ui_color_palette.blue.focus }}
+shade7 = {{ common_ui_color_palette.blue.focus_alt }}
+shade8 = {{ common_ui_color_palette.blue.focus_light }}
+txt = {{ common_ui_color_palette.neutral.text }}
+
+## Material Colors
+
+red = {{ common_ui_color_palette.status.red }}
+pink = {{ common_ui_color_palette.accent.pink }}
+purple = {{ common_ui_color_palette.accent.purple }}
+deep-purple = {{ common_ui_color_palette.accent.deep_purple }}
+indigo = {{ common_ui_color_palette.accent.indigo }}
+blue = {{ common_ui_color_palette.blue.base }}
+light-blue = {{ common_ui_color_palette.blue.light }}
+cyan = {{ common_ui_color_palette.accent.cyan }}
+teal = {{ common_ui_color_palette.accent.teal }}
+green = {{ common_ui_color_palette.status.green }}
+light-green = {{ common_ui_color_palette.status.light_green }}
+lime = {{ common_ui_color_palette.status.lime }}
+yellow = {{ common_ui_color_palette.status.yellow }}
+amber = {{ common_ui_color_palette.status.amber }}
+orange = {{ common_ui_color_palette.status.orange }}
+deep-orange = {{ common_ui_color_palette.status.deep_orange }}
+brown = {{ common_ui_color_palette.accent.brown }}
+grey = {{ common_ui_color_palette.neutral.grey }}
+blue-gray = {{ common_ui_color_palette.neutral.blue_gray }}
+
+;==========================================================
+
+[bar/main]
+#width = 96%
+height = 32
+#offset-x = 2%
+#offset-y = 2%
+bottom = false
+fixed-center = true
+line-size = 2
+
+background = ${color.bg}
+foreground = ${color.fg}
+
+
+
+;==========================================================
+; For text
+font-0 = "FiraCode Nerd Font Mono:style=Regular:size=12;3"
+; For icons
+font-1 = "FiraCode Nerd Font Mono:style=Regular:size=18;3"
+; For emojis
+font-2 = "Noto Color Emoji:style=Regular:pixelsize=12;3:scale=10;3"
+;==========================================================
+
+enable-ipc = true
+cursor-click = pointer
+
+#scroll-up = #i3.next
+#scroll-down = #i3.prev
+
+#wm-restack = i3
+#override-redirect = true
+
+;== Module Location ========================================================
+
+modules-right = netstate battery battery2 backlight volume date powermenu
+modules-left = tray i3 custom
+
+[bar/info]
+width = 80%
+height = 32
+offset-x = 10%
+offset-y = 10
+bottom = true
+#fixed-center = true
+line-size = 2
+radius = 20
+
+background = ${color.shade2}
+foreground = ${color.fg}
+
+;==========================================================
+; For text
+font-0 = "FiraCode Nerd Font Mono:style=Regular:size=12;3"
+; For icons
+font-1 = "FiraCode Nerd Font Mono:style=Regular:size=18;3"
+; For emojis
+font-2 = "Noto Color Emoji:style=Regular:pixelsize=12;3:scale=10;3"
+;==========================================================
+
+enable-ipc = false
+cursor-click = pointer
+
+#scroll-up = #i3.next
+#scroll-down = #i3.prev
+
+#wm-restack = i3
+override-redirect = true
+
+;== Module Location ========================================================
+
+modules-center = filesystem cpu memory temperature date-utc date-jp date-ny
+;== Modules ========================================================
+
+
+[module/tray]
+type = internal/tray
+tray-background = ${color.shade4}
+tray-size = 100%
+
+
+[module/i3]
+type = internal/i3
+enable-scroll = false
+strip-wsnumbers = true
+pin-workspaces = false
+format = <label-state> <label-mode>
+format-background = ${color.shade2}
+fuzzy-match = true
+ws-icon-0 = 1;󰖟
+ws-icon-1 = 2;
+ws-icon-2 = 3;󰭹
+ws-icon-3 = 4;󰝚
+ws-icon-4 = 5;
+ws-icon-default = 
+
+label-mode = %mode%
+label-mode-background = {{ common_ui_color_palette.accent.mode }}
+label-mode-padding = 2
+
+label-urgent = %name%
+label-urgent-background = ${color.red}
+label-urgent-padding = 2
+
+#label-focused = %icon% %name% (%output%)
+label-focused-font = 2
+label-focused = %icon%
+label-focused-background = ${color.shade6}
+label-focused-foreground = ${color.bg}
+label-focused-padding = 2
+
+label-unfocused = %icon%
+label-unfocused-background = ${color.shade2}
+label-unfocused-foreground = ${color.fg-alt}
+label-unfocused-padding = 2
+
+label-visible = %icon%
+label-visible-background = ${color.shade3}
+label-visible-foreground = ${color.fg}
+label-visible-padding = 2
+
+[module/custom]
+type = custom/script
+format-padding = 2
+exec = ~/.config/polybar/custom
+#click-left = kill -USR1 %pid%
+click-left = ~/.config/polybar/custom left
+click-middle = ~/.config/polybar/custom middle
+click-right = ~/.config/polybar/custom right
+double-click-left = ~/.config/polybar/custom double-left
+double-click-middle = ~/.config/polybar/custom double-middle
+double-click-right = ~/.config/polybar/custom double-right
+
+format-underline = ${color.shade6}
+label-foreground = ${color.txt}
+
+[module/date]
+type = internal/date
+interval = 10
+time =  %H:%M
+time-alt =   %d-%m-%Y
+label =  %time%
+label-padding = 2
+label-background = ${color.shade4}
+
+[module/volume]
+type = internal/pulseaudio
+format-volume = <ramp-volume> <label-volume>
+format-volume-padding = 2
+format-volume-background = ${color.shade3}
+label-volume = %percentage%%
+label-muted-background = ${color.shade3}
+label-muted-padding = 2
+
+ramp-volume-font = 2
+ramp-volume-0 = 󰕿
+ramp-volume-1 = 󰕿
+ramp-volume-2 = 󰖀
+ramp-volume-3 = 󰖀
+ramp-volume-4 = 󰕾
+ramp-volume-5 = 󰕾
+ramp-volume-6 = 󰕾
+
+click-right = pavucontrol
+
+[module/filesystem]
+type = internal/fs
+
+mount-0 = /
+mount-1 = /home
+mount-2 = /var
+
+interval = 10
+fixed-values = true
+spacing = 2
+format-mounted = <label-mounted> <ramp-capacity>
+format-unmounted = <label-unmounted>
+label-mounted = %mountpoint%
+label-unmounted = 
+ramp-capacity-0 = ▁
+ramp-capacity-0-foreground = ${color.shade7}
+ramp-capacity-1 = ▂
+ramp-capacity-1-foreground = ${color.shade7}
+ramp-capacity-2 = ▃
+ramp-capacity-2-foreground = ${color.shade6}
+ramp-capacity-3 = ▄
+ramp-capacity-3-foreground = ${color.shade6}
+ramp-capacity-4 = ▅
+ramp-capacity-4-foreground = ${color.yellow}
+ramp-capacity-5 = ▆
+ramp-capacity-5-foreground = ${color.orange}
+ramp-capacity-6 = ▇
+ramp-capacity-6-foreground = ${color.deep-orange}
+ramp-capacity-7 = █
+ramp-capacity-7-foreground = ${color.red}
+
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+format = <label> <ramp-coreload>
+#format = <label> <bar-load>
+format-padding = 2
+label = 
+label-font = 2
+bar-load-width = 15
+bar-load-foreground-0 = ${color.shade7}
+bar-load-foreground-1 = ${color.shade6}
+bar-load-foreground-2 = ${color.orange}
+bar-load-foreground-3 = ${color.red}
+bar-load-indicator = |
+bar-load-indicator-foreground = #ff
+bar-load-fill = ─
+bar-load-empty = ─
+bar-load-empty-foreground = ${color.shade3}
+ramp-coreload-0 = ▁
+ramp-coreload-0-foreground = ${color.shade7}
+ramp-coreload-1 = ▂
+ramp-coreload-1-foreground = ${color.shade7}
+ramp-coreload-2 = ▃
+ramp-coreload-2-foreground = ${color.shade6}
+ramp-coreload-3 = ▄
+ramp-coreload-3-foreground = ${color.shade6}
+ramp-coreload-4 = ▅
+ramp-coreload-4-foreground = ${color.orange}
+ramp-coreload-5 = ▆
+ramp-coreload-5-foreground = ${color.deep-orange}
+ramp-coreload-6 = ▇
+ramp-coreload-6-foreground = ${color.red}
+ramp-coreload-7 = █
+ramp-coreload-7-foreground = ${color.red}
+
+
+[module/powermenu]
+type = custom/menu
+
+format-padding = 2
+format-background = ${color.shade4}
+
+label-open = 󰩈
+label-close = 
+label-separator = |
+
+menu-0-0 = 
+menu-0-0-foreground = ${color.amber}
+menu-0-0-exec = loginctl lock-session
+menu-0-1 = 
+menu-0-1-foreground = ${color.red}
+menu-0-1-exec = menu-open-1
+menu-0-2 = 󰚥
+menu-0-2-foreground = ${color.red}
+menu-0-2-exec = menu-open-2
+
+menu-1-0 = 
+menu-1-0-foreground = ${color.red}
+menu-1-0-exec = systemctl reboot
+menu-1-1 = 󰌑
+menu-1-1-foreground = ${color.amber}
+menu-1-1-exec = menu-open-0
+
+menu-2-0 = 󰚥
+menu-2-0-foreground = ${color.red}
+menu-2-0-exec = systemctl poweroff
+menu-2-1 = 󰌑
+menu-2-1-foreground = ${color.amber}
+menu-2-1-exec = menu-open-0
+
+[module/memory]
+type = internal/memory
+format = <label> <bar-used>
+format-padding = 2
+label = 
+label-font = 2
+
+bar-used-width = 15
+bar-used-foreground-0 = ${color.shade7}
+bar-used-foreground-1 = ${color.shade6}
+bar-used-foreground-2 = ${color.orange}
+bar-used-foreground-3 = ${color.red}
+bar-used-indicator = |
+bar-used-indicator-foreground = #ff
+bar-used-fill = ─
+bar-used-empty = ─
+bar-used-empty-foreground = ${color.shade3}
+
+[module/battery]
+type = internal/battery
+interval = 30
+full-at = 99
+low-at = 5
+battery = BAT0
+adapter = AC
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-charging-background = ${color.shade2}
+format-discharging-background = ${color.shade2}
+format-low = <label-low> <animation-low>
+format-low-foreground = ${color.red}
+format-full-background = ${color.shade2}
+format-charging-padding = 2
+format-discharging-padding = 2
+format-full-padding = 2
+format-low-padding = 2
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full =  
+label-low = 
+animation-charging-font = 2
+ramp-capacity-font = 2
+label-full-font = 2
+ramp-capacity-0 = 
+ramp-capacity-0-foreground = ${color.red}
+ramp-capacity-1 = 
+ramp-capacity-1-foreground = ${color.orange}
+ramp-capacity-2 = 
+ramp-capacity-2-foreground = ${color.shade7}
+ramp-capacity-3 = 
+ramp-capacity-3-foreground = ${color.shade6}
+ramp-capacity-4 = 
+ramp-capacity-4-foreground = ${color.fg}
+bar-capacity-width = 10
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+animation-discharging-framerate = 500
+animation-low-0 = !
+animation-low-1 =
+animation-low-framerate = 200
+
+[module/backlight]
+type = internal/backlight
+card = intel_backlight
+enable-scroll = true
+format = <ramp> <label>
+format-padding = 2
+format-background = ${color.shade3}
+label = %percentage%%
+ramp-font = 2
+ramp-0 = 󰃞
+ramp-1 = 󰃟
+ramp-2 = 󰃠
+
+[module/netstate]
+type = custom/script
+format-padding = 2
+exec = sh -c 's=$(nmcli networking connectivity 2>/dev/null | tail -n1); case "$s" in full) echo "%{F#43A047}online%{F-}";; portal) echo "%{F#FDD835}portal%{F-}";; limited) echo "%{F#E53935}limited%{F-}";; none) echo "%{F#757575}offline%{F-}";; *) echo "%{F#8E24AA}unknown%{F-}";; esac'
+interval = 5
+label = 󰌘 %output%
+
+[module/temperature]
+type = internal/temperature
+base-temperature = 20
+warn-temperature = 60
+format = <ramp> <label>
+format-warn = <ramp> <label-warn>
+format-padding = 2
+format-warn-padding = 2
+label-warn-foreground = ${color.red}
+ramp-font = 2
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+[module/battery2]
+inherit = module/battery
+battery = BAT1
+
+[module/date-utc]
+type = custom/script
+interval = 10
+exec = TZ=UTC date +"%H:%M"
+label = 🌍 %output%
+label-padding = 2
+label-background = ${color.shade2}
+
+[module/date-jp]
+type = custom/script
+interval = 10
+exec = TZ=Asia/Tokyo date +"%H:%M"
+label = 🇯🇵 %output%
+label-padding = 2
+label-background = ${color.shade2}
+
+[module/date-ny]
+type = custom/script
+interval = 10
+exec = TZ=America/New_York date +"%H:%M"
+label = 🇺🇸 %output%
+label-padding = 2
+label-background = ${color.shade2}
+;== EOF ========================================================

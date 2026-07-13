@@ -8,6 +8,9 @@
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     smount.url = "github:lqp1/smount/main";
@@ -21,6 +24,9 @@
 
     antigravity-nix.url = "github:jacopone/antigravity-nix";
     antigravity-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    kitty-hintsconfig.url = "github:Lqp1/kitty-hintsconfig";
+    kitty-hintsconfig.flake = false;
   };
 
   outputs =
@@ -119,7 +125,6 @@
         modules = [
           overlayModule
           ./os/darwin.nix
-          ./workstation.nix
           ./hosts/FV3Y4FYJ31.nix
         ];
       };

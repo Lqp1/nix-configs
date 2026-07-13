@@ -1,0 +1,40 @@
+# SCREENRC
+
+# Use login shell in screen
+shell -${SHELL}
+
+# Detach on hangup
+autodetach on
+
+# Don't display the copyright page
+startup_message off
+
+# Emulate .logout message
+pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
+
+# Smart caption
+hardstatus off
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d-%m %{W} %c %{g}]'
+
+# Force use of UTF8
+defutf8 on
+
+# Use a huge history
+defscrollback 5000
+
+# Fix with vim/nano
+altscreen on
+
+# Fix screen behavior with vim
+term xterm-256color
+
+# Ensure vbell is off
+vbell_msg "bell: window ~%"
+vbell off
+
+# Disable wait time on messages
+msgminwait 0
+
+# Use application scrollbar
+#termcapinfo xterm* ti@:te@

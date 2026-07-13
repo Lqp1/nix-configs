@@ -1,3 +1,4 @@
+# Config for linux workstation configs
 { config
 , inputs
 , lib
@@ -6,7 +7,7 @@
 }:
 let
   inherit (config.my) linuxType;
-  useNeovim = config.my.editor == "neovim";
+
   staticResolvConf = pkgs.writeText "jailed-resolv.conf" ''
     nameserver 1.1.1.1
     nameserver 9.9.9.9
@@ -43,16 +44,12 @@ in
 {
   imports = [
     ./linux-base.nix
-    ../workstation.nix
     ./linux-polkit.nix
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   options = {
-    my.editor = lib.mkOption {
-      type = lib.types.enum [ "neovim" "vim" ];
-      default = "neovim";
-      description = "Default editor";
-    };
+
     my.linuxType = lib.mkOption {
       type = lib.types.enum [ "laptop" "desktop" "none" ];
       default = "none";
@@ -61,6 +58,17 @@ in
   };
 
   config = {
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = { inherit inputs; };
+      backupFileExtension = "backup";
+      users.thomas = {
+        imports = [ ../home-manager/home.nix ];
+        services.redshift.enable = linuxType == "laptop";
+      };
+    };
+
     assertions = [
       {
         assertion = linuxType != "none";
@@ -72,16 +80,29 @@ in
       veracrypt
       pulseaudio
       networkmanagerapplet
-      libreoffice
       hunspell
       hunspellDicts.fr-moderne
       hunspellDicts.en_US
       android-tools
+
+      # Workstation desktop apps (machine/family scope)
+      firefox
+      libreoffice
+      vlc
+      transmission_4
+      gimp
+      gthumb
+      pavucontrol
+      gsmartcontrol
+      gparted
+      audacity
+      naps2
     ] ++ lib.optionals (linuxType == "laptop") [ usbguard-select ];
 
     services.avahi.enable = linuxType == "desktop";
 
     programs.captive-browser.enable = linuxType == "laptop";
+    programs.dconf.enable = true;
 
     # VPN
     services.tailscale =
@@ -98,13 +119,6 @@ in
     services.gvfs.enable = true;
     services.gvfs.package = pkgs.lib.mkForce pkgs.gvfs;
 
-    services.redshift = {
-      enable = linuxType == "laptop";
-      temperature = {
-        day = 5500;
-        night = 3500;
-      };
-    };
 
     # Enable CUPS to print documents.
     #services.printing.logLevel = "debug";
@@ -189,41 +203,26 @@ in
           };
         windowManager.i3 = {
           enable = true;
-          extraPackages =
-            with pkgs;
-            let
-              polybar = pkgs.polybar.override {
-                i3Support = true;
-                pulseSupport = true;
-              };
-            in
-            [
-              rofi
-              xdotool
-              feh
-              arandr
-              polybar
-              i3lock
-              xfce4-terminal
-              papirus-icon-theme
-              arc-theme
-              material-cursors
-              xfce4-screenshooter
-              thunar
-              file-roller
-              ristretto
-              xclip
-              xfce4-settings
-              xfce4-power-manager
-              xfce4-clipman-plugin
-              xfconf
-              xfce4-exo
-              tumbler
-              dunst
-              snixembed
-              picom
-              xss-lock
-            ];
+          extraPackages = with pkgs; [
+            xdotool
+            feh
+            arandr
+            i3lock
+            xfce4-terminal
+            xfce4-screenshooter
+            thunar
+            file-roller
+            ristretto
+            xclip
+            xfce4-settings
+            xfce4-power-manager
+            xfce4-clipman-plugin
+            xfconf
+            xfce4-exo
+            tumbler
+            snixembed
+            xss-lock
+          ];
         };
 
       };
@@ -260,12 +259,6 @@ in
     programs.evince.enable = true;
     programs.nm-applet.enable = true;
 
-    programs.neovim = {
-      enable = useNeovim;
-      viAlias = useNeovim;
-      vimAlias = useNeovim;
-      defaultEditor = useNeovim;
-    };
 
     services.tlp.enable = linuxType == "laptop";
     services.power-profiles-daemon.enable = false; # Conflicts with TLP when activated.
@@ -309,18 +302,7 @@ in
         "dialout" # For Arduino / Esp32 access through tty
       ];
       packages = with pkgs; [
-        firefox
-        vlc
-        transmission_4
-        gimp
-        gthumb
-        pavucontrol
-        gsmartcontrol
-        gparted
-        audacity
-        naps2
         jailed-opencode
-        inputs.antigravity-nix.packages.${pkgs.stdenv.hostPlatform.system}.google-antigravity-cli
       ];
       shell = pkgs.zsh;
       # TODO: Should be changed anyway on each host! It just prevents being locked out by default

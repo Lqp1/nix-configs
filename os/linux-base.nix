@@ -1,3 +1,4 @@
+# Base Linux config (headless)
 { config
 , inputs
 , lib
@@ -48,9 +49,7 @@ in
     # $ nix search wget
     environment.systemPackages = with pkgs; [
       powertop
-      unzip
-      p7zip
-      ccze
+      pciutils
       samba
       lshw
       usbutils

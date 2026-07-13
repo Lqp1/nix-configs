@@ -1,3 +1,4 @@
+# Config for Darwin workstations
 { inputs, pkgs, ... }:
 let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
@@ -18,7 +19,18 @@ let
 
 in
 {
-  imports = [ ../base.nix ];
+  imports = [
+    ../base.nix
+    inputs.home-manager.darwinModules.home-manager
+  ];
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs; };
+    backupFileExtension = "backup";
+    users."t.lange" = import ../home-manager/home.nix;
+  };
 
   environment.systemPackages = with pkgs; [
     unstable.choose-gui
