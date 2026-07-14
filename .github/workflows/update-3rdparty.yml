@@ -46,7 +46,7 @@ jobs:
             
             git add flake.lock
             git commit -m "chore(flake): update 3rd party input ${{ matrix.input }}"
-            git push origin "$BRANCH_NAME"
+            git push --force origin "$BRANCH_NAME"
             
             # Prepare PR Body
             cat << EOF > pr-body.txt

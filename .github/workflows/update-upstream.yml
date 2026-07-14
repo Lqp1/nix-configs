@@ -40,7 +40,7 @@ jobs:
             
             git add flake.lock
             git commit -m "chore(flake): update upstream input ${{ matrix.input }}"
-            git push origin "$BRANCH_NAME"
+            git push --force origin "$BRANCH_NAME"
             
             gh pr create \
               --title "chore(flake): update ${{ matrix.input }}" \
