@@ -7,7 +7,7 @@ let
       placeholders = map (name: "{{ " + name + " }}") names;
       values = map (name: toString vars.${name}) names;
     in
-      lib.replaceStrings placeholders values (builtins.readFile path);
+    lib.replaceStrings placeholders values (builtins.readFile path);
 
   templateVars = {
     "common_ui_color_palette.blue.background" = "#002028";
@@ -58,7 +58,8 @@ let
     "common_ui_color_palette.shadow.green" = "0.07";
     "common_ui_color_palette.shadow.blue" = "0.10";
   };
-in {
+in
+{
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
@@ -242,13 +243,13 @@ in {
       open_url_with = "default";
       allow_hyperlinks = "ask";
       notify_on_cmd_finish = "unfocused 10.0 notify";
-      
+
       mark1_background = "gray";
       mark2_background = "orange";
       mark3_background = "red";
-      
+
       enabled_layouts = "Tall, Fat, Grid, Splits, Stack";
-      
+
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
       tab_bar_background = templateVars."common_ui_color_palette.blue.background";
@@ -260,21 +261,21 @@ in {
       inactive_tab_font_style = "normal";
       tab_title_template = " {index}: {title} ";
       active_tab_title_template = " {fmt.bold}{index}: {title}{fmt.nobold} ";
-      
+
       disable_ligatures = "cursor";
-      
+
       bold_font = "Fira Code Bold";
       italic_font = "Fira Code Light";
       bold_italic_font = "Fira Code SemiBold";
-      
+
       macos_option_as_alt = "left";
-      
+
       background = templateVars."common_ui_color_palette.blue.background";
       foreground = templateVars."common_ui_color_palette.terminal.foreground";
       cursor = templateVars."common_ui_color_palette.blue.focus";
       selection_background = templateVars."common_ui_color_palette.blue.surface_alt";
       selection_foreground = templateVars."common_ui_color_palette.terminal.foreground";
-      
+
       color0 = templateVars."common_ui_color_palette.blue.background";
       color1 = templateVars."common_ui_color_palette.terminal.red";
       color2 = templateVars."common_ui_color_palette.terminal.green";
@@ -337,173 +338,175 @@ in {
     extraConfig = {
       show-icons = true;
     };
-    theme = let
-      inherit (config.lib.formats.rasi) mkLiteral;
-    in {
-      "*" = {
-        background = mkLiteral "${templateVars."common_ui_color_palette.blue.background"}";
-        lightbg = mkLiteral "${templateVars."common_ui_color_palette.blue.surface_alt"}";
-        lightfg = mkLiteral "${templateVars."common_ui_color_palette.blue.surface"}";
-        foreground = mkLiteral "${templateVars."common_ui_color_palette.neutral.muted"}";
-        separatorcolor = mkLiteral "${templateVars."common_ui_color_palette.neutral.muted"}";
-        blue = mkLiteral "${templateVars."common_ui_color_palette.blue.focus"}";
-        red = mkLiteral "${templateVars."common_ui_color_palette.status.red"}";
-        
-        background-color = mkLiteral "var(background)";
-        border-color = mkLiteral "var(separatorcolor)";
-        
-        normal-background = mkLiteral "var(lightfg)";
-        normal-foreground = mkLiteral "var(foreground)";
-        
-        alternate-normal-background = mkLiteral "var(lightbg)";
-        alternate-normal-foreground = mkLiteral "var(foreground)";
-        
-        selected-normal-background = mkLiteral "var(blue)";
-        selected-normal-foreground = mkLiteral "var(background)";
-        
-        urgent-background = mkLiteral "var(red)";
-        urgent-foreground = mkLiteral "var(foreground)";
-        selected-urgent-background = mkLiteral "var(red)";
-        selected-urgent-foreground = mkLiteral "var(background)";
-        alternate-urgent-background = mkLiteral "var(red)";
-        alternate-urgent-foreground = mkLiteral "var(foreground)";
-        
-        active-background = mkLiteral "var(blue)";
-        active-foreground = mkLiteral "var(foreground)";
-        selected-active-background = mkLiteral "var(blue)";
-        selected-active-foreground = mkLiteral "var(background)";
-        alternate-active-background = mkLiteral "var(blue)";
-        alternate-active-foreground = mkLiteral "var(foreground)";
+    theme =
+      let
+        inherit (config.lib.formats.rasi) mkLiteral;
+      in
+      {
+        "*" = {
+          background = mkLiteral "${templateVars."common_ui_color_palette.blue.background"}";
+          lightbg = mkLiteral "${templateVars."common_ui_color_palette.blue.surface_alt"}";
+          lightfg = mkLiteral "${templateVars."common_ui_color_palette.blue.surface"}";
+          foreground = mkLiteral "${templateVars."common_ui_color_palette.neutral.muted"}";
+          separatorcolor = mkLiteral "${templateVars."common_ui_color_palette.neutral.muted"}";
+          blue = mkLiteral "${templateVars."common_ui_color_palette.blue.focus"}";
+          red = mkLiteral "${templateVars."common_ui_color_palette.status.red"}";
+
+          background-color = mkLiteral "var(background)";
+          border-color = mkLiteral "var(separatorcolor)";
+
+          normal-background = mkLiteral "var(lightfg)";
+          normal-foreground = mkLiteral "var(foreground)";
+
+          alternate-normal-background = mkLiteral "var(lightbg)";
+          alternate-normal-foreground = mkLiteral "var(foreground)";
+
+          selected-normal-background = mkLiteral "var(blue)";
+          selected-normal-foreground = mkLiteral "var(background)";
+
+          urgent-background = mkLiteral "var(red)";
+          urgent-foreground = mkLiteral "var(foreground)";
+          selected-urgent-background = mkLiteral "var(red)";
+          selected-urgent-foreground = mkLiteral "var(background)";
+          alternate-urgent-background = mkLiteral "var(red)";
+          alternate-urgent-foreground = mkLiteral "var(foreground)";
+
+          active-background = mkLiteral "var(blue)";
+          active-foreground = mkLiteral "var(foreground)";
+          selected-active-background = mkLiteral "var(blue)";
+          selected-active-foreground = mkLiteral "var(background)";
+          alternate-active-background = mkLiteral "var(blue)";
+          alternate-active-foreground = mkLiteral "var(foreground)";
+        };
+
+        "window" = {
+          background-color = mkLiteral "var(background)";
+          border-radius = 8;
+          border = 0;
+          width = mkLiteral "50%";
+          location = mkLiteral "center";
+          anchor = mkLiteral "center";
+        };
+
+        "mainbox" = {
+          border = 0;
+          padding = 0;
+        };
+
+        "inputbar" = {
+          background-color = mkLiteral "var(background)";
+          text-color = mkLiteral "var(foreground)";
+          spacing = 2;
+          padding = 12;
+          children = map mkLiteral [ "prompt" "entry" "case-indicator" ];
+        };
+
+        "entry" = {
+          text-color = mkLiteral "var(foreground)";
+        };
+
+        "prompt" = {
+          text-color = mkLiteral "var(foreground)";
+        };
+
+        "case-indicator" = {
+          text-color = mkLiteral "var(separatorcolor)";
+        };
+
+        "listview" = {
+          background-color = mkLiteral "var(background)";
+          border = 0;
+          padding = 4;
+          spacing = 2;
+          layout = mkLiteral "vertical";
+          dynamic = true;
+          cycle = true;
+        };
+
+        "element" = {
+          background-color = mkLiteral "transparent";
+          text-color = mkLiteral "var(foreground)";
+          padding = mkLiteral "6px 12px";
+          border-radius = 4;
+          border = 0;
+        };
+
+        "element normal.normal" = {
+          background-color = mkLiteral "var(normal-background)";
+          text-color = mkLiteral "var(normal-foreground)";
+        };
+
+        "element selected" = {
+          background-color = mkLiteral "var(blue)";
+          text-color = mkLiteral "var(background)";
+        };
+
+        "element selected.normal" = {
+          background-color = mkLiteral "var(selected-normal-background)";
+          text-color = mkLiteral "var(selected-normal-foreground)";
+        };
+
+        "element selected.urgent" = {
+          background-color = mkLiteral "var(selected-urgent-background)";
+          text-color = mkLiteral "var(selected-urgent-foreground)";
+        };
+
+        "element selected.active" = {
+          background-color = mkLiteral "var(selected-active-background)";
+          text-color = mkLiteral "var(selected-active-foreground)";
+        };
+
+        "element alternate" = {
+          background-color = mkLiteral "var(lightbg)";
+        };
+
+        "element alternate.normal" = {
+          background-color = mkLiteral "var(alternate-normal-background)";
+          text-color = mkLiteral "var(alternate-normal-foreground)";
+        };
+
+        "element urgent" = {
+          background-color = mkLiteral "var(red)";
+          text-color = mkLiteral "var(foreground)";
+        };
+
+        "element-text" = {
+          background-color = mkLiteral "transparent";
+          text-color = mkLiteral "inherit";
+        };
+
+        "element-icon" = {
+          background-color = mkLiteral "transparent";
+          text-color = mkLiteral "inherit";
+        };
+
+        "scrollbar" = {
+          handle-color = mkLiteral "var(blue)";
+          handle-width = 4;
+        };
+
+        "button" = {
+          background-color = mkLiteral "var(lightbg)";
+          text-color = mkLiteral "var(foreground)";
+        };
+
+        "button selected" = {
+          background-color = mkLiteral "var(blue)";
+          text-color = mkLiteral "var(background)";
+        };
+
+        "mode-switcher" = {
+          background-color = mkLiteral "var(lightbg)";
+          spacing = 2;
+          padding = 6;
+        };
+
+        "message" = {
+          background-color = mkLiteral "var(lightbg)";
+          text-color = mkLiteral "var(foreground)";
+          border = 0;
+        };
       };
-      
-      "window" = {
-        background-color = mkLiteral "var(background)";
-        border-radius = 8;
-        border = 0;
-        width = mkLiteral "50%";
-        location = mkLiteral "center";
-        anchor = mkLiteral "center";
-      };
-      
-      "mainbox" = {
-        border = 0;
-        padding = 0;
-      };
-      
-      "inputbar" = {
-        background-color = mkLiteral "var(background)";
-        text-color = mkLiteral "var(foreground)";
-        spacing = 2;
-        padding = 12;
-        children = map mkLiteral [ "prompt" "entry" "case-indicator" ];
-      };
-      
-      "entry" = {
-        text-color = mkLiteral "var(foreground)";
-      };
-      
-      "prompt" = {
-        text-color = mkLiteral "var(foreground)";
-      };
-      
-      "case-indicator" = {
-        text-color = mkLiteral "var(separatorcolor)";
-      };
-      
-      "listview" = {
-        background-color = mkLiteral "var(background)";
-        border = 0;
-        padding = 4;
-        spacing = 2;
-        layout = mkLiteral "vertical";
-        dynamic = true;
-        cycle = true;
-      };
-      
-      "element" = {
-        background-color = mkLiteral "transparent";
-        text-color = mkLiteral "var(foreground)";
-        padding = mkLiteral "6px 12px";
-        border-radius = 4;
-        border = 0;
-      };
-      
-      "element normal.normal" = {
-        background-color = mkLiteral "var(normal-background)";
-        text-color = mkLiteral "var(normal-foreground)";
-      };
-      
-      "element selected" = {
-        background-color = mkLiteral "var(blue)";
-        text-color = mkLiteral "var(background)";
-      };
-      
-      "element selected.normal" = {
-        background-color = mkLiteral "var(selected-normal-background)";
-        text-color = mkLiteral "var(selected-normal-foreground)";
-      };
-      
-      "element selected.urgent" = {
-        background-color = mkLiteral "var(selected-urgent-background)";
-        text-color = mkLiteral "var(selected-urgent-foreground)";
-      };
-      
-      "element selected.active" = {
-        background-color = mkLiteral "var(selected-active-background)";
-        text-color = mkLiteral "var(selected-active-foreground)";
-      };
-      
-      "element alternate" = {
-        background-color = mkLiteral "var(lightbg)";
-      };
-      
-      "element alternate.normal" = {
-        background-color = mkLiteral "var(alternate-normal-background)";
-        text-color = mkLiteral "var(alternate-normal-foreground)";
-      };
-      
-      "element urgent" = {
-        background-color = mkLiteral "var(red)";
-        text-color = mkLiteral "var(foreground)";
-      };
-      
-      "element-text" = {
-        background-color = mkLiteral "transparent";
-        text-color = mkLiteral "inherit";
-      };
-      
-      "element-icon" = {
-        background-color = mkLiteral "transparent";
-        text-color = mkLiteral "inherit";
-      };
-      
-      "scrollbar" = {
-        handle-color = mkLiteral "var(blue)";
-        handle-width = 4;
-      };
-      
-      "button" = {
-        background-color = mkLiteral "var(lightbg)";
-        text-color = mkLiteral "var(foreground)";
-      };
-      
-      "button selected" = {
-        background-color = mkLiteral "var(blue)";
-        text-color = mkLiteral "var(background)";
-      };
-      
-      "mode-switcher" = {
-        background-color = mkLiteral "var(lightbg)";
-        spacing = 2;
-        padding = 6;
-      };
-      
-      "message" = {
-        background-color = mkLiteral "var(lightbg)";
-        text-color = mkLiteral "var(foreground)";
-        border = 0;
-      };
-    };
   };
 
   services.redshift = {

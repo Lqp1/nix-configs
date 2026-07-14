@@ -31,7 +31,8 @@ let
         --prefix PATH : ${lib.makeBinPath [ pkgs.gcc pkgs.nodejs ]}
     '';
   };
-in {
+in
+{
   home.packages = with pkgs; [
     ansible
     autojump
@@ -63,7 +64,7 @@ in {
     yazi
     yq
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    cliclick  # Installs cliclick natively on Darwin, no wrap/arch hacks needed!
+    cliclick # Installs cliclick natively on Darwin, no wrap/arch hacks needed!
   ];
 
   programs.bat = {

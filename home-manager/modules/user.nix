@@ -1,8 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ ... }:
 
-let
-  home = config.home.homeDirectory;
-in {
+{
   # Default mime associations (replaces xdg-mime commands)
   xdg.mimeApps = {
     enable = true;
