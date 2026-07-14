@@ -156,11 +156,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783101583,
-        "narHash": "sha256-u17Bgeo1/K3eEZuEWpZLEuT0QLCQjAa90coTemfystU=",
-        "rev": "a214d9c86c3ce092944a6cc228dd2c6492950d76",
+        "lastModified": 1783863900,
+        "narHash": "sha256-aAxlKpLbO0eEllkAh/JKJjke4RF+MRx1p1YCQmvzNoo=",
+        "rev": "c99c7138fa61407a808663bca62b0a2342e822c8",
         "type": "tarball",
-        "url": "https://codeberg.org/api/v1/repos/Mynacol/nixos-needsreboot/archive/a214d9c86c3ce092944a6cc228dd2c6492950d76.tar.gz"
+        "url": "https://codeberg.org/api/v1/repos/Mynacol/nixos-needsreboot/archive/c99c7138fa61407a808663bca62b0a2342e822c8.tar.gz"
       },
       "original": {
         "type": "tarball",
