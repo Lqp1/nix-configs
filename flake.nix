@@ -147,13 +147,6 @@
           ];
         };
 
-        "thomas-desktop" = mkLinuxWorkstation {
-          type = "desktop";
-          extraModules = [
-            ./hosts/desktop.nix
-          ];
-        };
-
         test-vm = mkTestVm { system = "x86_64-linux"; };
 
         test-vm-darwin = mkTestVm {

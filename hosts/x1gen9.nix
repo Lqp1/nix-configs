@@ -106,10 +106,6 @@
     }
   ];
 
-  environment.systemPackages = with pkgs; [
-    spotify
-    discord
-  ];
 
   home-manager.users.thomas = {
     programs.git.settings.user.signingkey = "/home/thomas/.ssh/id_ed25519_sk.pub";

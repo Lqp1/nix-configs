@@ -69,6 +69,9 @@ in
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
+    discord
+    spotify
   ];
 
   # Native Home Manager Window Manager & Bar configuration
