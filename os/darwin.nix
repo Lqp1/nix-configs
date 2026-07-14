@@ -231,9 +231,12 @@ in
   environment.etc."nixpkgs/channels/nixpkgs".source = inputs.nixpkgs;
   environment.etc."nixpkgs/channels/nixpkgs-unstable".source = inputs.nixpkgs-unstable;
 
-  # Add "stats" cask
+  # Add "stats" cask and "cliclick" brew
   homebrew = {
     enable = true;
+    brews = [
+      "cliclick"
+    ];
     casks = [
       "stats"
     ];

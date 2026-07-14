@@ -63,8 +63,6 @@ in
     vgrep
     yazi
     yq
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    cliclick # Installs cliclick natively on Darwin, no wrap/arch hacks needed!
   ];
 
   programs.bat = {
