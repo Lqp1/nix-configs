@@ -1,0 +1,73 @@
+name: Update 3rd Party Flakes
+on:
+  schedule:
+    - cron: '0 5 * * 0' # Every Sunday at 5:00 AM
+  workflow_dispatch:
+
+jobs:
+  update-3rdparty:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        input: [smount, nixos-needsreboot, jail-nix, antigravity-nix, kitty-hintsconfig]
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Update input and generate diff
+        run: |
+          # Remove --color=always from lock-review to get clean diff in PR body
+          sed -i 's/--color=always//g' scripts/lock-review
+          
+          # Run the review script and capture output
+          ./scripts/lock-review lock --update-input ${{ matrix.input }} > diff_output.txt || true
+          
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Only create a PR if flake.lock actually changed
+          if ! git diff --quiet flake.lock; then
+            BRANCH_NAME="chore/update-3rdparty-${{ matrix.input }}-${{ github.run_id }}"
+            
+            git checkout -b "$BRANCH_NAME"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            
+            git add flake.lock
+            git commit -m "chore(flake): update 3rd party input ${{ matrix.input }}"
+            git push origin "$BRANCH_NAME"
+            
+            # Prepare PR Body
+            cat << EOF > pr-body.txt
+          Automated update of 3rd party flake input: \`${{ matrix.input }}\`
+
+          <details>
+          <summary>Diff Review</summary>
+
+          \`\`\`diff
+          $(cat diff_output.txt)
+          \`\`\`
+
+          </details>
+          EOF
+
+            # Use GitHub CLI to create the PR (avoids third-party PR actions)
+            gh pr create \
+              --title "chore(flake): update ${{ matrix.input }}" \
+              --body-file pr-body.txt \
+              --head "$BRANCH_NAME" \
+              --base main
+          else
+            echo "No changes to flake.lock for ${{ matrix.input }}"
+          fi

@@ -1,5 +1,6 @@
 name: nix-ci
 on:
+  workflow_dispatch:
   pull_request:
     branches: ["master", "main", "stable", "release/v*"]
   push:
@@ -18,3 +19,5 @@ jobs:
       - name: Install omnix
         run: nix profile install github:NixOS/nixpkgs/26.05#omnix 
       - run: om ci
+      - name: Build VM Image
+        run: nix build .#vmImage

@@ -1,0 +1,52 @@
+name: Update Upstream Flakes
+on:
+  schedule:
+    - cron: '0 4 * * 0' # Every Sunday at 4:00 AM
+  workflow_dispatch:
+
+jobs:
+  update-upstream:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        input: [nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, nixos-hardware, flake-utils]
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Update input
+        run: nix flake lock --update-input ${{ matrix.input }}
+          
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! git diff --quiet flake.lock; then
+            BRANCH_NAME="chore/update-upstream-${{ matrix.input }}-${{ github.run_id }}"
+            
+            git checkout -b "$BRANCH_NAME"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            
+            git add flake.lock
+            git commit -m "chore(flake): update upstream input ${{ matrix.input }}"
+            git push origin "$BRANCH_NAME"
+            
+            gh pr create \
+              --title "chore(flake): update ${{ matrix.input }}" \
+              --body "Automated update of upstream flake input: \`${{ matrix.input }}\`" \
+              --head "$BRANCH_NAME" \
+              --base main
+          else
+            echo "No changes to flake.lock for ${{ matrix.input }}"
+          fi
