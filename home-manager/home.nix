@@ -6,6 +6,7 @@
     ./modules/desktop.nix
     ./modules/user.nix
     ./modules/ai.nix
+    ./modules/k8s.nix
   ];
 
   home.username = if pkgs.stdenv.isDarwin then "t.lange" else "thomas";
