@@ -539,7 +539,13 @@ in
   xdg.configFile."kitty/ssh.conf".source = ../templates/kitty-ssh.conf;
 
   # Clone/fetch kitty-hintsconfig
-  xdg.configFile."kitty/kitty-hintsconfig".source = inputs.kitty-hintsconfig;
+  xdg.configFile."kitty/kitty-hintsconfig".source = pkgs.runCommand "kitty-hintsconfig-patched" { } ''
+    mkdir -p $out
+    cp -r ${inputs.kitty-hintsconfig}/* $out/
+    chmod +w $out/kitty-hintsconfig.py
+    substituteInPlace $out/kitty-hintsconfig.py \
+      --replace "'/run/current-system/sw/bin/python'" "'${pkgs.python3.withPackages (ps: [ ps.pyyaml ])}/bin/python'"
+  '';
 
   # Custom script for polybar custom module
   xdg.configFile."polybar/custom" = {
