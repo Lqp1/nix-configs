@@ -30,15 +30,15 @@
     executable = true;
   };
 
-  home.file."Bureau/Fake.desktop" = {
+  home.file."Bureau/Panoramix.desktop" = {
     text = ''
       [Desktop Entry]
       Version=1.0
       Type=Link
-      Name=Fake
+      Name=Panoramix
       Icon=network-server
-      URL=smb://usr@127.0.0.1/
-      Name[fr_FR.utf8]=Fake
+      URL=smb://thomas@192.168.1.4/
+      Name[fr_FR.utf8]=Panoramix
     '';
     executable = true;
   };
@@ -50,10 +50,6 @@
               mount: rclone mount $src $target --daemon --vfs-cache-mode writes --dir-cache-time
                   10s --attr-timeout 1s --vfs-read-chunk-size 16M --vfs-cache-max-size 1G
                   --vfs-cache-max-age 30m
-              umount: umount $target
-          rssh:
-              mount: sshfs -o reconnect,idmap=user,uid=$uid,gid=$gid -p 11122 thomas@2.santho.fr:$src
-                  $target
               umount: umount $target
           ssh:
               mount: sshfs -o reconnect,idmap=user,uid=$uid,gid=$gid thomas@192.168.1.4:$src
@@ -68,10 +64,6 @@
               src: .
               target: /home/thomas/shares/home
               type: ssh
-          remote_home:
-              src: .
-              target: /home/thomas/shares/home
-              type: rssh
           share:
               src: assurancetourix:share
               target: /home/thomas/shares/share
@@ -88,11 +80,5 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    settings = {
-      "bastion" = {
-        hostname = "x.x.x.x";
-        user = "thomas";
-      };
-    };
   };
 }
