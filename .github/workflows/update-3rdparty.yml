@@ -38,7 +38,7 @@ jobs:
         run: |
           # Only create a PR if flake.lock actually changed
           if ! git diff --quiet flake.lock; then
-            BRANCH_NAME="chore/update-3rdparty-${{ matrix.input }}-${{ github.run_id }}"
+            BRANCH_NAME="chore/update-3rdparty-${{ matrix.input }}"
             
             git checkout -b "$BRANCH_NAME"
             git config user.name "github-actions[bot]"
@@ -67,7 +67,7 @@ jobs:
               --title "chore(flake): update ${{ matrix.input }}" \
               --body-file pr-body.txt \
               --head "$BRANCH_NAME" \
-              --base main
+              --base main || true
           else
             echo "No changes to flake.lock for ${{ matrix.input }}"
           fi

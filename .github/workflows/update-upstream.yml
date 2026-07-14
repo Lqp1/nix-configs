@@ -32,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if ! git diff --quiet flake.lock; then
-            BRANCH_NAME="chore/update-upstream-${{ matrix.input }}-${{ github.run_id }}"
+            BRANCH_NAME="chore/update-upstream-${{ matrix.input }}"
             
             git checkout -b "$BRANCH_NAME"
             git config user.name "github-actions[bot]"
@@ -46,7 +46,7 @@ jobs:
               --title "chore(flake): update ${{ matrix.input }}" \
               --body "Automated update of upstream flake input: \`${{ matrix.input }}\`" \
               --head "$BRANCH_NAME" \
-              --base main
+              --base main || true
           else
             echo "No changes to flake.lock for ${{ matrix.input }}"
           fi
