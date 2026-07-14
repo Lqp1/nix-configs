@@ -5,6 +5,8 @@ on:
     branches: ["master", "main", "stable", "release/v*"]
   push:
     branches: ["master", "main", "stable", "release/v*"]
+permissions:
+  contents: read
 jobs:
   validate:
     name: Nix Lint
