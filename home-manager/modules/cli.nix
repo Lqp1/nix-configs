@@ -45,6 +45,7 @@ in
     htop
     httpie
     iftop
+    jnv
     jq
     lazygit
     mdcat
