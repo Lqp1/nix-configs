@@ -123,6 +123,10 @@
       if [ ! -d $HOME/Documents/Repo/kconfig-hardened-check ]; then
         ${pkgs.git}/bin/git clone https://github.com/a13xp0p0v/kconfig-hardened-check $HOME/Documents/Repo/kconfig-hardened-check
       fi
+
+      if [ ! -d $HOME/Documents/Repo/lazyvim-config ]; then
+        ${pkgs.git}/bin/git clone git@github.com:Lqp1/lazyvim-config.git $HOME/Documents/Repo/lazyvim-config
+      fi
     '';
   };
 }
