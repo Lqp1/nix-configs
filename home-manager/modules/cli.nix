@@ -132,7 +132,7 @@ in
       {
         name = "zsh-autoenv";
         src = pkgs.zsh-autoenv;
-        file = "share/zsh-autoenv/zsh-autoenv.zsh";
+        file = "share/zsh-autoenv/autoenv.zsh";
       }
     ];
 
