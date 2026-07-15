@@ -1,0 +1,2 @@
+command -v bat 2>&1 >/dev/null && alias cat='bat --theme="Solarized (dark)"'
+command -v batcat 2>&1 >/dev/null && alias cat='batcat --theme="Solarized (dark)"'

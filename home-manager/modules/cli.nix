@@ -108,6 +108,16 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
+    envExtra = ''
+      if [ -d ~/.profile.d ]; then
+          for f in ~/.profile.d/*(N); do
+              if [ -f "$f" ]; then
+                  source "$f"
+              fi
+          done
+      fi
+    '';
+
     oh-my-zsh = {
       enable = true;
       plugins = [
@@ -231,6 +241,13 @@ in
       if [ -f ~/.bash_aliases ]; then
           source ~/.bash_aliases
       fi
+      if [ -d ~/.aliases ]; then
+          for f in ~/.aliases/*(N); do
+              if [ -f "$f" ]; then
+                  source "$f"
+              fi
+          done
+      fi
     '';
   };
 
@@ -352,9 +369,35 @@ in
 
 
 
+  # ~/.aliases configuration files
+  home.file.".aliases/10kitty".source = ../templates/kittyaliases;
+  home.file.".aliases/fzf-git.sh".source = "${inputs.fzf-git}/fzf-git.sh";
+  home.file.".aliases/10vgrep".source = ../templates/vgrep;
+  home.file.".aliases/11bat".source = ../templates/bat;
+  home.file.".aliases/05secrets".source = ../templates/secrets;
+
+  # Vim colorscheme configuration
+  home.file.".vim/colors/solarized.vim".source = "${inputs.vim-solarized8}/colors/solarized8_flat.vim";
+
+  # Curl configuration
+  home.file.".curlrc".text = ''
+    --location
+    --compressed
+  '';
+
+  # Eza theme configuration
+  xdg.configFile."eza/theme.yml".source = "${inputs.eza-themes}/themes/gruvbox-dark.yml";
+
   # Bash interactive shell prompt (moved from base.nix)
   programs.bash = {
     enable = true;
+    profileExtra = ''
+      if [ -d ~/.profile.d ]; then
+          for f in ~/.profile.d/*; do
+              [ -e "$f" ] && source "$f"
+          done
+      fi
+    '';
     initExtra = ''
       __prompt_command() {
         local nix_info=""
@@ -368,10 +411,16 @@ in
           shlvl_info=" \[\e[33m\][shlvl:$SHLVL]\[\e[0m\]"
         fi
 
-        PS1="\[\e[32m\]\u@\h\[\e[0m\]''${nix_info}''${shlvl_info}: \[\e[34m\]\w\[\e[0m\] \$ "
+        PS1=" \[\e[32m\]\u@\h\[\e[0m\]''${nix_info}''${shlvl_info}: \[\e[34m\]\w\[\e[0m\] \$ "
       }
 
       PROMPT_COMMAND=__prompt_command
+
+      if [ -d ~/.aliases ]; then
+          for f in ~/.aliases/*; do
+              [ -e "$f" ] && source "$f"
+          done
+      fi
     '';
   };
 }

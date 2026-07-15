@@ -1,0 +1,22 @@
+# vim: set ft=sh
+# Alias and functions to use vgrep
+
+search() {
+  if [ "$1" != "" ]
+  then
+      vgrep -i $@
+  else
+      INITIAL_QUERY="$@" # <- useless but might be useful later
+      VGREP_PREFIX="vgrep -i --no-header "
+      FZF_DEFAULT_COMMAND="$VGREP_PREFIX '$INITIAL_QUERY'" | fzf --ansi --bind "change:reload:$VGREP_PREFIX {q} || true" --phony --tac --query "$INITIAL_QUERY" | awk '{print $1}' | xargs -I{} -o vgrep --show {}
+  fi
+}
+open() {
+    vgrep --show ${@:-0}
+}
+
+iter() {
+    vgrep --interactive
+}
+
+alias ag='search'

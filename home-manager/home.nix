@@ -14,4 +14,9 @@
 
   # Keep state version aligned with your nixpkgs release channel
   home.stateVersion = "26.05";
+
+  home.sessionPath = [
+    "$HOME/.local/bin"
+    "$HOME/bin"
+  ];
 }

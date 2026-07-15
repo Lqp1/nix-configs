@@ -27,6 +27,21 @@
 
     kitty-hintsconfig.url = "github:Lqp1/kitty-hintsconfig";
     kitty-hintsconfig.flake = false;
+
+    eza-themes = {
+      url = "github:eza-community/eza-themes";
+      flake = false;
+    };
+
+    vim-solarized8 = {
+      url = "github:lifepillar/vim-solarized8";
+      flake = false;
+    };
+
+    fzf-git = {
+      url = "github:junegunn/fzf-git.sh";
+      flake = false;
+    };
   };
 
   outputs =

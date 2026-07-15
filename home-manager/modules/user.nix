@@ -103,4 +103,26 @@
     enable = true;
     enableDefaultConfig = false;
   };
+
+  # Autocreate mount points for smount and clone user repositories
+  home.activation = {
+    setupEnvironment = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      # Create smount directories
+      mkdir -p $HOME/shares/home
+      mkdir -p $HOME/shares/share
+      mkdir -p $HOME/shares/vault
+
+      # Ensure Repo directory exists
+      mkdir -p $HOME/Documents/Repo
+
+      # Clone additional repositories if they do not exist
+      if [ ! -d $HOME/Documents/Repo/spectre-meltdown-checker ]; then
+        ${pkgs.git}/bin/git clone https://github.com/speed47/spectre-meltdown-checker $HOME/Documents/Repo/spectre-meltdown-checker
+      fi
+
+      if [ ! -d $HOME/Documents/Repo/kconfig-hardened-check ]; then
+        ${pkgs.git}/bin/git clone https://github.com/a13xp0p0v/kconfig-hardened-check $HOME/Documents/Repo/kconfig-hardened-check
+      fi
+    '';
+  };
 }
