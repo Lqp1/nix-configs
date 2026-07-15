@@ -14,5 +14,6 @@
       artifact_review_mode = "asks-for-review";
       color_scheme = "solarized dark";
     };
+    force = true;
   };
 }
