@@ -36,7 +36,7 @@ let
     time-zone
     no-new-session
     mount-cwd
-    (readonly (noescape "~/.gitconfig"))
+    (readonly (noescape "~/.config/git"))
     (readwrite (noescape "~/.config/opencode"))
     (add-pkg-deps (with pkgs; [ git ripgrep bashInteractive curl jq yq ]))
   ]);
