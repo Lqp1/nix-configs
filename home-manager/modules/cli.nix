@@ -286,7 +286,6 @@ in
         autocrlf = "input";
         safecrlf = "warn";
         pager = "less -FSRXIW";
-        excludesfile = "/home/thomas/.gitignore";
         hooksPath = "/home/thomas/.githooks";
         attributesfile = "/home/thomas/.gitattributes";
       };
