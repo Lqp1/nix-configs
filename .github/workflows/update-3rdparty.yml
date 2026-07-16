@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        input: [smount, nixos-needsreboot, jail-nix, antigravity-nix, kitty-hintsconfig, eza-themes, vim-solarized8, fzf-git]
+        input: [smount, nixos-needsreboot, jail-nix, antigravity-nix, kitty-hintsconfig, eza-themes, vim-solarized8, fzf-git, emacs-keybindings-in-osx]
     permissions:
       contents: write
       pull-requests: write

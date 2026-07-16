@@ -42,6 +42,11 @@
       url = "github:junegunn/fzf-git.sh";
       flake = false;
     };
+
+    emacs-keybindings-in-osx = {
+      url = "github:fkchang/emacs-keybindings-in-osx";
+      flake = false;
+    };
   };
 
   outputs =

@@ -604,14 +604,18 @@ in
 
   # Cocoa KeyBindings (Darwin specific)
   home.file."Library/KeyBindings/DefaultKeyBinding.dict" = lib.mkIf pkgs.stdenv.isDarwin {
-    text = ''
-      /* Windows-like Home/End bindings */
-      {
-          "\UF729"  = "moveToBeginningOfLine:";          /* Home */
-          "$\UF729" = "moveToBeginningOfLineAndModifySelection:";
-          "\UF72B"  = "moveToEndOfLine:";                /* End */
-          "$\UF72B" = "moveToEndOfLineAndModifySelection:";
-      }
-    '';
+    text =
+      let
+        original = builtins.readFile "${inputs.emacs-keybindings-in-osx}/DefaultKeybinding.dict";
+        patchedLines = ''
+          "\Uf72b"  = "moveToEndOfDocument:"; // End
+          "\Uf72c"  = "pageUp:"; // PageUp
+          "\Uf72d"  = "pageDown:"; // PageDown
+          "\Uf729"  = "moveToBeginningOfDocument:"; // Home
+          "$\Uf729" = "moveToBeginningOfDocumentAndModifySelection:"; // Shift+Home
+          "$\Uf72b" = "moveToEndOfDocumentAndModifySelection:"; // Shift+End
+        '';
+      in
+      builtins.replaceStrings [ "{\n" ] [ "{\n${patchedLines}" ] original;
   };
 }
