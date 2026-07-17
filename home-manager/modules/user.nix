@@ -108,7 +108,7 @@
 
   # Autocreate mount points for smount and clone user repositories
   home.activation = {
-    setupEnvironment = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    setupEnvironment = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       # Create smount directories
       mkdir -p $HOME/shares/home
       mkdir -p $HOME/shares/share

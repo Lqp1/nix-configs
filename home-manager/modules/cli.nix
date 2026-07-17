@@ -28,7 +28,15 @@ let
     nativeBuildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/nvim \
-        --prefix PATH : ${lib.makeBinPath [ pkgs.gcc pkgs.nodejs pkgs.tree-sitter pkgs.fd pkgs.ripgrep ]}
+        --prefix PATH : ${lib.makeBinPath [
+      pkgs.gcc
+      pkgs.nodejs
+      pkgs.tree-sitter
+      pkgs.fd
+      pkgs.ripgrep
+      pkgs.cargo
+      pkgs.rustc
+      ]}
     '';
   };
 in
