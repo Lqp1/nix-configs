@@ -540,6 +540,7 @@ in
 
   # Additional static config files from common_ui files
   home.file.".sshbashrc".source = ../templates/kitty-ssh-bashrc;
+  home.file.".sshaliases/.keep".text = "";
   xdg.configFile."kitty/ssh.conf".source = ../templates/kitty-ssh.conf;
 
   # Clone/fetch kitty-hintsconfig

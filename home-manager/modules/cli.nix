@@ -96,10 +96,7 @@ in
     screenrc = builtins.readFile ../templates/screenrc;
   };
 
-  programs.vim = {
-    enable = true;
-    extraConfig = builtins.readFile ../templates/vimrc;
-  };
+  home.file.".vimrc".source = ../templates/vimrc;
 
   # ZSH Configuration
   programs.zsh = {
