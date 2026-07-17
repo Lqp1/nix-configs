@@ -360,8 +360,7 @@ in
     *.xhtml diff=html
   '';
 
-  # Neovim (linked to local check-out for edit-in-place workflow)
-  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${home}/Documents/Repo/lazyvim-config";
+
 
 
 

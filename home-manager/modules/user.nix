@@ -129,6 +129,11 @@
       if [ ! -d $HOME/Documents/Repo/lazyvim-config ]; then
         ${pkgs.git}/bin/git clone git@github.com:Lqp1/lazyvim-config.git $HOME/Documents/Repo/lazyvim-config
       fi
+
+      if [ ! -d $HOME/.config/nvim ] && [ ! -L $HOME/.config/nvim ]; then
+        mkdir -p $HOME/.config
+        ln -sf $HOME/Documents/Repo/lazyvim-config $HOME/.config/nvim
+      fi
     '';
   };
 }
