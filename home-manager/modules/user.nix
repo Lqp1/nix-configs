@@ -18,6 +18,8 @@
   home.file = {
     ".smount/01personal" = {
       text = ''
+        variables:
+            pim: "prompt: Enter PIM:"
         mount_types:
             rclone:
                 mount: rclone mount $src $target --daemon --vfs-cache-mode writes --dir-cache-time
@@ -30,7 +32,7 @@
                 umount: umount $target
             veracrypt:
                 mount: veracrypt --text --mount -mro --fs-options=iocharset=utf8 --keyfiles=""
-                    --pim=1557 $src $target
+                    --pim=$pim $src $target
                 umount: veracrypt --text --dismount $src
         mounts:
             home:
