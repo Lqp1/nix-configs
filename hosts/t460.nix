@@ -53,4 +53,8 @@
 
   swapDevices =
     [{ device = "/dev/disk/by-uuid/157a7d5e-8a90-4a27-b00e-2d817639bf41"; }];
+
+  home-manager.users.thomas = {
+    programs.git.settings.user.signingkey = "/home/thomas/.ssh/id_ed25519.pub";
+  };
 }

@@ -21,6 +21,22 @@
         "type": "github"
       }
     },
+    "emacs-keybindings-in-osx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1363217165,
+        "narHash": "sha256-dVwimaf4d4WTyVlv8xiIdxEcIAb7mB/IyuKF+wEhbbs=",
+        "owner": "fkchang",
+        "repo": "emacs-keybindings-in-osx",
+        "rev": "b026882e4a0386dfac3bc626fce7cd6c036bca6b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fkchang",
+        "repo": "emacs-keybindings-in-osx",
+        "type": "github"
+      }
+    },
     "eza-themes": {
       "flake": false,
       "locked": {
@@ -245,6 +261,7 @@
     "root": {
       "inputs": {
         "antigravity-nix": "antigravity-nix",
+        "emacs-keybindings-in-osx": "emacs-keybindings-in-osx",
         "eza-themes": "eza-themes",
         "flake-utils": "flake-utils_2",
         "fzf-git": "fzf-git",
