@@ -28,7 +28,6 @@ in
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit inputs; };
-    backupFileExtension = "backup";
     users."t.lange" = import ../home-manager/home.nix;
   };
 

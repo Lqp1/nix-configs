@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Cleanup Home Manager backup files
+
+echo "Searching for *.backup files in home directory..."
+
+# Find the files and store them in an array
+files=()
+while IFS= read -r -d $'\0' file; do
+    files+=("$file")
+done < <(find "$HOME" \
+  -maxdepth 4 \
+  \( -path "$HOME/Documents" -o \
+     -path "$HOME/Downloads" -o \
+     -path "$HOME/.cache" -o \
+     -path "$HOME/Repo" -o \
+     -path "$HOME/.local/share" \) -prune \
+  -o -name "*.backup" -type f -print0)
+
+if [ ${#files[@]} -eq 0 ]; then
+    echo "No *.backup files found."
+    exit 0
+fi
+
+echo "Found the following *.backup files:"
+for file in "${files[@]}"; do
+    echo "  $file"
+done
+
+echo
+read -p "Do you want to delete these files? [y/N] " response
+if [[ "$response" =~ ^[Yy]$ ]]; then
+    for file in "${files[@]}"; do
+        rm -f "$file"
+        echo "Deleted: $file"
+    done
+    echo "Cleanup complete!"
+else
+    echo "Cleanup aborted."
+fi

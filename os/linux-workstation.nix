@@ -62,7 +62,6 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = { inherit inputs; };
-      backupFileExtension = "backup";
       users.thomas = {
         imports = [ ../home-manager/home.nix ];
         services.redshift.enable = linuxType == "laptop";
