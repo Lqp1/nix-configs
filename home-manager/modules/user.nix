@@ -134,6 +134,33 @@
         mkdir -p $HOME/.config
         ln -sf $HOME/Documents/Repo/lazyvim-config $HOME/.config/nvim
       fi
+
+      # Configure VeraCrypt default options if the configuration exists
+      VC_FILE="$HOME/.config/VeraCrypt/Configuration.xml"
+      if [ -f "$VC_FILE" ] && [ -s "$VC_FILE" ]; then
+        ${pkgs.python3}/bin/python3 -c "
+import xml.etree.ElementTree as ET
+try:
+    tree = ET.parse('$VC_FILE')
+    root = tree.getroot()
+    conf = root.find('configuration')
+    if conf is not None:
+        def set_key(key, val):
+            for c in conf.findall('config'):
+                if c.get('key') == key:
+                    c.text = val
+                    return
+            new_c = ET.SubElement(conf, 'config', key=key)
+            new_c.text = val
+        set_key('MountVolumesReadOnly', '1')
+        set_key('FilesystemOptions', 'iocharset=utf8')
+        if hasattr(ET, 'indent'):
+            ET.indent(tree, space='\t', level=0)
+        tree.write('$VC_FILE', encoding='utf-8', xml_declaration=True)
+except Exception:
+    pass
+"
+      fi
     '';
   };
 }
