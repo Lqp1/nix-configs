@@ -109,58 +109,7 @@
   # Autocreate mount points for smount and clone user repositories
   home.activation = {
     setupEnvironment = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      # Create smount directories
-      mkdir -p $HOME/shares/home
-      mkdir -p $HOME/shares/share
-      mkdir -p $HOME/shares/vault
-
-      # Ensure Repo directory exists
-      mkdir -p $HOME/Documents/Repo
-
-      # Clone additional repositories if they do not exist
-      if [ ! -d $HOME/Documents/Repo/spectre-meltdown-checker ]; then
-        ${pkgs.git}/bin/git clone https://github.com/speed47/spectre-meltdown-checker $HOME/Documents/Repo/spectre-meltdown-checker
-      fi
-
-      if [ ! -d $HOME/Documents/Repo/kconfig-hardened-check ]; then
-        ${pkgs.git}/bin/git clone https://github.com/a13xp0p0v/kconfig-hardened-check $HOME/Documents/Repo/kconfig-hardened-check
-      fi
-
-      if [ ! -d $HOME/Documents/Repo/lazyvim-config ]; then
-        ${pkgs.git}/bin/git clone git@github.com:Lqp1/lazyvim-config.git $HOME/Documents/Repo/lazyvim-config
-      fi
-
-      if [ ! -d $HOME/.config/nvim ] && [ ! -L $HOME/.config/nvim ]; then
-        mkdir -p $HOME/.config
-        ln -sf $HOME/Documents/Repo/lazyvim-config $HOME/.config/nvim
-      fi
-
-      # Configure VeraCrypt default options if the configuration exists
-      VC_FILE="$HOME/.config/VeraCrypt/Configuration.xml"
-      if [ -f "$VC_FILE" ] && [ -s "$VC_FILE" ]; then
-        ${pkgs.python3}/bin/python3 -c "
-import xml.etree.ElementTree as ET
-try:
-    tree = ET.parse('$VC_FILE')
-    root = tree.getroot()
-    conf = root.find('configuration')
-    if conf is not None:
-        def set_key(key, val):
-            for c in conf.findall('config'):
-                if c.get('key') == key:
-                    c.text = val
-                    return
-            new_c = ET.SubElement(conf, 'config', key=key)
-            new_c.text = val
-        set_key('MountVolumesReadOnly', '1')
-        set_key('FilesystemOptions', 'iocharset=utf8')
-        if hasattr(ET, 'indent'):
-            ET.indent(tree, space='\t', level=0)
-        tree.write('$VC_FILE', encoding='utf-8', xml_declaration=True)
-except Exception:
-    pass
-"
-      fi
+      run ${pkgs.python3}/bin/python3 ${../scripts/setup-environment.py} --git-bin ${pkgs.git}/bin/git
     '';
   };
 }
