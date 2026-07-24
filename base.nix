@@ -9,6 +9,9 @@
     htop
     less
     lsof
+    gnutar
+    gnused
+    gnugrep
     p7zip
     unzip
     vim
