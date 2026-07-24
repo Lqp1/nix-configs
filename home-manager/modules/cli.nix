@@ -45,7 +45,6 @@ in
     ansible
     autojump
     bc
-    ccze
     btop
     dfc
     go
@@ -72,7 +71,7 @@ in
     vgrep
     yazi
     yq
-  ];
+  ] ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [ ccze ]);
 
   programs.bat = {
     enable = true;

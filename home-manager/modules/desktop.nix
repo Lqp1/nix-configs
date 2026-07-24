@@ -582,7 +582,7 @@ in
   };
 
   # GTK theme configuration
-  gtk = {
+  gtk = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     iconTheme = {
       name = "Papirus-Dark";

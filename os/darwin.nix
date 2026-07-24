@@ -4,19 +4,6 @@ let
   nixpkgsPath = "/etc/nixpkgs/channels/nixpkgs";
   nixpkgsUnstablePath = "/etc/nixpkgs/channels/nixpkgs-unstable";
   lunchy = pkgs.callPackage ../derivations/lunchy { };
-  my-aerospace = pkgs.aerospace.overrideAttrs (_oldAttrs:
-    let
-      version = "0.20.3-Beta";
-    in
-    {
-      inherit version;
-      src = pkgs.fetchzip {
-        url = "https://github.com/nikitabobko/AeroSpace/releases/download/v${version}/AeroSpace-v${version}.zip";
-        #sha256 = lib.fakeSha256;
-        sha256 = "sha256-wrBcslp1W/lOmudMcW+SREL9LZY+wTwidh6Hot5ShGE=";
-      };
-    });
-
 in
 {
   imports = [
@@ -32,14 +19,14 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    unstable.choose-gui
+    choose-gui
     unstable.colima
     docker
     lunchy
   ];
 
   services.aerospace.enable = true;
-  services.aerospace.package = my-aerospace;
+  services.aerospace.package = pkgs.aerospace;
   services.aerospace.settings = {
     enable-normalization-flatten-containers = true;
     enable-normalization-opposite-orientation-for-nested-containers = true;
