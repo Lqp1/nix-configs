@@ -558,13 +558,12 @@ in
     executable = true;
   };
 
-  # Autostart script for i3
+  # Autostart script for i3 (excluding systemd-managed applets)
   xdg.configFile."i3/autostart.sh" = {
     text = ''
       #!/usr/bin/env bash
       # i3 Autostart Programs
       snixembed --fork
-      nm-applet &
       blueman-applet &
       xfce4-clipman &
       hp-systray &
