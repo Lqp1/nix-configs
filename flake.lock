@@ -40,11 +40,11 @@
     "eza-themes": {
       "flake": false,
       "locked": {
-        "lastModified": 1772645175,
-        "narHash": "sha256-toqj3bv2kCC2FHbGfeFpS3g9DoxQeZ7cwPYVpD8cfgg=",
+        "lastModified": 1784485423,
+        "narHash": "sha256-53J0plgB+d6b4LzSwrCezmIhfVm7WZrKMA1ORGdUtQU=",
         "owner": "eza-community",
         "repo": "eza-themes",
-        "rev": "add4c72c546992b8db674d6d3eea315bf2111b9a",
+        "rev": "21184b55bfe34e8473c8160f9de0c03e4f76857f",
         "type": "github"
       },
       "original": {
