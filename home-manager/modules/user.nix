@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Default mime associations (replaces xdg-mime commands)
@@ -37,16 +37,16 @@
         mounts:
             home:
                 src: .
-                target: /home/thomas/shares/home
+                target: ${config.home.homeDirectory}/shares/home
                 type: ssh
             share:
                 src: assurancetourix:share
-                target: /home/thomas/shares/share
+                target: ${config.home.homeDirectory}/shares/share
                 type: rclone
             vault:
                 expand: last-alpha
-                src: /home/thomas/Documents/Drive.hc.*
-                target: /home/thomas/shares/vault
+                src: ${config.home.homeDirectory}/Documents/Drive.hc.*
+                target: ${config.home.homeDirectory}/shares/vault
                 type: veracrypt
       '';
     };

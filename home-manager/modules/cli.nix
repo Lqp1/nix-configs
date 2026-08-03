@@ -290,8 +290,8 @@ in
         autocrlf = "input";
         safecrlf = "warn";
         pager = "less -FSRXIW";
-        hooksPath = "/home/thomas/.githooks";
-        attributesfile = "/home/thomas/.gitattributes";
+        hooksPath = "${home}/.githooks";
+        attributesfile = "${home}/.gitattributes";
       };
       help.autocorrect = 20;
       diff = {
