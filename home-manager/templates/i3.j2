@@ -194,7 +194,7 @@ mode "power" {
 default_border pixel 3
 exec_always --no-startup-id ~/.fehbg
 exec --no-startup-id polybar -c ~/.config/polybar/config.ini main
-exec --no-startup-id xss-lock -- i3lock -c $color_background
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c $color_background
 exec_always --no-startup-id bash -c "source ~/.profile && autotiling"
 
 # Theming

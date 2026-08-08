@@ -18,6 +18,8 @@
   boot.loader.systemd-boot.editor = false;
 
   services.fprintd.enable = true;
+  my.fprintMitigation = true;
+
   services.xserver.videoDrivers = [ "modesetting" ];
   hardware.graphics = {
     enable = true;

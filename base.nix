@@ -1,6 +1,9 @@
-# Config for Linux+Darwin, for both headless and workstation machines
 { inputs, pkgs, ... }:
 {
+  imports = [
+    ./hack.nix
+  ];
+
   environment.systemPackages = with pkgs; [
     coreutils
     curl
