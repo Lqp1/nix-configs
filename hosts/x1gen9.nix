@@ -18,9 +18,6 @@
   boot.loader.systemd-boot.editor = false;
 
   services.fprintd.enable = true;
-  # Disabled because fingerprint auth doesn't work well with apps that need sudo
-  # in the background, e.g. VeraCrypt
-  security.pam.services.sudo.fprintAuth = false;
   services.xserver.videoDrivers = [ "modesetting" ];
   hardware.graphics = {
     enable = true;

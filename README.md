@@ -69,7 +69,7 @@ darwin            -> os/darwin            -> base
 
 *   **Linux (NixOS)**:
     ```bash
-    sudo nixos-rebuild switch --flake .
+    run0 nixos-rebuild switch --flake .
     ```
 *   **macOS (nix-darwin)**:
     ```bash

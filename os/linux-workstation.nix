@@ -44,7 +44,6 @@ in
 {
   imports = [
     ./linux-base.nix
-    ./linux-polkit.nix
     inputs.home-manager.nixosModules.home-manager
   ];
 

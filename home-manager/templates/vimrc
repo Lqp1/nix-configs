@@ -34,8 +34,8 @@ nnoremap <silent> <Leader>b :ls<CR>
 nnoremap <silent> <Leader>d :bdelete<CR>
 nnoremap <Leader><Leader> :
 
-" Shortcut to sudo-save a file
-command! W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+" Shortcut to root-save a file
+command! W :execute ':silent w !run0 tee % > /dev/null' | :edit!
 
 " Auto-save sessions
 "autocmd VimLeave * mksession! ~/.vimdat/session.vim

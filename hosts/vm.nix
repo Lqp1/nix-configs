@@ -18,9 +18,15 @@
     getty.autologinUser = "admin";
     qemuGuest.enable = true;
     spice-vdagentd.enable = true;
-
   };
-  security.sudo.wheelNeedsPassword = false;
+
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
   users.users.admin = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "docker" ];

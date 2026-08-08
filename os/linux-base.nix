@@ -18,6 +18,7 @@ in
     ../base.nix
     ./linux-tmpfs.nix
     ./linux-security.nix
+    ./linux-polkit.nix
   ];
 
   options = {
