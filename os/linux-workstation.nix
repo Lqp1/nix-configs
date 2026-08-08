@@ -54,9 +54,13 @@ in
       default = "none";
       description = "Whether this is a desktop (GNOME + avahi) rather than a laptop (i3)";
     };
+
   };
 
   config = {
+
+    my.sudoWrapper = true;
+
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;

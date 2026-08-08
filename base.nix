@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }:
 {
   imports = [
-    ./hack.nix
+    ./hacks.nix
   ];
 
   environment.systemPackages = with pkgs; [
