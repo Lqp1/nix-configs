@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Color palette from theme
+c_bg="{{ common_ui_color_palette.blue.background }}"
+c_ring="{{ common_ui_color_palette.blue.surface_alt }}"
+c_key="{{ common_ui_color_palette.blue.focus }}"
+c_bs="{{ common_ui_color_palette.status.red }}"
+c_ver="{{ common_ui_color_palette.status.green }}"
+c_wrong="{{ common_ui_color_palette.status.red }}"
+c_time="{{ common_ui_color_palette.neutral.text }}"
+c_date="{{ common_ui_color_palette.neutral.muted }}"
+
+hex() {
+  local val="$1"
+  echo "${val#'#'}"
+}
+
+exec i3lock-color --nofork \
+  --blur 5 \
+  -c "$(hex "$c_bg")" \
+  --inside-color=00000000 \
+  --ring-color="$(hex "$c_ring")ff" \
+  --keyhl-color="$(hex "$c_key")ff" \
+  --bshl-color="$(hex "$c_bs")ff" \
+  --insidever-color=00000000 \
+  --ringver-color="$(hex "$c_ver")ff" \
+  --verif-color="$(hex "$c_ver")ff" \
+  --insidewrong-color=00000000 \
+  --ringwrong-color="$(hex "$c_wrong")ff" \
+  --wrong-color="$(hex "$c_wrong")ff" \
+  --time-color="$(hex "$c_time")ff" \
+  --date-color="$(hex "$c_date")ff" \
+  --clock --indicator \
+  --time-str="%H:%M:%S" \
+  --date-str="%A, %d %B %Y" \
+  --radius=120 --ring-width=8 \
+  --verif-text="Verifying..." \
+  --wrong-text="Wrong password" \
+  --noinput-text="" \
+  --pass-media-keys --pass-screen-keys "$@"

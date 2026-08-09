@@ -209,7 +209,7 @@ in
             xdotool
             feh
             arandr
-            i3lock
+            i3lock-color
             xfce4-terminal
             xfce4-screenshooter
             thunar

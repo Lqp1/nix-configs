@@ -572,6 +572,12 @@ in
     executable = true;
   };
 
+  # Lock screen wrapper script using i3lock-color
+  xdg.configFile."i3/lock.sh" = {
+    text = templateFile ../templates/lock.sh.j2 templateVars;
+    executable = true;
+  };
+
   # Systemd user targets
   systemd.user.targets.i3-session = lib.mkIf pkgs.stdenv.isLinux {
     Unit = {
