@@ -419,17 +419,32 @@ label = 󰌘 %output%
 
 [module/temperature]
 type = internal/temperature
-base-temperature = 20
-warn-temperature = 60
+zone-type = x86_pkg_temp
+interval = 2
+base-temperature = 30
+warn-temperature = 75
+
 format = <ramp> <label>
 format-warn = <ramp> <label-warn>
 format-padding = 2
 format-warn-padding = 2
+format-background = ${color.shade2}
+format-warn-background = ${color.shade2}
+label = %temperature-c%
+label-warn = %temperature-c%
 label-warn-foreground = ${color.red}
+
 ramp-font = 2
 ramp-0 = 
-ramp-1 = 
-ramp-2 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+ramp-0-foreground = ${color.acolor}
+ramp-1-foreground = ${color.acolor}
+ramp-2-foreground = ${color.fg}
+ramp-3-foreground = ${color.shade8}
+ramp-4-foreground = ${color.red}
 
 [module/battery2]
 inherit = module/battery
