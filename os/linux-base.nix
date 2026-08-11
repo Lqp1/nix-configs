@@ -46,8 +46,7 @@ in
     # Set your time zone.
     time.timeZone = "Europe/Paris";
 
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
+    environment.enableAllTerminfo = true;
     environment.systemPackages = with pkgs; [
       powertop
       pciutils
