@@ -113,7 +113,7 @@ in
         useRoutingFeatures = "client";
         disableUpstreamLogging = true;
         disableTaildrop = true;
-        extraSetFlags = [ "--netfilter-mode=on" "--accept-routes=true" "--accept-dns=false" ];
+        extraSetFlags = [ "--netfilter-mode=on" "--accept-routes=true" "--accept-dns=true" ];
         extraDaemonFlags = [ "--no-logs-no-support" ];
       };
 
