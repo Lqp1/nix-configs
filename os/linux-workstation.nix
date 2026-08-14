@@ -88,7 +88,6 @@ in
       android-tools
 
       # Workstation desktop apps (machine/family scope)
-      firefox
       libreoffice
       vlc
       transmission_4
@@ -100,6 +99,31 @@ in
       audacity
       naps2
     ] ++ lib.optionals (linuxType == "laptop") [ usbguard-select ];
+
+    environment.sessionVariables = {
+      DICPATH = "/run/current-system/sw/share/hunspell";
+    };
+
+    programs.firefox = {
+      enable = true;
+      languagePacks = [ "fr" "en-US" ];
+      policies = {
+        ExtensionSettings = {
+          "uBlock0@raymondhill.net" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+          };
+          "fr-dicollecte@dictionaries.addons.mozilla.org" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/dictionnaire-français1/latest.xpi";
+          };
+          "@unitedstatesenglishdictionary" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/us-english-dictionary/latest.xpi";
+          };
+        };
+      };
+    };
 
     services.avahi.enable = linuxType == "desktop";
 
