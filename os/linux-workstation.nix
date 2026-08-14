@@ -356,5 +356,40 @@ in
       ];
     };
 
+    specialisation.Powersave = lib.mkIf (linuxType == "laptop") {
+      inheritParentConfig = true;
+      configuration = { options, ... }: {
+        environment.sessionVariables = {
+          NIXOS_SPECIALISATION = "Powersave";
+        };
+        environment.etc."specialisation".text = "Powersave";
+
+        boot.kernelParams = lib.mkForce [
+          "slab_nomerge"
+          "page_poison=1"
+          "page_alloc.shuffle=1"
+          "debugfs=on"
+          "intel_pstate=no_turbo"
+          "i915.enable_fbc=1"
+          "i915.enable_psr=1"
+          "nmi_watchdog=0"
+        ];
+        boot.kernel.sysctl = {
+          "kernel.nmi_watchdog" = 0;
+        };
+        powerManagement.cpuFreqGovernor = lib.mkForce "powersave";
+        hardware.bluetooth.powerOnBoot = lib.mkForce false;
+        services.tlp.settings = lib.mkIf (options ? services && options.services ? tlp) {
+          CPU_ENERGY_PERF_POLICY_ON_AC = "power";
+          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+          CPU_BOOST_ON_AC = 0;
+          CPU_BOOST_ON_BAT = 0;
+          CPU_HWP_DYN_BOOST_ON_AC = 0;
+          CPU_HWP_DYN_BOOST_ON_BAT = 0;
+          PLATFORM_PROFILE_ON_AC = "low-power";
+          PLATFORM_PROFILE_ON_BAT = "low-power";
+        };
+      };
+    };
   };
 }

@@ -104,3 +104,36 @@ ssh 127.0.0.1 -o StrictHostKeyChecking=no -p 2222 -l admin
     # Or update a single input:
     scripts/lock-review lock --update-input <input-name> --commit-lock-file
     ```
+
+---
+
+## 4. System Specialisations & Power Profiles
+
+Laptop workstation targets (`thomas-x1gen9`, `thomas-t460`) include declarative NixOS **specialisations** built alongside the default system generations.
+
+### 🔋 `Powersave` Profile
+Optimized for maximum battery life (travel/flights/trains) and silent, cool thermals:
+* **Intel Turbo Boost Disabled**: Strictly capped at base CPU clock (`no_turbo = 1`) to eliminate high-wattage power spikes.
+* **Energy Performance Preference**: Set to `power` via TLP on both AC and battery.
+* **ThinkPad ACPI Platform Profile**: Set to `low-power` (quiet fan curve, cool chassis).
+* **Intel Iris Xe Display Optimization**: Enables Panel Self Refresh (`i915.enable_psr=1`) and Framebuffer Compression (`i915.enable_fbc=1`).
+* **Kernel Timer Optimization**: NMI watchdog disabled (`nmi_watchdog=0`) to allow deeper CPU $C8/C10$ sleep states.
+* **PowerTOP Diagnostics**: Enables `debugfs=on` for real-time hardware energy consumption measurement.
+* **Prompt Indicator**: Interactive Zsh and Bash shells automatically display a **`🔋`** emoji indicator when active.
+
+#### 🕹️ Usage:
+* **Switch Live (No reboot needed)**:
+  ```bash
+  run0 /run/current-system/specialisation/Powersave/bin/switch-to-configuration test
+  ```
+* **Switch back to Default Live**:
+  ```bash
+  run0 /run/current-system/bin/switch-to-configuration test
+  ```
+* **Boot into Powersave**:
+  Press <kbd>Space</kbd> or <kbd>Esc</kbd> at the startup menu $\rightarrow$ select **`NixOS (Powersave)`**.
+* **List All Boot Entries**:
+  ```bash
+  bootctl list
+  ```
+

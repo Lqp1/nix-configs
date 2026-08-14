@@ -2,7 +2,7 @@
 #!nix-shell -i bash -p nix-diff nix-output-monitor nvd
 set -euo pipefail
 
-rm ./result
+test -d result && rm ./result
 case "$(uname -s)" in
     Darwin)
         PLATFORM=darwin

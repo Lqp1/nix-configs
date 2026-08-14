@@ -170,6 +170,15 @@ in
       # Custom prompt with execution time (timed-cypher theme)
       setopt PROMPT_SUBST
 
+      specialisation_prompt_info() {
+        local spec="''${NIXOS_SPECIALISATION:-$(cat /etc/specialisation 2>/dev/null)}"
+        if [[ "$spec" == "Powersave" ]]; then
+          echo "🔋 "
+        elif [[ -n "$spec" ]]; then
+          echo "%{''${fg[cyan]}%}[$spec]%{''${reset_color}%} "
+        fi
+      }
+
       nix_prompt_info() {
         if [[ -n "$IN_NIX_SHELL" ]]; then
           echo "%{''${fg[magenta]}%}[nix:$IN_NIX_SHELL]%{''${reset_color}%} "
@@ -182,7 +191,7 @@ in
         fi
       }
 
-      PROMPT='[%*] %m $(nix_prompt_info)$(shlvl_prompt_info)%{''${fg_bold[red]}%}:: %{''${fg[green]}%}%3~%(0?. . %{''${fg[red]}%}%? )%{''${fg[blue]}%}»%{''${reset_color}%} '
+      PROMPT='[%*] %m $(specialisation_prompt_info)$(nix_prompt_info)$(shlvl_prompt_info)%{''${fg_bold[red]}%}:: %{''${fg[green]}%}%3~%(0?. . %{''${fg[red]}%}%? )%{''${fg[blue]}%}»%{''${reset_color}%} '
 
       preexec() {
         timer=$(($(date +%s%0N)/1000000))
@@ -402,8 +411,16 @@ in
     '';
     initExtra = ''
       __prompt_command() {
+        local spec_info=""
         local nix_info=""
         local shlvl_info=""
+
+        local spec="''${NIXOS_SPECIALISATION:-$(cat /etc/specialisation 2>/dev/null)}"
+        if [ "$spec" = "Powersave" ]; then
+          spec_info=" 🔋"
+        elif [ -n "$spec" ]; then
+          spec_info=" \[\e[36m\][$spec]\[\e[0m\]"
+        fi
 
         if [ -n "$IN_NIX_SHELL" ]; then
           nix_info=" \[\e[35m\][nix:$IN_NIX_SHELL]\[\e[0m\]"
@@ -413,7 +430,7 @@ in
           shlvl_info=" \[\e[33m\][shlvl:$SHLVL]\[\e[0m\]"
         fi
 
-        PS1=" \[\e[32m\]\u@\h\[\e[0m\]''${nix_info}''${shlvl_info}: \[\e[34m\]\w\[\e[0m\] \$ "
+        PS1=" \[\e[32m\]\u@\h\[\e[0m\]''${spec_info}''${nix_info}''${shlvl_info}: \[\e[34m\]\w\[\e[0m\] \$ "
       }
 
       PROMPT_COMMAND=__prompt_command
