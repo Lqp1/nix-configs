@@ -1,139 +1,111 @@
-# Nix OS & Home Manager Configurations
+# Nix Configurations
 
-Declarative system and user-space configurations for Linux (NixOS) and macOS (nix-darwin) managed via Nix Flakes.
-
----
-
-## 1. Architecture & Module Inheritance
-
-Each module imports its parent, so host definitions only reference the leaf profiles.
-Arrows (`->`) read as "imports":
-
-```
-linux-workstation -> os/linux-workstation -> os/linux-base -> base
-test-vm           -> os/linux-base        -> base
-darwin            -> os/darwin            -> base
-```
-
-### 📂 Directory Structure & Scopes
-
-*   **[`base.nix`](file:///home/thomas/Documents/Repo/nix-configs/base.nix) (System Base - Cross-platform)**:
-    *   Bare-minimum bootstrap config. Contains essential tools (`git`, `vim`, `htop`, `curl`, `coreutils`, `less`) available system-wide for rescue operations and fallback/headless users.
-*   **[`os/linux-base.nix`](file:///home/thomas/Documents/Repo/nix-configs/os/linux-base.nix) (Linux Base)**:
-    *   Low-level hardware diagnostics, storage tools, and drivers (`powertop`, `hdparm`, `samba`, `pciutils`).
-*   **[`os/linux-workstation.nix`](file:///home/thomas/Documents/Repo/nix-configs/os/linux-workstation.nix) (Workstation Base - Linux)**:
-    *   Graphical display manager config (i3 window manager, X11 utilities, udev rules).
-    *   **Family/Machine Scope**: Graphical desktop applications shared by all accounts on the host (`firefox`, `vlc`, `libreoffice`, `gimp`, `audacity`, `naps2`, `pavucontrol`).
-*   **[`os/darwin.nix`](file:///home/thomas/Documents/Repo/nix-configs/os/darwin.nix) (macOS Base)**:
-    *   nix-darwin module configuration, homebrew casks (`stats`), shell defaults, and cocoa-keybindings.
-*   **[`home-manager/`](file:///home/thomas/Documents/Repo/nix-configs/home-manager)**:
-    *   Portable user workspace environment.
-    *   `modules/cli.nix`: Development packages (Go, Nil lsp, custom Python/Ruby wrappers), interactive shell prompts (Zsh theme with command timers, autoenv, syntax-highlighting), and the wrapped Neovim package (pre-packaged with runtime requirements like `gcc` and `nodejs`).
-    *   `modules/desktop.nix`: User-specific GUI programs (`keepassxc`, `rofimoji`), X11 cursor themes (`pointerCursor`), and declarative setups for Dunst, Picom, Kitty, Rofi, Redshift, and Polybar.
-    *   `modules/user.nix`: Static home directory configs (ssh widgets, mime associations, desktop shortcuts, and custom `smount` mounting profiles).
+Declarative system and user configurations for Linux (NixOS) and macOS (nix-darwin) using Nix Flakes and Home Manager.
 
 ---
 
-## 2. Bootstrapping a New Install
+## 1. Architecture
 
-### 🐧 NixOS
+Configuration layers import their dependencies hierarchically:
 
-1.  Format the disks according to standard specifications:
-    *   [NixOS Disk Installation Guide](https://nixos.org/manual/nixos/stable/#sec-installation)
-    *   [LVM Configuration Wiki](https://nixos.wiki/wiki/LVM)
-    *   [LUKS Encryption Guide](https://nixos.org/manual/nixos/stable/#sec-luks-file-systems)
-2.  Mount the partitions (e.g. `/mnt`), then generate the configuration:
-    ```bash
-    nixos-generate-config --root /mnt
-    ```
-3.  Clone the repository, merge the generated hardware configuration to `hosts/`, and run:
-    ```bash
-    git clone https://github.com/lqp1/nix-configs
-    nixos-install --flake .#thomas-x1gen9 --no-root-passwd
-    nixos-enter --root /mnt -c "passwd thomas"
-    ```
+```
+Workstation (i3 / Desktop) -> Linux Base (Headless/CLI) -> Base (Common)
+VM (Headless Test VM)      -> Linux Base               -> Base
+macOS (nix-darwin)         -> Darwin Base              -> Base
+```
 
-### 🍏 macOS (nix-darwin)
-
-1.  Install Nix in single-user or multi-user mode.
-2.  Clone this repository and run the darwin installer switch:
-    ```bash
-    nix run nix-darwin -- switch --flake .#darwin
-    ```
+* **`base.nix`**: Common cross-platform system defaults and core CLI tools.
+* **`os/linux-base.nix`**: Headless Linux defaults, storage, security, and networking.
+* **`os/linux-workstation.nix`**: Graphical desktop environment (i3), applications, and hardware policies.
+* **`os/darwin.nix`**: macOS system defaults, Homebrew integration, and Cocoa keybindings.
+* **`home-manager/`**: User-space environment (shell, dev tools, desktop session configs).
+* **`hosts/`**: Host-specific hardware definitions, filesystems, and machine overrides.
 
 ---
 
-## 3. Maintenance & Upgrades
+## 2. Daily Usage
 
-### 🔄 Apply Changes
+### Apply Changes
 
-*   **Linux (NixOS)**:
-    ```bash
-    run0 nixos-rebuild switch --flake .
-    ```
-*   **macOS (nix-darwin)**:
-    ```bash
-    darwin-rebuild switch --flake .
-    ```
+* **NixOS**:
+  ```bash
+  run0 nixos-rebuild switch --flake .
+  ```
+* **macOS (nix-darwin)**:
+  ```bash
+  darwin-rebuild switch --flake .
+  ```
 
-### 🛡️ First-time Activation Backups
-To prevent overwriting local personal data, Home Manager is configured to automatically rename conflicting pre-existing config files in your home directory (e.g., `.bashrc`, `.profile`) by appending a `.backup` extension.
+### Maintenance
 
-### 🧪 Testing inside a VM (QEMU)
-To compile the NixOS configuration and test the environment inside a graphical-free virtual machine:
-```bash
-nix run .#vmImage
-```
-To connect to the running VM via SSH (password: `admin`):
-```bash
-ssh 127.0.0.1 -o StrictHostKeyChecking=no -p 2222 -l admin
-```
-
-### 📦 Flake Maintenance
-*   Format codebase:
-    ```bash
-    nix fmt .
-    ```
-*   Standard lock update:
-    ```bash
-    nix flake update --commit-lock-file
-    ```
-*   Update inputs with upstream diff review:
-    ```bash
-    scripts/lock-review update --commit-lock-file
-    # Or update a single input:
-    scripts/lock-review lock --update-input <input-name> --commit-lock-file
-    ```
+* **Standard lock update**:
+  ```bash
+  nix flake update --commit-lock-file
+  ```
+* **Update with upstream diff review**:
+  ```bash
+  scripts/lock-review update --commit-lock-file
+  ```
+* **Format codebase**:
+  ```bash
+  nix fmt .
+  ```
 
 ---
 
-## 4. System Specialisations & Power Profiles
+## 3. Specialisations & Profiles
 
-Laptop workstation targets (`thomas-x1gen9`, `thomas-t460`) include declarative NixOS **specialisations** built alongside the default system generations.
+Laptop configurations include a declarative **`Powersave`** specialisation for maximum battery runtime and silent operation (disables CPU turbo boost, tunes power policies, and enables diagnostic `debugfs`):
 
-### 🔋 `Powersave` Profile
-Optimized for maximum battery life (travel/flights/trains) and silent, cool thermals:
-* **Intel Turbo Boost Disabled**: Strictly capped at base CPU clock (`no_turbo = 1`) to eliminate high-wattage power spikes.
-* **Energy Performance Preference**: Set to `power` via TLP on both AC and battery.
-* **ThinkPad ACPI Platform Profile**: Set to `low-power` (quiet fan curve, cool chassis).
-* **Intel Iris Xe Display Optimization**: Enables Panel Self Refresh (`i915.enable_psr=1`) and Framebuffer Compression (`i915.enable_fbc=1`).
-* **Kernel Timer Optimization**: NMI watchdog disabled (`nmi_watchdog=0`) to allow deeper CPU $C8/C10$ sleep states.
-* **PowerTOP Diagnostics**: Enables `debugfs=on` for real-time hardware energy consumption measurement.
-* **Prompt Indicator**: Interactive Zsh and Bash shells automatically display a **`🔋`** emoji indicator when active.
-
-#### 🕹️ Usage:
-* **Switch Live (No reboot needed)**:
+* **Switch live (no reboot)**:
   ```bash
   run0 /run/current-system/specialisation/Powersave/bin/switch-to-configuration test
   ```
-* **Switch back to Default Live**:
+* **Switch back to default live**:
   ```bash
   run0 /run/current-system/bin/switch-to-configuration test
   ```
-* **Boot into Powersave**:
-  Press <kbd>Space</kbd> or <kbd>Esc</kbd> at the startup menu $\rightarrow$ select **`NixOS (Powersave)`**.
-* **List All Boot Entries**:
-  ```bash
-  bootctl list
-  ```
+* **Boot directly into Powersave**:
+  Press <kbd>Space</kbd> or <kbd>Esc</kbd> at the `systemd-boot` menu and select `NixOS (Powersave)`.
 
+---
+
+## 4. Bootstrapping
+
+### NixOS
+
+1. Partition and format disks according to your desired layout:
+   * [NixOS Installation Guide](https://nixos.org/manual/nixos/stable/#sec-installation)
+   * [LUKS Partitioning Guide](https://nixos.org/manual/nixos/stable/#sec-luks-file-systems)
+   * [LVM Guide](https://nixos.wiki/wiki/LVM)
+2. Mount partitions (e.g. `/mnt`) and generate hardware configuration:
+   ```bash
+   nixos-generate-config --root /mnt
+   ```
+3. Copy/merge the hardware configuration into `hosts/<hostname>.nix`, register the host in `flake.nix`, install without setting a root password, and initialize your user password:
+   ```bash
+   nixos-install --flake .#<hostname> --no-root-passwd
+   nixos-enter --root /mnt -c "passwd <username>"
+   ```
+
+### macOS (nix-darwin)
+
+1. Install Nix.
+2. Clone repository and run the installer switch:
+   ```bash
+   nix run nix-darwin -- switch --flake .#<hostname>
+   ```
+
+---
+
+## 5. VM Testing
+
+To build and launch a headless test VM in QEMU:
+```bash
+nix run .#vmImage
+```
+
+Connect to the running VM via SSH (password: `admin`):
+```bash
+ssh localhost -o StrictHostKeyChecking=no -p 2222 -l admin
+```
