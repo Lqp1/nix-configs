@@ -48,16 +48,6 @@
     allowDiscards = true;
   };
 
-  services.autorandr.hooks.postswitch = {
-    "reload-wm" = ''
-      ${pkgs.procps}/bin/pkill -USR1 polybar || true
-      if ! ${pkgs.procps}/bin/pgrep -f i3lock >/dev/null; then
-        [ -x ~/.fehbg ] && ~/.fehbg || true
-        ${pkgs.i3}/bin/i3-msg restart || true
-      fi
-    '';
-  };
-
   services.autorandr.profiles = {
     "default" = {
       fingerprint = {

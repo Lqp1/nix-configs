@@ -271,6 +271,15 @@ in
       };
     services.displayManager.defaultSession = lib.mkIf (linuxType == "laptop") "none+i3";
     services.autorandr.enable = true;
+    services.autorandr.hooks.postswitch = {
+      "reload-wm" = ''
+        ${pkgs.procps}/bin/pkill -USR1 polybar || true
+        if ! ${pkgs.procps}/bin/pgrep -f i3lock >/dev/null; then
+          [ -x ~/.fehbg ] && ~/.fehbg || true
+          ${pkgs.i3}/bin/i3-msg restart || true
+        fi
+      '';
+    };
 
     hardware.acpilight.enable = true;
 
