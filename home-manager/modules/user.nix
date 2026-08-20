@@ -45,7 +45,7 @@
                 type: rclone
             vault:
                 expand: last-alpha
-                src: ${config.home.homeDirectory}/Documents/Drive.hc.*
+                src: ${config.home.homeDirectory}/Documents/Drive.hc*
                 target: ${config.home.homeDirectory}/shares/vault
                 type: veracrypt
       '';
