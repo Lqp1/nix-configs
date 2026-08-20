@@ -101,6 +101,12 @@
       fsType = "ext4";
       options = [ "discard" "noatime" "nodiratime" "nodev" "nosuid" ];
     };
+  fileSystems."/mnt/data" =
+    {
+      device = "/dev/mapper/vg0-data";
+      fsType = "ext4";
+      options = [ "discard" "noatime" "nodiratime" "nodev" "nosuid" ];
+    };
 
   fileSystems."/nix" =
     {
