@@ -236,16 +236,17 @@ in
             i3lock-color
             xfce4-terminal
             xfce4-screenshooter
-            thunar
             file-roller
             ristretto
             xclip
+            libnotify
+            catfish
+            fzf
             xfce4-settings
             xfce4-power-manager
             xfce4-clipman-plugin
             xfconf
             xfce4-exo
-            tumbler
             snixembed
             xss-lock
           ];
@@ -294,8 +295,25 @@ in
     programs.evince.enable = true;
     programs.nm-applet.enable = true;
 
+    programs.thunar = {
+      enable = true;
+      plugins = with pkgs; [
+        thunar-archive-plugin
+      ];
+    };
+    services.tumbler.enable = true;
 
-    services.tlp.enable = linuxType == "laptop";
+
+    services.tlp = lib.mkIf (linuxType == "laptop") {
+      enable = true;
+      settings = {
+        # ThinkPad battery charge thresholds (preserves battery cycle life)
+        START_CHARGE_THRESH_BAT0 = 75;
+        STOP_CHARGE_THRESH_BAT0 = 80;
+        START_CHARGE_THRESH_BAT1 = 75;
+        STOP_CHARGE_THRESH_BAT1 = 80;
+      };
+    };
     services.power-profiles-daemon.enable = false; # Conflicts with TLP when activated.
     powerManagement.powertop.enable = false; # Same
     networking.networkmanager.wifi.powersave = linuxType == "laptop";

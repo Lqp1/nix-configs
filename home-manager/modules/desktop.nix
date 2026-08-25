@@ -604,9 +604,136 @@ in
     gtk3.extraConfig = {
       gtk-key-theme-name = "Emacs";
     };
+    gtk3.extraCss = ''
+      /* Thunar interface styling */
+      .thunar .sidebar treeview {
+        background-color: #00252e;
+        padding: 4px 0;
+      }
+      .thunar .sidebar row {
+        padding: 4px 6px;
+      }
+      .thunar .path-bar button {
+        border-radius: 4px;
+        margin: 1px 2px;
+        padding: 2px 8px;
+      }
+      .thunar treeview:selected,
+      .thunar .view:selected {
+        background-color: #1E88E5;
+        color: #FFFFFF;
+      }
+    '';
     gtk4.extraConfig = {
       gtk-key-theme-name = "Emacs";
     };
+  };
+
+  # Thunar Custom Actions (User Custom Actions - uca.xml)
+  xdg.configFile."Thunar/uca.xml" = lib.mkIf pkgs.stdenv.isLinux {
+    force = true;
+    text = ''
+      <?xml version="1.0" encoding="UTF-8"?>
+      <actions>
+        <action>
+          <icon>system-search</icon>
+          <name>Search Files Here</name>
+          <unique-id>search-files-here</unique-id>
+          <command>catfish --path=%f</command>
+          <description>Deep search for files and text content in folder</description>
+          <patterns>*</patterns>
+          <directories/>
+        </action>
+        <action>
+          <icon>utilities-terminal</icon>
+          <name>Open Terminal Here</name>
+          <unique-id>open-terminal-here</unique-id>
+          <command>kitty --directory %f</command>
+          <description>Open Kitty terminal at current location</description>
+          <patterns>*</patterns>
+          <directories/>
+        </action>
+        <action>
+          <icon>nvim</icon>
+          <name>Edit with Neovim</name>
+          <unique-id>edit-with-neovim</unique-id>
+          <command>kitty -e nvim %F</command>
+          <description>Open selected file(s) in Neovim</description>
+          <patterns>*</patterns>
+          <other-files/>
+          <text-files/>
+        </action>
+        <action>
+          <icon>document-open-recent</icon>
+          <name>Compare with Neovim</name>
+          <unique-id>compare-with-neovim</unique-id>
+          <command>kitty -e nvim -d %F</command>
+          <description>Compare selected files side-by-side in Neovim</description>
+          <patterns>*</patterns>
+          <other-files/>
+          <text-files/>
+        </action>
+        <action>
+          <icon>edit-copy</icon>
+          <name>Copy Path</name>
+          <unique-id>copy-file-path</unique-id>
+          <command>sh -c 'echo -n "$*" | xclip -selection clipboard' _ %F</command>
+          <description>Copy absolute path of selected file(s) to clipboard</description>
+          <patterns>*</patterns>
+          <directories/>
+          <audio-files/>
+          <image-files/>
+          <other-files/>
+          <text-files/>
+          <video-files/>
+        </action>
+        <action>
+          <icon>dialog-password</icon>
+          <name>Compute SHA-256</name>
+          <unique-id>compute-sha256</unique-id>
+          <command>sh -c 'sha=$(sha256sum "$1" | cut -d" " -f1); echo -n "$sha" | xclip -selection clipboard; notify-send -a Thunar "SHA-256 Checksum" "$sha"' _ %f</command>
+          <description>Compute SHA-256 checksum and copy to clipboard</description>
+          <patterns>*</patterns>
+          <audio-files/>
+          <image-files/>
+          <other-files/>
+          <text-files/>
+          <video-files/>
+        </action>
+        <action>
+          <icon>security-high</icon>
+          <name>Scan with ClamAV</name>
+          <unique-id>scan-with-clamav</unique-id>
+          <command>sh -c 'out=$(clamdscan --multiscan --fdpass "$@" 2&gt;&amp;1); ret=$?; if [ $ret -eq 0 ]; then notify-send -a ClamAV -i security-high "ClamAV Scan: Clean" "No threats found in:\n$*"; elif [ $ret -eq 1 ]; then notify-send -u critical -a ClamAV -i security-low "ClamAV Alert: Threat Detected!" "$out"; else notify-send -u critical -a ClamAV -i dialog-error "ClamAV Scan Error" "$out"; fi' _ %F</command>
+          <description>Scan selected file(s) or folder with ClamAV daemon and report status</description>
+          <patterns>*</patterns>
+          <directories/>
+          <audio-files/>
+          <image-files/>
+          <other-files/>
+          <text-files/>
+          <video-files/>
+        </action>
+      </actions>
+    '';
+  };
+
+  # Thunar Xfconf Preferences (Default Details view, ISO dates, folders first)
+  xdg.configFile."xfce4/xfconf/xfce-perchannel-xml/thunar.xml" = lib.mkIf pkgs.stdenv.isLinux {
+    force = true;
+    text = ''
+      <?xml version="1.0" encoding="UTF-8"?>
+      <channel name="thunar" version="1.0">
+        <property name="last-view" type="string" value="ThunarDetailsView"/>
+        <property name="last-location-bar" type="string" value="ThunarLocationButtons"/>
+        <property name="last-show-hidden" type="bool" value="false"/>
+        <property name="last-sort-column" type="string" value="THUNAR_COLUMN_NAME"/>
+        <property name="last-sort-order" type="string" value="GTK_SORT_ASCENDING"/>
+        <property name="misc-date-style" type="string" value="THUNAR_DATE_STYLE_ISO"/>
+        <property name="misc-folders-first" type="bool" value="true"/>
+        <property name="misc-show-delete-action" type="bool" value="true"/>
+      </channel>
+    '';
   };
 
   # Cocoa KeyBindings (Darwin specific)
