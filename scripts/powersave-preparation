@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -t 1 ]] && command -v tput >/dev/null 2>&1; then
+  TITLE="$(tput bold)$(tput setaf 4)"
+  GOOD="$(tput setaf 2)"
+  WARN="$(tput setaf 3)"
+  RESET="$(tput sgr0)"
+else
+  TITLE="" GOOD="" WARN="" RESET=""
+fi
+
+section() {
+  printf "\n%s== %s ==%s\n" "$TITLE" "$1" "$RESET"
+}
+
+get_priv_cmd() {
+  if command -v run0 >/dev/null 2>&1; then
+    echo "run0"
+  elif command -v sudo >/dev/null 2>&1; then
+    echo "sudo"
+  else
+    echo ""
+  fi
+}
+
+PRIV="$(get_priv_cmd)"
+if [[ -z "$PRIV" && $EUID -ne 0 ]]; then
+  echo "${WARN}Error: Root privileges required (run0 or sudo).${RESET}" >&2
+  exit 1
+fi
+
+section "1. Battery Charge: Unlock 100% (Current Cycle Only)"
+echo "Temporarily setting battery charge target to 100%..."
+BAT_FOUND=false
+for bat in BAT0 BAT1; do
+  if [[ -d "/sys/class/power_supply/$bat" ]]; then
+    $PRIV tlp fullcharge "$bat" || true
+    echo "  ${GOOD}✓ $bat set to full charge${RESET}"
+    BAT_FOUND=true
+  fi
+done
+if ! $BAT_FOUND; then
+  echo "  ${WARN}No BAT0/BAT1 battery interface detected.${RESET}"
+fi
+
+section "2. Bootloader: Configure One-Shot Boot to Powersave"
+# Locate the newest Powersave entry from bootctl or /boot/loader/entries
+POWERSAVE_ENTRY="$($PRIV bootctl list 2>/dev/null | grep -E '^[[:space:]]*id:.*Powersave' | head -n1 | awk '{print $2}' || true)"
+
+if [[ -z "$POWERSAVE_ENTRY" ]]; then
+  # Fallback to inspecting entries directory directly
+  POWERSAVE_ENTRY="$($PRIV find /boot/loader/entries -maxdepth 1 -name '*Powersave*.conf' 2>/dev/null | sort -V | tail -n1 | xargs -r basename || true)"
+fi
+
+if [[ -n "$POWERSAVE_ENTRY" ]]; then
+  echo "Found Powersave boot entry: ${GOOD}$POWERSAVE_ENTRY${RESET}"
+  $PRIV bootctl set-oneshot "$POWERSAVE_ENTRY"
+  echo "  ${GOOD}✓ Next boot scheduled to boot into Powersave (one-shot only).${RESET}"
+else
+  echo "  ${WARN}Warning: Could not detect a systemd-boot entry for Powersave.${RESET}"
+  echo "  Ensure you have run 'run0 nixos-rebuild switch' with specialisation enabled."
+fi
+
+section "Ready for Powersave!"
+echo "${GOOD}Preparation complete:${RESET}"
+echo "  1. Battery will charge to 100% for this cycle."
+echo "  2. Next reboot will automatically start the Powersave specialisation."
+echo "  3. Subsequent reboots will revert back to the default profile."

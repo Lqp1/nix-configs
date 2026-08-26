@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ -t 1 ]] && command -v tput >/dev/null 2>&1; then
+  TITLE="$(tput bold)$(tput setaf 4)"
+  GOOD="$(tput setaf 2)"
+  WARN="$(tput setaf 3)"
+  RESET="$(tput sgr0)"
+else
+  TITLE="" GOOD="" WARN="" RESET=""
+fi
+
+section() {
+  printf "\n%s== %s ==%s\n" "$TITLE" "$1" "$RESET"
+}
+
+get_priv_cmd() {
+  if command -v run0 >/dev/null 2>&1; then
+    echo "run0"
+  elif command -v sudo >/dev/null 2>&1; then
+    echo "sudo"
+  else
+    echo ""
+  fi
+}
+
+current_specialisation() {
+  if [[ -f /etc/specialisation ]]; then
+    cat /etc/specialisation 2>/dev/null || echo "default"
+  else
+    echo "default"
+  fi
+}
+
+CURRENT="$(current_specialisation)"
+TARGET="${1:-toggle}"
+ACTION="${2:-test}" # 'test' (live switch without bootloader entry change) or 'switch'
+
+case "$TARGET" in
+  status)
+    section "Current Specialisation"
+    echo "Active: ${GOOD}${CURRENT}${RESET}"
+    if [[ -d /run/current-system/specialisation ]]; then
+      echo "Available specialisations:"
+      for s in /run/current-system/specialisation/*; do
+        [[ -d "$s" ]] && echo "  - $(basename "$s")"
+      done
+    fi
+    exit 0
+    ;;
+  toggle)
+    if [[ "$CURRENT" == "Powersave" || "$CURRENT" == "powersave" ]]; then
+      TARGET="default"
+    else
+      TARGET="Powersave"
+    fi
+    ;;
+  powersave|Powersave)
+    TARGET="Powersave"
+    ;;
+  default|main)
+    TARGET="default"
+    ;;
+esac
+
+PRIV="$(get_priv_cmd)"
+if [[ -z "$PRIV" && $EUID -ne 0 ]]; then
+  echo "${WARN}Error: Root privileges required (run0 or sudo).${RESET}" >&2
+  exit 1
+fi
+
+section "Switching Specialisation"
+echo "Current : ${WARN}${CURRENT}${RESET}"
+echo "Target  : ${GOOD}${TARGET}${RESET}"
+
+if [[ "$TARGET" == "default" ]]; then
+  SCRIPT="/run/current-system/bin/switch-to-configuration"
+  if [[ ! -x "$SCRIPT" ]]; then
+    echo "${WARN}Error: Default activation script not found: $SCRIPT${RESET}" >&2
+    exit 1
+  fi
+  $PRIV "$SCRIPT" "$ACTION"
+else
+  SCRIPT="/run/current-system/specialisation/$TARGET/bin/switch-to-configuration"
+  if [[ ! -x "$SCRIPT" ]]; then
+    echo "${WARN}Error: Specialisation '$TARGET' not found: $SCRIPT${RESET}" >&2
+    exit 1
+  fi
+  $PRIV "$SCRIPT" "$ACTION"
+fi
+
+section "Done"
+echo "${GOOD}Successfully switched to ${TARGET}!${RESET}"
