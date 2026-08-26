@@ -67,7 +67,19 @@ in
 
   networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.enable = true;
-  services.clamav.daemon.enable = true;
+  services.clamav.daemon = {
+    enable = true;
+    settings = {
+      OnAccessIncludePath = [
+        "/home/thomas/Downloads"
+        "/home/thomas/Téléchargements"
+      ];
+      OnAccessPrevention = true;
+      OnAccessExtraScanning = true;
+      OnAccessExcludeUname = "clamav";
+    };
+  };
+  services.clamav.clamonacc.enable = true;
   services.clamav.updater.enable = true;
   programs.firejail.enable = true;
 
