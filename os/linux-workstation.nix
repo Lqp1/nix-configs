@@ -241,7 +241,6 @@ in
             xclip
             libnotify
             catfish
-            fzf
             xfce4-settings
             xfce4-power-manager
             xfce4-clipman-plugin
