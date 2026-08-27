@@ -395,14 +395,10 @@ in
         };
         environment.etc."specialisation".text = "Powersave";
 
-        boot.kernelParams = lib.mkForce [
-          "slab_nomerge"
-          "page_poison=1"
-          "page_alloc.shuffle=1"
+        # Enable debugfs (for powertop/debugging) and disable watchdogs in powersave
+        boot.kernelParams = [
           "debugfs=on"
-          "intel_pstate=no_turbo"
-          "i915.enable_fbc=1"
-          "i915.enable_psr=1"
+          "nowatchdog"
           "nmi_watchdog=0"
         ];
         boot.kernel.sysctl = {
