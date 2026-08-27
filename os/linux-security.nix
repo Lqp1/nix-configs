@@ -70,10 +70,6 @@ in
   services.clamav.daemon = {
     enable = true;
     settings = {
-      OnAccessIncludePath = [
-        "/home/thomas/Downloads"
-        "/home/thomas/Téléchargements"
-      ];
       OnAccessPrevention = true;
       OnAccessExtraScanning = true;
       OnAccessExcludeUname = "clamav";

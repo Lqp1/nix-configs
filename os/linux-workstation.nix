@@ -361,6 +361,11 @@ in
       initialHashedPassword = "$y$j9T$NQnV5fxUh6Dza6fFQkP5B1$zu0JwCqa13sSpt1wvVhGB24xpAyiVKcfmxm06.8YYHA";
     };
 
+    services.clamav.daemon.settings.OnAccessIncludePath = [
+      "${config.users.users.thomas.home}/Downloads"
+      "${config.users.users.thomas.home}/Téléchargements"
+    ];
+
     # Hide logs or on workstations & add plymouth
     boot.loader.timeout = 0;
     boot.consoleLogLevel = 3;
