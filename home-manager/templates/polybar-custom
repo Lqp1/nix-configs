@@ -10,8 +10,14 @@ if len(sys.argv) > 1 and sys.argv[1] == 'left':
     sys.exit(0)
 
 
-output = '🦆'
+output = ['🦆']
 if len(i3ipc.Connection().get_tree().scratchpad().leaves()):
-    output += ' 🐈'
+    output.append('🐈')
 
-print(output)
+# if /etc/specialisation contains "Powersave", add a battery icon too!
+if os.path.exists('/etc/specialisation'):
+    with open('/etc/specialisation', 'r') as f:
+        if 'Powersave' in f.read():
+            output.append('🔋')
+
+print(' '.join(output))
