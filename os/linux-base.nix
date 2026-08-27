@@ -93,8 +93,8 @@ in
       dns = lib.mkIf config.my.use-resolved "systemd-resolved";
       settings = {
         connectivity = {
-          uri = "http://ping.archlinux.org/";
-          response = "Arch Linux online check";
+          uri = "http://nmcheck.gnome.org/check_network_status.txt";
+          response = "NetworkManager is online";
           interval = 300;
         };
       };
