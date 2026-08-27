@@ -24,25 +24,40 @@ get_priv_cmd() {
   fi
 }
 
-current_specialisation() {
-  if [[ -f /etc/specialisation ]]; then
-    cat /etc/specialisation 2>/dev/null || echo "default"
+get_base_system() {
+  if [[ -L /nix/var/nix/profiles/system ]]; then
+    readlink -f /nix/var/nix/profiles/system
+  elif [[ -d /run/booted-system ]]; then
+    readlink -f /run/booted-system
   else
-    echo "default"
+    readlink -f /run/current-system
   fi
 }
 
+current_specialisation() {
+  if [[ -f /etc/specialisation ]]; then
+    local spec
+    spec="$(cat /etc/specialisation 2>/dev/null || true)"
+    if [[ -n "$spec" ]]; then
+      echo "$spec"
+      return
+    fi
+  fi
+  echo "default"
+}
+
+BASE_SYSTEM="$(get_base_system)"
 CURRENT="$(current_specialisation)"
 TARGET="${1:-toggle}"
-ACTION="${2:-test}" # 'test' (live switch without bootloader entry change) or 'switch'
+ACTION="${2:-test}" # 'test' switches live without touching bootloader; 'switch' also updates boot default
 
 case "$TARGET" in
   status)
     section "Current Specialisation"
     echo "Active: ${GOOD}${CURRENT}${RESET}"
-    if [[ -d /run/current-system/specialisation ]]; then
-      echo "Available specialisations:"
-      for s in /run/current-system/specialisation/*; do
+    if [[ -d "$BASE_SYSTEM/specialisation" ]]; then
+      echo "Available specialisations in generation ($(basename "$BASE_SYSTEM")):"
+      for s in "$BASE_SYSTEM"/specialisation/*; do
         [[ -d "$s" ]] && echo "  - $(basename "$s")"
       done
     fi
@@ -70,22 +85,25 @@ if [[ -z "$PRIV" && $EUID -ne 0 ]]; then
 fi
 
 section "Switching Specialisation"
-echo "Current : ${WARN}${CURRENT}${RESET}"
-echo "Target  : ${GOOD}${TARGET}${RESET}"
+echo "Current System : ${WARN}${CURRENT}${RESET}"
+echo "Target Profile : ${GOOD}${TARGET}${RESET}"
+echo "Base Generation: $BASE_SYSTEM"
 
 if [[ "$TARGET" == "default" ]]; then
-  SCRIPT="/run/current-system/bin/switch-to-configuration"
+  SCRIPT="$BASE_SYSTEM/bin/switch-to-configuration"
   if [[ ! -x "$SCRIPT" ]]; then
     echo "${WARN}Error: Default activation script not found: $SCRIPT${RESET}" >&2
     exit 1
   fi
+  echo "Activating base default profile..."
   $PRIV "$SCRIPT" "$ACTION"
 else
-  SCRIPT="/run/current-system/specialisation/$TARGET/bin/switch-to-configuration"
+  SCRIPT="$BASE_SYSTEM/specialisation/$TARGET/bin/switch-to-configuration"
   if [[ ! -x "$SCRIPT" ]]; then
-    echo "${WARN}Error: Specialisation '$TARGET' not found: $SCRIPT${RESET}" >&2
+    echo "${WARN}Error: Specialisation '$TARGET' not found in $BASE_SYSTEM/specialisation/${RESET}" >&2
     exit 1
   fi
+  echo "Activating specialisation '$TARGET'..."
   $PRIV "$SCRIPT" "$ACTION"
 fi
 

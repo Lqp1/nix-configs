@@ -387,6 +387,8 @@ in
       ];
     };
 
+    environment.etc."specialisation".text = "default";
+
     specialisation.Powersave = lib.mkIf (linuxType == "laptop") {
       inheritParentConfig = true;
       configuration = { options, ... }: {
