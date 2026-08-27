@@ -37,8 +37,8 @@ get_base_system() {
 current_specialisation() {
   if [[ -f /etc/specialisation ]]; then
     local spec
-    spec="$(cat /etc/specialisation 2>/dev/null || true)"
-    if [[ -n "$spec" ]]; then
+    spec="$(head -n1 /etc/specialisation 2>/dev/null | xargs)"
+    if [[ -n "$spec" && "$spec" != "default" ]]; then
       echo "$spec"
       return
     fi
@@ -64,7 +64,7 @@ case "$TARGET" in
     exit 0
     ;;
   toggle)
-    if [[ "$CURRENT" == "Powersave" || "$CURRENT" == "powersave" ]]; then
+    if [[ "$CURRENT" =~ ^[Pp]owersave ]]; then
       TARGET="default"
     else
       TARGET="Powersave"

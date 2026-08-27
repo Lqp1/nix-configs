@@ -395,7 +395,7 @@ in
         environment.sessionVariables = {
           NIXOS_SPECIALISATION = "Powersave";
         };
-        environment.etc."specialisation".text = "Powersave";
+        environment.etc."specialisation".text = lib.mkForce "Powersave";
 
         # Enable debugfs (for powertop/debugging) and disable watchdogs in powersave
         boot.kernelParams = [
