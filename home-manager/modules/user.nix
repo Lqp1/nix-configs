@@ -100,10 +100,14 @@
     };
   });
 
-  # SSH Jump Host configs
+  # SSH Jump Host configs.
+  # Host-specific rules are dropped into ~/.ssh/config.d/ by external tooling.
+  # The Include is emitted before any match block below, and ssh is
+  # first-match-wins, so those files take precedence over anything set here.
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
+    includes = [ "config.d/*" ];
   };
 
   # Autocreate mount points for smount and clone user repositories
