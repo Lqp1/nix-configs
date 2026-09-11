@@ -19,6 +19,7 @@
 
   services.fprintd.enable = true;
   my.fprintMitigation = true;
+  security.pam.services.i3lock.rules.auth.fprintd.args = [ "timeout=7" "max-tries=1" ];
 
   services.xserver.videoDrivers = [ "modesetting" ];
   hardware.graphics = {

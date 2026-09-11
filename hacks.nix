@@ -37,7 +37,7 @@
 
     (lib.optionalAttrs (options ? powerManagement) {
       powerManagement.resumeCommands = lib.mkIf config.my.fprintMitigation ''
-        ${pkgs.systemd}/bin/systemctl try-restart fprintd.service || true
+        ${pkgs.systemd}/bin/systemctl restart fprintd.service || true
       '';
     })
 
