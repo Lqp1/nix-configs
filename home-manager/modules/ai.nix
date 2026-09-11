@@ -13,6 +13,12 @@
       internet_access_policy = "ask";
       artifact_review_mode = "asks-for-review";
       color_scheme = "solarized dark";
+      permissions = {
+        allow = [
+          "command(git status)"
+          "command(git diff)"
+        ];
+      };
     };
     force = true;
   };
