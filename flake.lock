@@ -128,11 +128,11 @@
     },
     "jail-nix": {
       "locked": {
-        "lastModified": 1788202681,
-        "narHash": "sha256-JIejDAYFpvMOtRto2N4MmaXs/HdgWJCqcT0mMzUvd0g=",
+        "lastModified": 1788928033,
+        "narHash": "sha256-UQRytK4SsshV1CeX6aKF+P855Sbcqg9aA731eYTakNg=",
         "owner": "~alexdavid",
         "repo": "jail.nix",
-        "rev": "e75e0a61137c0853234a825157ae226dbf58b417",
+        "rev": "7cd53acef3ad51b9c775be759f5643f8d3bcf6eb",
         "type": "sourcehut"
       },
       "original": {
