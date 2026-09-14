@@ -65,44 +65,40 @@ bindsym $mod+Shift+Q kill
 # use rofi to start apps
 bindsym $mod+d exec rofi -show drun
 
+# ONE AXIS ONLY. This workflow is tabs plus the occasional horizontal split, so
+# every vertical binding is deliberately absent: no focus/move up-down, no split v,
+# no stacking layout. Mirrors os/darwin.nix (AeroSpace). Dropping `layout stacking`
+# matters as much as dropping the keys - a stacked container is vertical, and with
+# no vertical focus bound its windows would be unreachable.
+
 # change focus
-bindsym $mod+j focus down
-bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # focus next container, fast switch on azerty
 bindsym $mod+twosuperior focus right
 
 # move focused window
-bindsym $mod+Shift+J move down
-bindsym $mod+Shift+K move up
 bindsym $mod+Shift+L move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
 bindsym $mod+h split h
 
-# split in vertical orientation
-bindsym $mod+v split v
-
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# change container layout (tabbed, horizontal split)
+# NOT `layout toggle split`: that toggles splith/splitv, i.e. it creates the vertical
+# splits this config has no keys to navigate. Horizontal only.
 bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+bindsym $mod+e layout splith
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle

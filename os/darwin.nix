@@ -29,8 +29,20 @@ in
   services.aerospace.package = pkgs.aerospace;
   services.aerospace.settings = {
     enable-normalization-flatten-containers = true;
-    enable-normalization-opposite-orientation-for-nested-containers = true;
+
+    # Deliberately FALSE: with this true, any nested container gets flipped to the
+    # opposite orientation, so a stray `join-with` inside a horizontal accordion
+    # silently produces a *vertical* container. This workflow is tabs along one
+    # horizontal axis only, so verticality is never wanted - and left unblocked it
+    # produces windows that horizontal focus keys cannot reach. With it false, a
+    # nested container keeps the parent's orientation and flatten-containers above
+    # collapses it as redundant.
+    enable-normalization-opposite-orientation-for-nested-containers = false;
+
     default-root-container-layout = "accordion";
+    # Not "auto": auto derives orientation from monitor aspect ratio, so a portrait
+    # screen would hand us a vertical root we never asked for.
+    default-root-container-orientation = "horizontal";
 
     # Mouse follows focus when focused monitor changes
     on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
@@ -39,21 +51,38 @@ in
       cmd-shift-p = "move-node-to-monitor --wrap-around next";
       cmd-shift-z = "move-workspace-to-monitor --wrap-around next"; # it's the w on an azerty
 
-      # i3 wraps focus by default
+      # ONE AXIS ONLY. This workflow is tabs along a horizontal accordion plus the
+      # occasional horizontal split; there are deliberately no vertical bindings, and
+      # the normalization settings above stop AeroSpace manufacturing vertical
+      # containers on its own. Mirrored in home-manager/templates/i3.j2.
+      #
+      # dfs-prev/dfs-next is "previous tab / next tab" in an accordion. Preferred over
+      # directional focus because it traverses the whole tree: even if a nested
+      # container somehow appears, no window can become unreachable. AeroSpace has no
+      # `focus parent`/`focus child` (see below), so this is the only such guarantee.
       # Workaround for https://github.com/nikitabobko/AeroSpace/issues/1311 requires --ignore-floating
-      cmd-j = "focus --ignore-floating --boundaries-action wrap-around-the-workspace left";
-      cmd-left = "focus --ignore-floating --boundaries-action wrap-around-the-workspace left";
-      #cmd-l = "focus --boundaries-action wrap-around-the-workspace right";
-      cmd-right = "focus --ignore-floating --boundaries-action wrap-around-the-workspace right";
+      # --boundaries/--boundaries-action are what make this cycle rather than stop
+      # dead at the last tab; the default action is `stop`. i3 wraps by default.
+      cmd-left = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace dfs-prev";
+      cmd-right = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace dfs-next";
 
-      cmd-shift-j = "move left";
       cmd-shift-left = "move left";
-      cmd-shift-l = "move right";
       cmd-shift-right = "move right";
+      cmd-shift-l = "move right"; # i3 $mod+Shift+L
 
+      # i3 $mod+h split h. No `cmd-v` counterpart: $mod+v split v is dropped on both
+      # sides, and cmd-v would shadow Paste for a binding this workflow never uses.
       cmd-h = "join-with right";
+
+      # Dissolve nested containers on the current workspace - the "undo my mess"
+      # button. NB: on i3 this same chord opens the power mode (it is a mode, so a
+      # stray press there is harmless - Escape exits).
+      cmd-shift-e = "flatten-workspace-tree";
       cmd-shift-f = "macos-native-fullscreen";
       cmd-z = "layout h_accordion"; # "layout tabbed" in i3, is w on an azerty
+      # NOT `layout tiles horizontal vertical` (the i3 `layout toggle split` mirror):
+      # that cycles through v_tiles, i.e. it creates the vertical splits this config
+      # has no keys to navigate. Horizontal tiles only.
       cmd-e = "layout h_tiles";
 
       cmd-shift-space = "layout floating tiling"; # "floating toggle" in i3
