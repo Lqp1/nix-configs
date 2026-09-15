@@ -246,7 +246,6 @@ in
   environment.etc."nixpkgs/channels/nixpkgs".source = inputs.nixpkgs;
   environment.etc."nixpkgs/channels/nixpkgs-unstable".source = inputs.nixpkgs-unstable;
 
-  # Add "stats" cask and "cliclick" brew
   homebrew = {
     enable = true;
     brews = [
@@ -256,6 +255,8 @@ in
       "stats"
     ];
   };
+
+  environment.systemPath = [ "/opt/homebrew/bin" ];
 
   # Lightweight aarch64-linux VM used as a remote builder so darwin can
   # build linux derivations (e.g. .#vmImage).
