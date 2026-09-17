@@ -56,15 +56,16 @@ in
       # the normalization settings above stop AeroSpace manufacturing vertical
       # containers on its own. Mirrored in home-manager/templates/i3.j2.
       #
-      # dfs-prev/dfs-next is "previous tab / next tab" in an accordion. Preferred over
-      # directional focus because it traverses the whole tree: even if a nested
-      # container somehow appears, no window can become unreachable. AeroSpace has no
-      # `focus parent`/`focus child` (see below), so this is the only such guarantee.
-      # Workaround for https://github.com/nikitabobko/AeroSpace/issues/1311 requires --ignore-floating
-      # --boundaries/--boundaries-action are what make this cycle rather than stop
-      # dead at the last tab; the default action is `stop`. i3 wraps by default.
-      cmd-left = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace dfs-prev";
-      cmd-right = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace dfs-next";
+      # Directional, not dfs-*: --ignore-floating drops floating windows from the dfs
+      # sequence, so the key dies while a popup holds focus.
+      # --ignore-floating works around https://github.com/nikitabobko/AeroSpace/issues/1311
+      # --boundaries-action makes it wrap instead of stopping at the last tab.
+      cmd-left = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace left";
+      cmd-right = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace right";
+
+      # Tree-traversal fallback if a nested container ever appears.
+      cmd-alt-left = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace dfs-prev";
+      cmd-alt-right = "focus --ignore-floating --boundaries workspace --boundaries-action wrap-around-the-workspace dfs-next";
 
       cmd-shift-left = "move left";
       cmd-shift-right = "move right";
