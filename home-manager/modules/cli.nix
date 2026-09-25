@@ -39,9 +39,11 @@ let
       ]}
     '';
   };
+  docker-clean = pkgs.callPackage ../../derivations/docker-clean { };
 in
 {
   home.packages = with pkgs; [
+    docker-clean
     ansible
     autojump
     bc
