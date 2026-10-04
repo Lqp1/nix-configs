@@ -92,11 +92,11 @@
     "fzf-git": {
       "flake": false,
       "locked": {
-        "lastModified": 1790217636,
-        "narHash": "sha256-/jusRDAXY8lb0zaTIl/qXGWoi9Il7likX1UaKIQ9sI0=",
+        "lastModified": 1790525933,
+        "narHash": "sha256-pu3qAtY/M5IPfRHGKhC1rFscSCBvgnjaD2KlAXbZ8L0=",
         "owner": "junegunn",
         "repo": "fzf-git.sh",
-        "rev": "930e378b8abcb2b6f47191462d492c6f9f0325e2",
+        "rev": "110c0a10b744131b90861aa1d1fff6fbe0794f9d",
         "type": "github"
       },
       "original": {
