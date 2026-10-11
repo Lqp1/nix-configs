@@ -7,6 +7,20 @@ if [ ! -f flake.nix ] || [ ! -f flake.lock ]; then
   exit 1
 fi
 
+# Determine whether to use color (auto-detect TTY, allow CLI override)
+COLOR_FLAG="--color=never"
+if [ -t 1 ]; then
+  COLOR_FLAG="--color=always"
+fi
+
+for arg in "$@"; do
+  if [ "$arg" = "--color" ]; then
+    COLOR_FLAG="--color=always"
+  elif [ "$arg" = "--no-color" ]; then
+    COLOR_FLAG="--color=never"
+  fi
+done
+
 # Create a temporary directory to hold the original lock file and flake
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
@@ -15,7 +29,7 @@ trap 'rm -rf "$TEMP_DIR"' EXIT
 cp flake.nix flake.lock "$TEMP_DIR/"
 
 # Run the user's nix flake command (default to update if no args provided)
-echo "Running nix flake..."
+echo "Running nix flake..." >&2
 if [ "$#" -eq 0 ]; then
   nix flake update
 else
@@ -33,12 +47,12 @@ for name, node2 in lock2.items():
     node1 = lock1.get(name)
     if not node1:
         print(f"+{name}") # New input
-    elif node1.get("locked", {}).get("rev") != node2.get("locked", {}).get("rev"):
+    elif node1.get("locked") != node2.get("locked"):
         print(f"~{name}") # Changed input
 ' "$TEMP_DIR/flake.lock" flake.lock)
 
 if [ -z "$CHANGED_INPUTS" ]; then
-  echo "No inputs were updated."
+  echo "No inputs were updated." >&2
   exit 0
 fi
 
@@ -47,16 +61,12 @@ for change in $CHANGED_INPUTS; do
   input="${change:1}"
 
   if [ "$action" = "+" ]; then
-    echo -e "\n=== New Input Added: $input ==="
+    echo "=== New Input Added: $input ===" >&2
     new_path=$(nix eval --raw --impure --expr "(builtins.getFlake \"path:$PWD\").inputs.${input}.outPath" --extra-experimental-features "nix-command flakes" 2>/dev/null || true)
     if [ -n "$new_path" ]; then
-      echo "Source files resolved in: $new_path"
+      echo "Source files resolved in: $new_path" >&2
     fi
   elif [ "$action" = "~" ]; then
-    echo -e "\n============================================="
-    echo "  Upstream diff for input: $input"
-    echo -e "============================================="
-    
     # Resolve the store path of the old revision
     old_path=$(nix eval --raw --impure --expr "(builtins.getFlake \"path:$TEMP_DIR\").inputs.${input}.outPath" --extra-experimental-features "nix-command flakes" 2>/dev/null || true)
     
@@ -64,11 +74,14 @@ for change in $CHANGED_INPUTS; do
     new_path=$(nix eval --raw --impure --expr "(builtins.getFlake \"path:$PWD\").inputs.${input}.outPath" --extra-experimental-features "nix-command flakes" 2>/dev/null || true)
 
     if [ -z "$old_path" ] || [ -z "$new_path" ]; then
-      echo "Could not resolve store paths for $input"
+      echo "Could not resolve store paths for $input" >&2
       continue
     fi
 
-    # Generate colorized diff comparing the two directories
-    git diff --no-index --color=always "$old_path" "$new_path" || true
+    # Generate diff and normalize store paths to standard a/ and b/ paths
+    diff_output=$(git diff --no-index $COLOR_FLAG "$old_path" "$new_path" || true)
+    if [ -n "$diff_output" ]; then
+      echo "$diff_output" | sed -E "s|([1a])?$old_path/|a/|g; s|([2b])?$new_path/|b/|g; s|$old_path/|a/|g; s|$new_path/|b/|g"
+    fi
   fi
 done
