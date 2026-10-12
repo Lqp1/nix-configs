@@ -17,6 +17,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.editor = false;
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   services.fprintd.enable = true;
   my.fprintMitigation = true;
   security.pam.services.i3lock.rules.auth.fprintd.args = [ "timeout=7" "max-tries=1" ];
