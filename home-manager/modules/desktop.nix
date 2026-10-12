@@ -266,6 +266,8 @@ in
       tab_title_template = " {index}: {title} ";
       active_tab_title_template = " {fmt.bold}{index}: {title}{fmt.nobold} ";
 
+      custom_shaders = "dim-inactive-windows";
+
       disable_ligatures = "cursor";
 
       bold_font = "Fira Code Bold";
