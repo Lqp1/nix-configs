@@ -121,7 +121,7 @@ in
     nix.settings.allowed-users = [ "@wheel" ];
     nix.gc = {
       automatic = true;
-      dates = "monthly";
+      dates = "weekly";
       options = "--delete-older-than 30d";
     };
     system.activationScripts = {
