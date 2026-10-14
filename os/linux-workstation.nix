@@ -121,6 +121,10 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/us-english-dictionary/latest.xpi";
           };
+          "{f507746b-2607-45b1-b022-d87a5c5ea3b7}" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/pqspy/latest.xpi";
+          };
         };
       };
     };
