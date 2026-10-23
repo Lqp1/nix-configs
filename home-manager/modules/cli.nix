@@ -166,6 +166,9 @@ in
       VISUAL = "nvim";
       PAGER = "less";
       LESS = "-FSRXIW";
+      # uv embeds its own CA bundle (still trusts the compromised eMudhra roots)
+      # https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576
+      UV_SYSTEM_CERTS = "true";
     };
 
     initContent = ''

@@ -8,6 +8,7 @@ in
 {
   imports = [
     ../base.nix
+    ./darwin-security.nix
     inputs.home-manager.darwinModules.home-manager
   ];
 
@@ -210,7 +211,6 @@ in
     NSGlobalDomain."com.apple.sound.beep.volume" = 0.0;
     NSGlobalDomain.NSWindowShouldDragOnGesture = true;
     controlcenter.BatteryShowPercentage = true;
-    loginwindow.GuestEnabled = false;
     trackpad.Clicking = true;
     trackpad.TrackpadRightClick = true;
 
@@ -237,8 +237,6 @@ in
   system.keyboard.enableKeyMapping = true;
   system.keyboard.swapLeftCommandAndLeftAlt = false;
   system.keyboard.swapLeftCtrlAndFn = false;
-
-  security.pam.services.sudo_local.touchIdAuth = true;
 
   # workaround to have flake's derivations available for nix-* commands
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
