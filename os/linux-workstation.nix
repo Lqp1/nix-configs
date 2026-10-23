@@ -9,8 +9,8 @@ let
   inherit (config.my) linuxType;
 
   staticResolvConf = pkgs.writeText "jailed-resolv.conf" ''
-    nameserver 1.1.1.1
-    nameserver 9.9.9.9
+    nameserver 80.67.169.12
+    nameserver 80.67.169.40
     options edns0
   '';
   usbguard-select = pkgs.callPackage ../derivations/usbguard-select { };

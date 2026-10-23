@@ -7,10 +7,10 @@
 }:
 let
   nameservers = [
-    "9.9.9.9#dns.quad9.net"
-    "149.112.112.112#dns.quad9.net"
-    "2620:fe::fe#dns.quad9.net"
-    "2620:fe::9#dns.quad9.net"
+    "80.67.169.12#ns0.fdn.fr"
+    "80.67.169.40#ns1.fdn.fr"
+    "2001:910:800::12#ns0.fdn.fr"
+    "2001:910:800::40#ns1.fdn.fr"
   ];
 in
 {
