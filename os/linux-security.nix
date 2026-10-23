@@ -142,9 +142,12 @@ in
     "emSign Root CA - C1"
     "emSign ECC Root CA - C3"
   ];
-  # Python's ssl module ignores NIX_SSL_CERT_FILE; point it (and uv, which
-  # embeds its own bundle) at the system bundle with the blacklist applied.
+  # NixOS does not set NIX_SSL_CERT_FILE (needed by python3Packages.certifi),
+  # and Python's ssl module ignores NIX_SSL_CERT_FILE; point both (and uv,
+  # which embeds its own bundle) at the system bundle with the blacklist applied.
   environment.sessionVariables = {
+    NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+    REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
     UV_SYSTEM_CERTS = "true";
   };

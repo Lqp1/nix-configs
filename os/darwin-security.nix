@@ -16,6 +16,7 @@
   # Python's ssl module ignores NIX_SSL_CERT_FILE; point it (and uv, which
   # embeds its own bundle) at the system bundle with the blacklist applied.
   environment.variables = {
+    REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
     SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
     UV_SYSTEM_CERTS = "true";
   };
