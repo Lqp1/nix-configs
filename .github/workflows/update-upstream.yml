@@ -1,7 +1,7 @@
 name: Update Upstream Flakes
 on:
   schedule:
-    - cron: '0 4 * * 0' # Every Sunday at 4:00 AM
+    - cron: '0 4 * * 5' # Every Friday at 4:00 AM
   workflow_dispatch:
 
 jobs:
@@ -24,8 +24,28 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
-      - name: Update input
-        run: nix flake lock --update-input ${{ matrix.input }}
+      - name: Update input and generate diff
+        run: |
+          cp flake.lock flake.lock.before
+          nix flake lock --update-input ${{ matrix.input }}
+
+          if ! git diff --quiet flake.lock; then
+            cp flake.lock flake.lock.after
+
+            cp flake.lock.before flake.lock
+            OLD_DRV=$(nix eval --raw "path:$PWD#nixosConfigurations.test-vm.config.system.build.toplevel.drvPath")
+
+            cp flake.lock.after flake.lock
+            NEW_DRV=$(nix eval --raw "path:$PWD#nixosConfigurations.test-vm.config.system.build.toplevel.drvPath")
+
+            nix-shell -p nvd nix-diff --run "
+              nvd --color never diff \"$OLD_DRV\" \"$NEW_DRV\" > nvd_output.txt || true
+              if [ \"$OLD_DRV\" != \"$NEW_DRV\" ]; then
+                nix-diff --color never --line-oriented \"$OLD_DRV\" \"$NEW_DRV\" > nix_diff_output.txt || true
+              fi
+            "
+          fi
+          rm -f flake.lock.before flake.lock.after
           
       - name: Create Pull Request
         env:
@@ -42,11 +62,42 @@ jobs:
             git commit -m "chore(flake): update upstream input ${{ matrix.input }}"
             git push --force origin "$BRANCH_NAME"
             
+            # Prepare PR Body
+            {
+              echo "Automated update of upstream flake input: \`${{ matrix.input }}\`"
+              echo ""
+              if [ -s nvd_output.txt ]; then
+                echo "<details>"
+                echo "<summary>Package Diff (nvd)</summary>"
+                echo ""
+                echo '`````text'
+                cat nvd_output.txt
+                echo '`````'
+                echo ""
+                echo "</details>"
+                echo ""
+              fi
+              if [ -s nix_diff_output.txt ]; then
+                echo "<details>"
+                echo "<summary>Derivation Diff (nix-diff)</summary>"
+                echo ""
+                echo '`````diff'
+                head -c 50000 nix_diff_output.txt
+                if [ "$(wc -c < nix_diff_output.txt)" -gt 50000 ]; then
+                  echo ""
+                  echo "... (truncated)"
+                fi
+                echo '`````'
+                echo ""
+                echo "</details>"
+              fi
+            } > pr-body.txt
+
             gh pr create \
               --title "chore(flake): update ${{ matrix.input }}" \
-              --body "Automated update of upstream flake input: \`${{ matrix.input }}\`" \
+              --body-file pr-body.txt \
               --head "$BRANCH_NAME" \
-              --base main || true
+              --base main || gh pr edit "$BRANCH_NAME" --body-file pr-body.txt || true
           else
             echo "No changes to flake.lock for ${{ matrix.input }}"
           fi
