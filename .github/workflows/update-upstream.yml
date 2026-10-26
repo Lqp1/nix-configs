@@ -38,12 +38,12 @@ jobs:
             cp flake.lock.after flake.lock
             NEW_DRV=$(nix eval --raw "path:$PWD#nixosConfigurations.test-vm.config.system.build.toplevel.drvPath")
 
-            nix-shell -p nvd nix-diff --run "
-              nvd --color never diff \"$OLD_DRV\" \"$NEW_DRV\" > nvd_output.txt || true
-              if [ \"$OLD_DRV\" != \"$NEW_DRV\" ]; then
-                nix-diff --color never --line-oriented \"$OLD_DRV\" \"$NEW_DRV\" > nix_diff_output.txt || true
+            nix shell --inputs-from "path:$PWD" nixpkgs#nvd nixpkgs#nix-diff -c bash -c '
+              nvd --color never diff "$1" "$2" > nvd_output.txt || true
+              if [ "$1" != "$2" ]; then
+                nix-diff --color never --line-oriented "$1" "$2" > nix_diff_output.txt || true
               fi
-            "
+            ' _ "$OLD_DRV" "$NEW_DRV"
           fi
           rm -f flake.lock.before flake.lock.after
           
