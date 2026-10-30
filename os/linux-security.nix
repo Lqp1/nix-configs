@@ -135,13 +135,8 @@ in
     "page_alloc.shuffle=1"
     "debugfs=off"
   ];
-  #https://emudhra.we-have-a-problem.com/
-  security.pki.caCertificateBlacklist = [
-    "Comodo AAA Services root"
-    "emSign ECC Root CA - G3"
-    "emSign Root CA - C1"
-    "emSign ECC Root CA - C3"
-  ];
+
+  # https://emudhra.we-have-a-problem.com/
   # NixOS does not set NIX_SSL_CERT_FILE (needed by python3Packages.certifi),
   # and Python's ssl module ignores NIX_SSL_CERT_FILE; point both (and uv,
   # which embeds its own bundle) at the system bundle with the blacklist applied.
