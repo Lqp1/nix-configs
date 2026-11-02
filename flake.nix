@@ -71,7 +71,7 @@
       # https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576
       emudhraOverlay = _final: prev: {
         pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-          (_pyFinal: pyPrev: {
+          (_pyFinal: pyPrev: prev.lib.optionalAttrs pyPrev.python.isPy3k {
             pip = pyPrev.pip.overridePythonAttrs (_old: rec {
               version = "26.2.2";
               src = prev.fetchFromGitHub {
