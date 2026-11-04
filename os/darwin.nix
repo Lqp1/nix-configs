@@ -277,10 +277,10 @@ in
   nix.settings.allowed-users = [ "@admin" ];
   nix.gc = {
     automatic = true;
-    interval = { Weekday = 0; Hour = 0; Minute = 0; };
+    # Daily at midday: a weekly midnight run is skipped if the Mac is off.
+    interval = { Hour = 12; Minute = 0; };
     options = "--delete-older-than 30d";
   };
-
   system.activationScripts.activateDarwinSettings.text = ''
     # Following line should allow us to avoid a logout/login cycle
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
