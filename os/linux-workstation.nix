@@ -107,7 +107,49 @@ in
     programs.firefox = {
       enable = true;
       languagePacks = [ "fr" "en-US" ];
+      preferences = {
+        "browser.ml.chat.enabled" = false;
+        "browser.ml.chat.menu" = false;
+        "browser.ml.chat.page" = false;
+        "browser.ml.chat.shortcuts" = false;
+        "browser.ml.chat.sidebar" = false;
+        "browser.ml.enable" = false;
+        "browser.ml.linkPreview.enabled" = false;
+        "browser.startup.homepage" = "https://google.com";
+        "browser.tabs.groups.smart.enabled" = false;
+        "browser.tabs.groups.smart.userEnabled" = false;
+        "dom.private-attribution.submission.enabled" = false;
+        "extensions.ml.enabled" = false;
+        "privacy.fingerprintingProtection" = true;
+        "privacy.globalprivacycontrol.enabled" = true;
+      };
       policies = {
+        DisableFirefoxStudies = true;
+        DisableProfileImport = true;
+        DisableProfileRefresh = true;
+        DisableSetDesktopBackground = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisableFormHistory = true;
+        DisablePasswordReveal = true;
+        HTTPSOnlyMode = "force_enabled";
+        FirefoxHome = {
+          SponsoredTopSites = false;
+          SponsoredPocket = false;
+          Pocket = false;
+          Locked = true;
+        };
+        FirefoxSuggest = {
+          SponsoredSuggestions = false;
+          ImproveSuggest = false;
+          Locked = true;
+        };
+        UserMessaging = {
+          ExtensionRecommendations = false;
+          FeatureRecommendations = false;
+          MoreFromMozilla = false;
+          Locked = true;
+        };
         ExtensionSettings = {
           "uBlock0@raymondhill.net" = {
             installation_mode = "force_installed";

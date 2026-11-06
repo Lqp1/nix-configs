@@ -64,6 +64,7 @@ in
     my-neovim
     netcat-gnu
     nil
+    nix-tree
     rclone
     smount
     sshfs
