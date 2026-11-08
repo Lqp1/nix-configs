@@ -4,7 +4,6 @@ let
   home = config.home.homeDirectory;
   inherit (inputs.smount.packages.${pkgs.stdenv.hostPlatform.system}) smount;
   my-python-packages = python-packages: with python-packages; [
-    pip
     configargparse
     flake8
     autopep8
@@ -71,6 +70,7 @@ in
     statix
     tig
     tree
+    uv
     vgrep
     yazi
     yq
@@ -158,6 +158,7 @@ in
       gitt = "git diff $(git rev-list -n1 --before=\"7:00\" master)";
       serve = "python3 -m http.server";
       bc = "bc -l";
+      pip = "uv pip";
       vi = "nvim";
       vim = "nvim";
     };

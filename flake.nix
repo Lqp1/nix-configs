@@ -66,27 +66,8 @@
         };
       };
 
-      # Temporary: nixpkgs still ships pip < 26.2.2, whose vendored CA bundle
-      # trusts the compromised eMudhra roots. Drop once nixpkgs has >= 26.2.2.
-      # https://discuss.python.org/t/information-for-python-users-regarding-emudhra-emsign-ca-certificate-security-incident/109576
-      emudhraOverlay = _final: prev: {
-        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-          (_pyFinal: pyPrev: prev.lib.optionalAttrs pyPrev.python.isPy3k {
-            pip = pyPrev.pip.overridePythonAttrs (_old: rec {
-              version = "26.2.2";
-              src = prev.fetchFromGitHub {
-                owner = "pypa";
-                repo = "pip";
-                tag = version;
-                hash = "sha256-iH5O1kneYzoHpzbfgrJc/8gVr57CNX3/xpwel4ueNqE=";
-              };
-            });
-          })
-        ];
-      };
-
       overlayModule = {
-        nixpkgs.overlays = [ unstableOverlay emudhraOverlay ];
+        nixpkgs.overlays = [ unstableOverlay ];
       };
 
       commonSpecialArgs = { inherit inputs; };
@@ -134,7 +115,7 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          overlays = [ unstableOverlay emudhraOverlay ];
+          overlays = [ unstableOverlay ];
         };
       in
       {
