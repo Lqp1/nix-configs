@@ -183,9 +183,31 @@ in
         useRoutingFeatures = "client";
         disableUpstreamLogging = true;
         disableTaildrop = true;
-        extraSetFlags = [ "--netfilter-mode=on" "--accept-routes=true" "--accept-dns=true" ];
+        extraSetFlags = [ "--netfilter-mode=on" "--accept-dns=true" ];
         extraDaemonFlags = [ "--no-logs-no-support" ];
       };
+
+    # Accept Tailscale subnet routes only when away from home LAN
+    networking.networkmanager.dispatcherScripts = [
+      {
+        source = pkgs.writeShellScript "tailscale-home-routes" ''
+          case "$1" in tailscale0|lo|docker*|br-*|veth*) exit 0 ;; esac
+          case "$2" in up|down) ;; *) exit 0 ;; esac
+
+          HOME_GW="192.168.1.1"
+          HOME_MAC="18:6a:81:90:bc:e0"
+
+          [ "$2" = "up" ] && [ "''${IP4_GATEWAY:-}" = "$HOME_GW" ] && \
+            ${pkgs.iputils}/bin/arping -q -c1 -w1 -I "$1" "$HOME_GW" || true
+
+          if ${pkgs.iproute2}/bin/ip neigh show "$HOME_GW" | ${pkgs.gnugrep}/bin/grep -qi "$HOME_MAC"; then
+            ${pkgs.tailscale}/bin/tailscale set --accept-routes=false || true
+          else
+            ${pkgs.tailscale}/bin/tailscale set --accept-routes=true || true
+          fi
+        '';
+      }
+    ];
 
     # Enable the various daemons
     services.gvfs.enable = true;

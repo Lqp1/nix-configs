@@ -94,7 +94,7 @@ cursor-click = pointer
 
 ;== Module Location ========================================================
 
-modules-right = netstate battery battery2 backlight volume date powermenu
+modules-right = tailscale netstate battery battery2 backlight volume date powermenu
 modules-left = tray i3 custom
 
 [bar/info]
@@ -409,6 +409,13 @@ ramp-font = 2
 ramp-0 = 󰃞
 ramp-1 = 󰃟
 ramp-2 = 󰃠
+
+[module/tailscale]
+type = custom/script
+format-padding = 2
+exec = sh -c 'if ! ip -4 addr show dev tailscale0 2>/dev/null | grep -q "inet "; then echo "%{F#757575}off%{F-}"; elif ip -4 route show table 52 2>/dev/null | grep -q "^192\.168\.1\.0/24 "; then echo "%{F#42A5F5}routes%{F-}"; else echo "%{F#43A047}home%{F-}"; fi'
+interval = 5
+label = 󰖂 %output%
 
 [module/netstate]
 type = custom/script
