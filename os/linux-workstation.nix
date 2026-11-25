@@ -197,10 +197,13 @@ in
           HOME_GW="192.168.1.1"
           HOME_MAC="18:6a:81:90:bc:e0"
 
-          [ "$2" = "up" ] && [ "''${IP4_GATEWAY:-}" = "$HOME_GW" ] && \
-            ${pkgs.iputils}/bin/arping -q -c1 -w1 -I "$1" "$HOME_GW" || true
+          is_home() {
+            ${pkgs.iproute2}/bin/ip neigh show "$HOME_GW" | ${pkgs.gnugrep}/bin/grep -qi "$HOME_MAC" && return 0
+            [ "$2" = "up" ] && [ "''${IP4_GATEWAY:-}" = "$HOME_GW" ] && \
+              ${pkgs.iputils}/bin/arping -f -c2 -w2 -I "$1" "$HOME_GW" 2>/dev/null | ${pkgs.gnugrep}/bin/grep -qi "$HOME_MAC"
+          }
 
-          if ${pkgs.iproute2}/bin/ip neigh show "$HOME_GW" | ${pkgs.gnugrep}/bin/grep -qi "$HOME_MAC"; then
+          if is_home "$@"; then
             ${pkgs.tailscale}/bin/tailscale set --accept-routes=false || true
           else
             ${pkgs.tailscale}/bin/tailscale set --accept-routes=true || true
