@@ -155,7 +155,7 @@ in
       gitw = "git log --no-merges --raw";
       gitl = "git tree";
       gite = "git ls-files -o -m --exclude-standard | fzf -m | xargs -r -o nvim";
-      gitt = "git diff $(git rev-list -n1 --before=\"7:00\" master)";
+      gitt = "git diff $(git rev-list -n1 --before=\"7:00\" HEAD)";
       serve = "python3 -m http.server";
       bc = "bc -l";
       pip = "uv pip";
