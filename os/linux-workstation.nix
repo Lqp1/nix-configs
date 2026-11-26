@@ -419,7 +419,6 @@ in
         "wheel" # Admin of the system
         "networkmanager"
         "clamav" # To trigger scans
-        "docker" # To manipulate docker
         "video"
         "plugdev"
         "dialout" # For Arduino / Esp32 access through tty

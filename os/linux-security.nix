@@ -63,9 +63,8 @@ in
   security.rtkit.enable = true;
 
   # Don't save coredumps
-  systemd.coredump.settings.Coredump.Storage = "node";
+  systemd.coredump.settings.Coredump.Storage = "none";
 
-  networking.firewall.allowedTCPPorts = [ 22 ];
   networking.firewall.enable = true;
   services.clamav.daemon = {
     enable = true;
@@ -77,7 +76,6 @@ in
   };
   services.clamav.clamonacc.enable = true;
   services.clamav.updater.enable = true;
-  programs.firejail.enable = true;
 
   ## Sysctl & Kernel security settings from:
   # https://github.com/NixOS/nixpkgs/blob/d1adf7652500d3ef98cdadb411b6aea20e2d4339/nixos/modules/profiles/hardened.nix
